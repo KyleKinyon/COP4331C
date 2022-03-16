@@ -1,28 +1,34 @@
-import { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import FrontPage from "./pages/Frontpage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 /*
 
 TODO: Add routing
 TODO: Add protected routes
 TODO: Add loading screen for getting jwt
-TODO: Install MUI and add to project
-TODO: Add Axios for requests
-TODO: Add interceptor or auth library to auto regenerate jwt
+TODO: Complete Login, Signup, and Front pages
 
 */
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="App">
-      <h1>The app has been created!</h1>
-      <div>
-        <h3>{count}</h3>
-        <h3>Click the button to increase the count</h3>
-        <button onClick={() => setCount(count + 1)}>Click me</button>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/">
+          <Route path="/" element={<FrontPage />} />
+          {/* Up to you guys if you want to combine it into one file  */}
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
