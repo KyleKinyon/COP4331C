@@ -23,15 +23,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/">
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<FrontPage />} />
           {/* Up to you guys if you want to combine it into one file  */}
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
-    </BrowserRouter>  
-
+    </BrowserRouter>
   );
 }
 
