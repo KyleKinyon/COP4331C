@@ -1,8 +1,11 @@
-import { Box, Grid, Button, TextField, Link, Typography } from "@mui/material";
+import { Box, Grid, Button, TextField, Link, Typography, CssBaseline } from "@mui/material";
+import "./styles.css";
 
 export default function Signup() {
   return (
     <>
+      <div className="login-signup-background">
+      <CssBaseline/>
       <Box sx={{ flexGrow: 1, width: `100vw`, height: "100vh" }}>
         <Grid container spacing={2} sx={{ height: 1 }}>
           <Grid item xs={7}>
@@ -66,6 +69,7 @@ export default function Signup() {
           </Grid>
         </Grid>
       </Box>
+      </div>
     </>
   );
 }
