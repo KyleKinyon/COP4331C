@@ -7,7 +7,9 @@ import {
   Typography,
   styled,
   ImageList,
+  CssBaseline,
 } from "@mui/material";
+import "./styles.css";
 
 const StyledTextField = styled(TextField)`
   width: 100%;
@@ -28,6 +30,8 @@ const StyledTextField = styled(TextField)`
 export default function Login() {
   return (
     <>
+      <div className="login-signup-background">
+      <CssBaseline/>
       <Box
         sx={{
           flexGrow: 1,
@@ -101,7 +105,7 @@ export default function Login() {
             </Box>
           </Grid>
           <Grid item xs={4} sx={{ width: 1, height: 1 }}>
-            <Box
+            {/* <Box
               sx={{
                 height: 1,
                 width: 1,
@@ -114,11 +118,12 @@ export default function Login() {
                 src="https://i.pinimg.com/originals/95/4c/31/954c316be675cee73eb91306bc1bb954.jpg"
                 alt="Scary Underground Dragon"
                 loading="lazy"
-              /> */}
-            </Box>
+              /> 
+            </Box> */}
           </Grid>
         </Grid>
       </Box>
+      </div>
     </>
   );
 }
