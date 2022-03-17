@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import FrontPage from "./pages/Frontpage";
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
@@ -22,13 +23,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/">
-          <Route path="/" element={<FrontPage />} />
+          <Route path="/" element={<Dashboard />} />
           {/* Up to you guys if you want to combine it into one file  */}
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter>  
+
   );
 }
 
