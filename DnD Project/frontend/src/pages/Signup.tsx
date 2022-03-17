@@ -74,7 +74,7 @@ export default function Signup() {
                   margin="normal"
                 />
 
-                <Button variant="contained" color="error" sx={{ px: 2 }}>
+                <Button onClick={() => { alert('Placeholder for create account function');}} variant="contained" color="error" sx={{ px: 2 }}>
                   Create Account
                 </Button>
 

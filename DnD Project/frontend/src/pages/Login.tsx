@@ -92,7 +92,7 @@ export default function Login() {
                   margin="normal"
                 />
 
-                <Button variant="contained" color="error" sx={{ px: 2 }}>
+                <Button onClick={() => { alert('Placeholder for login function');}} variant="contained" color="error" sx={{ px: 2 }}>
                   Log In
                 </Button>
 
