@@ -15,6 +15,9 @@ export default function FrontPage() {
         <Link href="/signup" mx={1}>
           Sign up
         </Link>
+        <Link href="/dashboard" mx={1}>
+          Front Page
+        </Link>
       </div>
     </div>
   );
