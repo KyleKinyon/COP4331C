@@ -35,6 +35,17 @@ export default function Signup() {
                     backgroundColor: "white",
                   }}
                   id="outlined-basic"
+                  label="Email"
+                  type="text"
+                  autoComplete="current-password"
+                  margin="normal"
+                />
+
+                <TextField
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                  id="outlined-basic"
                   label="Username"
                   type="text"
                   autoComplete="current-password"
@@ -42,6 +53,9 @@ export default function Signup() {
                 />
 
                 <TextField
+                  style={{
+                    backgroundColor: "white",
+                  }}
                   id="outlined-basic"
                   label="Password"
                   type="password"
@@ -49,17 +63,22 @@ export default function Signup() {
                   margin="normal"
                 />
 
+                <TextField
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                  id="outlined-basic"
+                  label="Confirm Password"
+                  type="password"
+                  autoComplete="current-password"
+                  margin="normal"
+                />
+
                 <Button variant="contained" color="error" sx={{ px: 2 }}>
-                  Log In
+                  Create Account
                 </Button>
 
                 <Box my={2}>
-                  <Typography variant="subtitle1">
-                    Don't have an account?
-                    <Link href="/signup" mx={1} underline="none" color="red">
-                      Sign up
-                    </Link>
-                  </Typography>
                 </Box>
               </Box>
             </Box>

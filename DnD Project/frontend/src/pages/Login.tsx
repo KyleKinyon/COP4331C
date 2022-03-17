@@ -69,9 +69,12 @@ export default function Login() {
                   //   borderColor: "white",
                   //   borderRadius: "4px",
                   // }}
-                  InputLabelProps={{ style: { color: "grey" } }}
-                  InputProps={{
-                    style: { borderColor: "black", color: "black" },
+                  // InputLabelProps={{ style: { color: "grey" } }}
+                  // InputProps={{
+                  //  style: { borderColor: "black", color: "black" },
+                  // }}
+                  style={{
+                    backgroundColor: "white",
                   }}
                   label="Username"
                   type="text"
