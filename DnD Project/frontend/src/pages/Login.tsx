@@ -1,10 +1,42 @@
-import { Box, Grid, Button, TextField, Link, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Button,
+  TextField,
+  Link,
+  Typography,
+  styled,
+  ImageList,
+} from "@mui/material";
+
+const StyledTextField = styled(TextField)`
+  width: 100%;
+  & .MuiOutlinedInput-notchedOutline {
+    border-color: white;
+    color: black;
+  }
+  & .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: white;
+    color: black;
+  }
+
+  & .MuiFormLabel-root-MuiInputLabel-root {
+    color: black;
+  }
+`;
 
 export default function Login() {
   return (
     <>
-      <Box sx={{ flexGrow: 1, width: `100vw`, height: "100vh" }}>
-        <Grid container spacing={2} sx={{ height: 1 }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          width: `100vw`,
+          height: "100vh",
+          // overflowY: "hidden",
+        }}
+      >
+        <Grid container spacing={2} sx={{ height: "100%" }}>
           <Grid item xs={7}>
             <Box
               py={4}
@@ -27,16 +59,26 @@ export default function Login() {
               <Box
                 sx={{ display: "flex", flexDirection: "column", width: "40%" }}
               >
-                <TextField
-                  id="outlined-basic"
+                <StyledTextField
+                  // style={{
+                  //   backgroundColor: "white",
+                  //   borderColor: "white",
+                  //   borderRadius: "4px",
+                  // }}
+                  InputLabelProps={{ style: { color: "grey" } }}
+                  InputProps={{
+                    style: { borderColor: "black", color: "black" },
+                  }}
                   label="Username"
                   type="text"
                   autoComplete="current-password"
-                  margin="normal"
+                  margin="dense"
                 />
 
-                <TextField
-                  id="outlined-basic"
+                <StyledTextField
+                  style={{
+                    backgroundColor: "white",
+                  }}
                   label="Password"
                   type="password"
                   autoComplete="current-password"
@@ -58,8 +100,22 @@ export default function Login() {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={4}>
-            xs=8
+          <Grid item xs={4} sx={{ width: 1, height: 1 }}>
+            <Box
+              sx={{
+                height: 1,
+                width: 1,
+                backgroundImage:
+                  "url(https://i.pinimg.com/originals/95/4c/31/954c316be675cee73eb91306bc1bb954.jpg)",
+                backgroundSize: "cover",
+              }}
+            >
+              {/* <img
+                src="https://i.pinimg.com/originals/95/4c/31/954c316be675cee73eb91306bc1bb954.jpg"
+                alt="Scary Underground Dragon"
+                loading="lazy"
+              /> */}
+            </Box>
           </Grid>
         </Grid>
       </Box>
