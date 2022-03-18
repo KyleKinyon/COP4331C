@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose'
 
-// TODO: Update to reflect actual schema
 const CharacterSchema = new Schema({
 	CharID: Number,
 	UserID: Number,
