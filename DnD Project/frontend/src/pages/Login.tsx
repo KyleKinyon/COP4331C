@@ -35,13 +35,13 @@ export default function Login() {
       <Box
         sx={{
           flexGrow: 1,
-          width: `100vw`,
+          width: "100vw",
           height: "100vh",
-          // overflowY: "hidden",
+          overflowY: "hidden",
         }}
       >
         <Grid container spacing={2} sx={{ height: "100%" }}>
-          <Grid item xs={7}>
+          <Grid item xs={6}> {/*  still deciding between 6,7,and 8  */}
             <Box
               py={4}
               px={2}
@@ -53,7 +53,8 @@ export default function Login() {
                 textAlign: "center",
                 backgroundColor: "black",
                 color: "white",
-                height: 1,
+                height: "100vh",
+                spacing: "0",
               }}
             >
               <Typography variant="h5" component="h2">
@@ -76,7 +77,7 @@ export default function Login() {
                   style={{
                     backgroundColor: "white",
                   }}
-                  label="Username"
+                  placeholder="Username"
                   type="text"
                   autoComplete="current-password"
                   margin="dense"
@@ -86,13 +87,13 @@ export default function Login() {
                   style={{
                     backgroundColor: "white",
                   }}
-                  label="Password"
+                  placeholder="Password"
                   type="password"
                   autoComplete="current-password"
-                  margin="normal"
+                  margin="dense"
                 />
 
-                <Button onClick={() => { alert('Placeholder for login function');}} variant="contained" color="error" sx={{ px: 2 }}>
+                <Button onClick={() => { alert('Placeholder for login function');}} variant="contained" color="error" sx={{ px: 2, my: 1}}>
                   Log In
                 </Button>
 

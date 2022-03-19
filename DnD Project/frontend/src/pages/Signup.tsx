@@ -6,9 +6,9 @@ export default function Signup() {
     <>
       <div className="login-signup-background">
       <CssBaseline/>
-      <Box sx={{ flexGrow: 1, width: `100vw`, height: "100vh" }}>
+      <Box sx={{ flexGrow: 1, width: `100vw`, height: "100vh", overflowY: "hidden"}}>
         <Grid container spacing={2} sx={{ height: 1 }}>
-          <Grid item xs={7}>
+          <Grid item xs={6}>
             <Box
               py={4}
               px={2}
@@ -20,7 +20,7 @@ export default function Signup() {
                 textAlign: "center",
                 backgroundColor: "black",
                 color: "white",
-                height: 1,
+                height: "100vh",
               }}
             >
               <Typography variant="h5" component="h2">
@@ -35,10 +35,10 @@ export default function Signup() {
                     backgroundColor: "white",
                   }}
                   id="outlined-basic"
-                  label="Email"
                   type="text"
                   autoComplete="current-password"
-                  margin="normal"
+                  margin="dense"
+                  placeholder="First Name"
                 />
 
                 <TextField
@@ -46,10 +46,10 @@ export default function Signup() {
                     backgroundColor: "white",
                   }}
                   id="outlined-basic"
-                  label="Username"
                   type="text"
                   autoComplete="current-password"
-                  margin="normal"
+                  margin="dense"
+                  placeholder="Last Name"
                 />
 
                 <TextField
@@ -57,10 +57,10 @@ export default function Signup() {
                     backgroundColor: "white",
                   }}
                   id="outlined-basic"
-                  label="Password"
-                  type="password"
+                  type="text"
                   autoComplete="current-password"
-                  margin="normal"
+                  margin="dense"
+                  placeholder="Email"
                 />
 
                 <TextField
@@ -68,13 +68,35 @@ export default function Signup() {
                     backgroundColor: "white",
                   }}
                   id="outlined-basic"
-                  label="Confirm Password"
-                  type="password"
+                  placeholder="Username"
+                  type="text"
                   autoComplete="current-password"
-                  margin="normal"
+                  margin="dense"
                 />
 
-                <Button onClick={() => { alert('Placeholder for create account function');}} variant="contained" color="error" sx={{ px: 2 }}>
+                <TextField
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                  id="outlined-basic"
+                  placeholder="Password"
+                  type="password"
+                  autoComplete="current-password"
+                  margin="dense"
+                />
+
+                <TextField
+                  style={{
+                    backgroundColor: "white",
+                  }}
+                  id="outlined-basic"
+                  placeholder="Confirm Password"
+                  type="password"
+                  autoComplete="current-password"
+                  margin="dense"
+                />
+
+                <Button onClick={() => { alert('Placeholder for create account function');}} variant="contained" color="error" sx={{ px: 2, my: 1}}>
                   Create Account
                 </Button>
 
