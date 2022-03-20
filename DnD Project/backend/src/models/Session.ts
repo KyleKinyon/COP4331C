@@ -1,11 +1,10 @@
 import { Schema, model } from 'mongoose'
 
 const SessionSchema = new Schema({
-	SessionID: Number,
-	UserIDs: [Number],
-	CharacterIDs: [Number],
+	UserIDs: [String],
+	CharacterIDs: [String],
 	Map: String,
-	DM: Number
+	DM: String
 })
 
 const Session = model('Session', SessionSchema);

@@ -47,10 +47,10 @@ router.post("/login", async (req, res) => {
 		return res.status(400).json({ error: "Username does not exist" });
 	}
 
-	let data = await User.findOne({ username, password }).exec();
+	let data = await User.findOne({ Username: username, Password: password }).exec();
 
-	// only username in user collection of mongodb
 	if (data) {
+		sendRefreshToken(res, createRefreshToken(data));
 		res.status(200).json({
 			data,
 			accessToken: createAccessToken(data)
@@ -58,27 +58,28 @@ router.post("/login", async (req, res) => {
 	} else {
 		return res.status(400).json({ error: "Invalid user info" });
 	}
-
-	sendRefreshToken(res, createRefreshToken(data));
 });
 
 router.post("/signup", async (req, res) => {
-	const { username, password } = req.body;
+	const { username, password , firstName, lastName, email} = req.body;
 	if ([username, password].some(item => item === null || item === undefined)) {
 		return res.status(400).json({ error: "Sign up info does not exist" });
 	}
 
-	let data = await User.findOne({ username }).exec();
+	let data = await User.findOne({ Username:username }).exec();
 
 	if (data) {
 		return res.status(400).json({ error: "Username already exists" });
 	} else {
+		await User.create({ Username: username, Password: password, FirstName: firstName, LastName: lastName, Email: email });
+		data = await User.findOne({ Username: username, Password: password }).exec();
+		sendRefreshToken(res, createRefreshToken(data));
 		res.status(200).json({
+			data,
 			accessToken: createAccessToken(data)
 		});
+		
 	}
-
-	sendRefreshToken(res, createRefreshToken(data));
 });
 
 export default router;
