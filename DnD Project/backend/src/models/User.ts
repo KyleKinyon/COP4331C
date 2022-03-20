@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 
 const UserSchema = new Schema({
-	UserID: Number,
 	Username: String,
 	Password: String,
 	FirstName: String,
