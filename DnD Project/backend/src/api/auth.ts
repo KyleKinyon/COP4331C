@@ -50,6 +50,7 @@ router.post("/login", async (req, res) => {
 	let data = await User.findOne({ Username: username, Password: password }).exec();
 
 	if (data) {
+		sendRefreshToken(res, createRefreshToken(data));
 		res.status(200).json({
 			data,
 			accessToken: createAccessToken(data)
@@ -57,8 +58,6 @@ router.post("/login", async (req, res) => {
 	} else {
 		return res.status(400).json({ error: "Invalid user info" });
 	}
-
-	sendRefreshToken(res, createRefreshToken(data));
 });
 
 router.post("/signup", async (req, res) => {
@@ -74,13 +73,13 @@ router.post("/signup", async (req, res) => {
 	} else {
 		await User.create({ Username: username, Password: password, FirstName: firstName, LastName: lastName, Email: email });
 		data = await User.findOne({ Username: username, Password: password }).exec();
+		sendRefreshToken(res, createRefreshToken(data));
 		res.status(200).json({
 			data,
 			accessToken: createAccessToken(data)
 		});
+		
 	}
-
-	sendRefreshToken(res, createRefreshToken(data));
 });
 
 export default router;
