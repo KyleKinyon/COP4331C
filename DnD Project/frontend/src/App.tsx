@@ -8,10 +8,12 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import "./css/styles.css";
 
 /*
 
 TODO: Add routing
+TODO: Create Protected Route HOC
 TODO: Add protected routes
 TODO: Add loading screen for getting jwt
 TODO: Complete Login, Signup, and Front pages

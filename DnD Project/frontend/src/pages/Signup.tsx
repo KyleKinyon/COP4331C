@@ -1,12 +1,23 @@
-import { Box, Grid, Button, TextField, Link, Typography, CssBaseline } from "@mui/material";
-import "./styles.css";
+import { Box, Grid, Button, TextField, Typography } from "@mui/material";
+
+const FieldStyle = {
+  backgroundColor: "white",
+  borderRadius: "4px",
+  marginRight: "0.1rem",
+  marginLeft: "0.1rem",
+};
 
 export default function Signup() {
   return (
     <>
-      <div className="login-signup-background">
-      <CssBaseline/>
-      <Box sx={{ flexGrow: 1, width: `100vw`, height: "100vh", overflowY: "hidden"}}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          width: 1,
+          height: 1,
+        }}
+        className="dragon-background"
+      >
         <Grid container spacing={2} sx={{ height: 1 }}>
           <Grid item xs={6}>
             <Box
@@ -23,39 +34,46 @@ export default function Signup() {
                 height: "100vh",
               }}
             >
-              <Typography variant="h5" component="h2">
+              <Typography variant="h4" component="h2" my={2}>
                 Start Your D&D Campaign Today
               </Typography>
 
               <Box
-                sx={{ display: "flex", flexDirection: "column", width: "40%" }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "65%",
+                }}
               >
-                <TextField
-                  style={{
-                    backgroundColor: "white",
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignContent: "center",
                   }}
-                  id="outlined-basic"
-                  type="text"
-                  autoComplete="current-password"
-                  margin="dense"
-                  placeholder="First Name"
-                />
+                >
+                  <TextField
+                    style={FieldStyle}
+                    id="outlined-basic"
+                    type="text"
+                    autoComplete="current-password"
+                    margin="dense"
+                    placeholder="First Name"
+                  />
+
+                  <TextField
+                    style={FieldStyle}
+                    id="outlined-basic"
+                    type="text"
+                    autoComplete="current-password"
+                    margin="dense"
+                    placeholder="Last Name"
+                  />
+                </Box>
 
                 <TextField
-                  style={{
-                    backgroundColor: "white",
-                  }}
-                  id="outlined-basic"
-                  type="text"
-                  autoComplete="current-password"
-                  margin="dense"
-                  placeholder="Last Name"
-                />
-
-                <TextField
-                  style={{
-                    backgroundColor: "white",
-                  }}
+                  style={FieldStyle}
                   id="outlined-basic"
                   type="text"
                   autoComplete="current-password"
@@ -64,9 +82,7 @@ export default function Signup() {
                 />
 
                 <TextField
-                  style={{
-                    backgroundColor: "white",
-                  }}
+                  style={FieldStyle}
                   id="outlined-basic"
                   placeholder="Username"
                   type="text"
@@ -74,43 +90,51 @@ export default function Signup() {
                   margin="dense"
                 />
 
-                <TextField
-                  style={{
-                    backgroundColor: "white",
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignContent: "center",
                   }}
-                  id="outlined-basic"
-                  placeholder="Password"
-                  type="password"
-                  autoComplete="current-password"
-                  margin="dense"
-                />
+                >
+                  <TextField
+                    style={FieldStyle}
+                    id="outlined-basic"
+                    placeholder="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    margin="dense"
+                  />
 
-                <TextField
-                  style={{
-                    backgroundColor: "white",
+                  <TextField
+                    style={FieldStyle}
+                    id="outlined-basic"
+                    placeholder="Confirm Password"
+                    type="password"
+                    autoComplete="current-password"
+                    margin="dense"
+                  />
+                </Box>
+
+                <Button
+                  onClick={() => {
+                    alert("Placeholder for create account function");
                   }}
-                  id="outlined-basic"
-                  placeholder="Confirm Password"
-                  type="password"
-                  autoComplete="current-password"
-                  margin="dense"
-                />
-
-                <Button onClick={() => { alert('Placeholder for create account function');}} variant="contained" color="error" sx={{ px: 2, my: 1}}>
+                  variant="contained"
+                  color="error"
+                  sx={{ px: 2, py: 1, my: 1 }}
+                >
                   Create Account
                 </Button>
 
-                <Box my={2}>
-                </Box>
+                <Box my={2}></Box>
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={4}>
-            xs=8
-          </Grid>
+          <Grid item xs={4}></Grid>
         </Grid>
       </Box>
-      </div>
     </>
   );
 }

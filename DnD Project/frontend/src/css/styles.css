@@ -1,0 +1,11 @@
+.dragon-background {
+  background-image: url("https://i.pinimg.com/originals/95/4c/31/954c316be675cee73eb91306bc1bb954.jpg");
+  background-repeat: no-repeat;
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
