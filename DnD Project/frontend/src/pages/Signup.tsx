@@ -1,4 +1,6 @@
 import { Box, Grid, Button, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import request from "../utils/request";
 
 const FieldStyle = {
   backgroundColor: "white",
@@ -8,6 +10,39 @@ const FieldStyle = {
 };
 
 export default function Signup() {
+  const [confirmPass, setConfirmPass] = useState("");
+
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+
+  const updateValue = (key: string) => {
+    return (e: any) => setForm({ ...form, [key]: e.target.value });
+  };
+
+  const submitForm = async () => {
+    try {
+      if (confirmPass !== form.password) {
+        throw new Error("Passwords do not match");
+      }
+
+      if (Object.values(form).some((item) => item.trim() === "")) {
+        throw new Error("Empty fields");
+      }
+
+      let { data } = await request.post("/auth/signup", form);
+      console.log(data);
+      // TODO: Add redirect when good response
+      // TODO: Add error box to sign up
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Box
@@ -45,6 +80,9 @@ export default function Signup() {
                   width: "65%",
                 }}
               >
+                {/* <Box sx={{ width: 1, height: "50%" }}>
+                  <p>FUCK FUCK FUCK</p>
+                </Box> */}
                 <Box
                   sx={{
                     display: "flex",
@@ -60,6 +98,8 @@ export default function Signup() {
                     autoComplete="current-password"
                     margin="dense"
                     placeholder="First Name"
+                    value={form.firstName}
+                    onChange={updateValue("firstName")}
                   />
 
                   <TextField
@@ -69,6 +109,8 @@ export default function Signup() {
                     autoComplete="current-password"
                     margin="dense"
                     placeholder="Last Name"
+                    value={form.lastName}
+                    onChange={updateValue("lastName")}
                   />
                 </Box>
 
@@ -79,6 +121,8 @@ export default function Signup() {
                   autoComplete="current-password"
                   margin="dense"
                   placeholder="Email"
+                  value={form.email}
+                  onChange={updateValue("email")}
                 />
 
                 <TextField
@@ -88,6 +132,7 @@ export default function Signup() {
                   type="text"
                   autoComplete="current-password"
                   margin="dense"
+                  onChange={updateValue("username")}
                 />
 
                 <Box
@@ -103,8 +148,9 @@ export default function Signup() {
                     id="outlined-basic"
                     placeholder="Password"
                     type="password"
-                    autoComplete="current-password"
+                    autoComplete="password"
                     margin="dense"
+                    onChange={updateValue("password")}
                   />
 
                   <TextField
@@ -114,12 +160,14 @@ export default function Signup() {
                     type="password"
                     autoComplete="current-password"
                     margin="dense"
+                    onChange={(e) => setConfirmPass(e.target.value)}
                   />
                 </Box>
 
                 <Button
-                  onClick={() => {
-                    alert("Placeholder for create account function");
+                  onClick={(e) => {
+                    e.preventDefault();
+                    submitForm();
                   }}
                   variant="contained"
                   color="error"

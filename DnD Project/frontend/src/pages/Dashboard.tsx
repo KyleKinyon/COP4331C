@@ -1,20 +1,15 @@
-import { useEffect } from "react";
-import { Link } from "@mui/material";
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-
-import { createTheme } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
+// import { Link } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  CardMedia,
+} from "@mui/material";
 
 export default function Dashboard() {
-  useEffect(() => console.log(process.env.REACT_APP_BACKEND_ADDRESS), []);
-
   return (
     <>
       <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
@@ -30,7 +25,14 @@ export default function Dashboard() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               D&D 25
             </Typography>
-            <Button  onClick={() => { alert('Placeholder for log out function');}} color="inherit">Log Out</Button>
+            <Button
+              onClick={() => {
+                alert("Placeholder for log out function");
+              }}
+              color="inherit"
+            >
+              Log Out
+            </Button>
           </Toolbar>
         </AppBar>
       </Box>
@@ -80,7 +82,14 @@ export default function Dashboard() {
         justifyContent="center"
         sx={{ mx: "auto", width: 700 }}
       >
-        <Button onClick={() => { alert('Placeholder for Start Campaign function');}}  variant="contained">Start Campaign</Button>
+        <Button
+          onClick={() => {
+            alert("Placeholder for Start Campaign function");
+          }}
+          variant="contained"
+        >
+          Start Campaign
+        </Button>
       </Box>
 
       <CardMedia
@@ -124,7 +133,14 @@ export default function Dashboard() {
         justifyContent="center"
         sx={{ mx: "auto", width: 700 }}
       >
-        <Button onClick={() => { alert('Placeholder for Create Character function');}}  variant="contained">CREATE CHARACTER</Button>
+        <Button
+          onClick={() => {
+            alert("Placeholder for Create Character function");
+          }}
+          variant="contained"
+        >
+          CREATE CHARACTER
+        </Button>
       </Box>
 
       <CardMedia
@@ -168,7 +184,14 @@ export default function Dashboard() {
         justifyContent="center"
         sx={{ mx: "auto", width: 700 }}
       >
-        <Button onClick={() => { alert('Placeholder for Start Map function');}}  variant="contained">START MAP</Button>
+        <Button
+          onClick={() => {
+            alert("Placeholder for Start Map function");
+          }}
+          variant="contained"
+        >
+          START MAP
+        </Button>
       </Box>
     </>
   );

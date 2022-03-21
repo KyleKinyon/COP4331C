@@ -1,30 +1,39 @@
-import {
-  Box,
-  Grid,
-  Button,
-  TextField,
-  Link,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Box, Grid, Button, TextField, Link, Typography } from "@mui/material";
+import { useState } from "react";
+import request from "../utils/request";
 
-const StyledTextField = styled(TextField)`
-  width: 100%;
-  & .MuiOutlinedInput-notchedOutline {
-    border-color: white;
-    color: black;
-  }
-  & .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: white;
-    color: black;
-  }
-
-  & .MuiFormLabel-root-MuiInputLabel-root {
-    color: black;
-  }
-`;
+const FieldStyle = {
+  backgroundColor: "white",
+  borderRadius: "4px",
+  marginRight: "0.1rem",
+  marginLeft: "0.1rem",
+};
 
 export default function Login() {
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
+
+  const updateValue = (key: string) => {
+    return (e: any) => setForm({ ...form, [key]: e.target.value });
+  };
+
+  const submitForm = async () => {
+    try {
+      if (form.username.trim() === "" || form.username.trim() === "") {
+        throw new Error("Empty input field");
+      }
+
+      let { data } = await request.post("/auth/login", form);
+      console.log(data);
+      // TODO: Add redirect when good response
+      // TODO: Add error box to sign up
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Box
@@ -51,8 +60,7 @@ export default function Login() {
                 textAlign: "center",
                 backgroundColor: "black",
                 color: "white",
-                height: "100vh",
-                spacing: "0",
+                height: 1,
               }}
             >
               <Typography variant="h5" component="h2">
@@ -63,32 +71,33 @@ export default function Login() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  width: "40%",
+                  width: "60%",
                 }}
               >
-                <StyledTextField
-                  style={{
-                    backgroundColor: "white",
-                  }}
+                <TextField
+                  style={FieldStyle}
                   placeholder="Username"
                   type="text"
                   autoComplete="current-password"
                   margin="dense"
+                  value={form.username}
+                  onChange={updateValue("username")}
                 />
 
-                <StyledTextField
-                  style={{
-                    backgroundColor: "white",
-                  }}
+                <TextField
+                  style={FieldStyle}
                   placeholder="Password"
                   type="password"
                   autoComplete="current-password"
                   margin="dense"
+                  value={form.password}
+                  onChange={updateValue("password")}
                 />
 
                 <Button
-                  onClick={() => {
-                    alert("Placeholder for login function");
+                  onClick={(e) => {
+                    e.preventDefault();
+                    submitForm();
                   }}
                   variant="contained"
                   color="error"
