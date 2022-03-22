@@ -18,9 +18,10 @@ Want to regenerate it after every time the user makes a request (todo on fronten
 export function createAccessToken(user: any) {
 	return sign(
 		{
-			username: user.username, // update this if necessary (check todo in CheckAuth)
+			_id: user._id,
+			username: user.username,
 		},
-		process.env.ACCESS_TOKEN!, // need to add in .env file
+		process.env.ACCESS_TOKEN!,
 		{
 			expiresIn: "15m",
 		}
@@ -30,9 +31,10 @@ export function createAccessToken(user: any) {
 export function createRefreshToken(user: any) {
 	return sign(
 		{
-			username: user.username, // update this if necessary (check todo in CheckAuth)
+			_id: user._id,
+			username: user.username,
 		},
-		process.env.REFRESH_TOKEN!, // need to add in .env file
+		process.env.REFRESH_TOKEN!,
 		{
 			expiresIn: "7d",
 		}

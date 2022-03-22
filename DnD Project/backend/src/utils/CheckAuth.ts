@@ -22,7 +22,6 @@ export default function checkAuth(req: Request, res: Response, next: Function) {
 
 	try {
 		let payload: any = verify(token, process.env.ACCESS_TOKEN!);
-		username = payload.username;
 
 	} catch (e) {
 		return res.status(401).json({
@@ -30,14 +29,14 @@ export default function checkAuth(req: Request, res: Response, next: Function) {
 		});
 	}
 
-	if (!username) {
+	if (!payload) {
 		return res.status(401).json({
 			message: "No username in token"
 		});
 	}
 
 	// Save our username in the locals section so that other routes can use it
-	res.locals.username = username;
+	res.locals = {...payload};
 
 	// runs the next route if there is one
 	// This next function won't run if any of the errors occur
