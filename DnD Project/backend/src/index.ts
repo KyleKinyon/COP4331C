@@ -4,7 +4,7 @@ import cors from 'cors';
 import { connect, } from "mongoose";
 import cookieParser from 'cookie-parser';
 import auth from './api/auth';
-import character from "./api/charcter";
+import character from "./api/character";
 
 const env = dotenv.config(); // env variables
 

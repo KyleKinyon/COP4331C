@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { verify } from "jsonwebtoken";
 import User from "../models/User";
-import Character from "../models/Character"
 import { sendRefreshToken, createAccessToken, createRefreshToken } from "../utils/TokenAuth";
+import { compare, genSalt, hash } from "bcrypt";
 
 const router = Router();
 
@@ -48,39 +48,49 @@ router.post("/login", async (req, res) => {
 		return res.status(400).json({ error: "Username not provided" });
 	}
 
-	let data = await User.findOne({ Username: username, Password: password }).exec();
+	let data = await User.findOne({ username }).exec();
 
-	if (data) {
-		sendRefreshToken(res, createRefreshToken(data));
-		res.status(200).json({
-			data,
-			accessToken: createAccessToken(data)
-		});
-	} else {
+	console.log(data);
+
+	const validPassword = await compare(password, data.password);
+
+	if (!data || !validPassword) {
 		return res.status(400).json({ error: "Incorrect username/password" });
 	}
+
+	sendRefreshToken(res, createRefreshToken(data));
+
+	res.status(200).json({
+		data,
+		accessToken: createAccessToken(data)
+	});
 });
 
 router.post("/signup", async (req, res) => {
-	const { username, password , firstName, lastName, email} = req.body;
-	if ([username, password].some(item => item === null || item === undefined)) {
+	const { username, password, firstName, lastName, email } = req.body;
+	if (!username || !password) {
 		return res.status(400).json({ error: "Sign up info not provided" });
 	}
 
-	let data = await User.findOne({ Username:username }).exec();
+	let data = await User.findOne({ username }).exec();
 
 	if (data) {
 		return res.status(400).json({ error: "Username already exists" });
-	} else {
-		await User.create({ Username: username, Password: password, FirstName: firstName, LastName: lastName, Email: email });
-		data = await User.findOne({ Username: username, Password: password }).exec();
-		sendRefreshToken(res, createRefreshToken(data));
-		res.status(200).json({
-			data,
-			accessToken: createAccessToken(data)
-		});
-		
 	}
+
+	const salt = await genSalt(12);
+
+	const hashedPassword: string = await hash(password, salt);
+
+	let user = new User({ username, password: hashedPassword, firstName: firstName ?? "", lastName: lastName ?? "", email: email ?? "" });
+	await user.save();
+
+	sendRefreshToken(res, createRefreshToken(user));
+	res.status(200).json({
+		user,
+		accessToken: createAccessToken(user)
+	});
+
 });
 
 export default router;
