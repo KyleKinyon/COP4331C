@@ -1,18 +1,18 @@
 import { Schema, model } from 'mongoose'
 
 const CharacterSchema = new Schema({
-	UserID: Schema.Types.ObjectId,
-	CharName: String,
-	Class: String,
-	Level: Number,
-	Race: String,
-	Strength: Number,
-	Dexterity: Number,
-	Constitution: Number,
-	Intelligence: Number,
-	Wisdom: Number,
-	Charisma: Number,
-	Equipment: [String]
+	userID: Schema.Types.ObjectId,
+	charName: String,
+	class: String,
+	level: Number,
+	race: String,
+	strength: Number,
+	dexterity: Number,
+	constitution: Number,
+	intelligence: Number,
+	wisdom: Number,
+	charisma: Number,
+	equipment: [String]
 })
 
 const Character = model('Character', CharacterSchema);
