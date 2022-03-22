@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
 
 const CharacterSchema = new Schema({
-	UserID: String,
+	UserID: Schema.Types.ObjectId,
 	CharName: String,
 	Class: String,
 	Level: Number,

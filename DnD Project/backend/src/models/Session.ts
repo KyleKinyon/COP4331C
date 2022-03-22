@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose'
 
 const SessionSchema = new Schema({
-	UserIDs: [String],
-	CharacterIDs: [String],
+	UserIDs: [Schema.Types.ObjectId],
+	CharacterIDs: [Schema.Types.ObjectId],
 	Map: String,
-	DM: String
+	DM: Schema.Types.ObjectId
 })
 
 const Session = model('Session', SessionSchema);
