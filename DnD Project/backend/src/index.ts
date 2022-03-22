@@ -2,8 +2,9 @@ import express from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { connect, } from "mongoose";
-import auth from './api/auth';
 import cookieParser from 'cookie-parser';
+import auth from './api/auth';
+import character from "./api/charcter";
 
 const env = dotenv.config(); // env variables
 
@@ -18,6 +19,7 @@ app.use(cors({
 }));  // allow for cors and sending credentials
 
 app.use("/auth", auth);
+app.use("/char", character);
 
 const mongoURI: string = `mongodb+srv://${process.env.ADDRESS}`;
 
