@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verify } from "jsonwebtoken";
 import User from "../models/User";
+import Character from "../models/Character"
 import { sendRefreshToken, createAccessToken, createRefreshToken } from "../utils/TokenAuth";
 
 const router = Router();
@@ -80,6 +81,35 @@ router.post("/signup", async (req, res) => {
 		});
 		
 	}
+});
+
+//TODO: INCORPORATE AUTHENTICATION
+router.post("/createCharacter", async (req, res) => {
+	const { userId, charName } = req.body;
+	if ([userId, charName].some(item => item === null || item === undefined)) {
+		return res.status(400).json({ error: "Character info does not exist" });
+	}
+
+	let data = await Character.findOne({ UserID: userId, CharName: charName }).exec();
+
+	if (data) {
+		return res.status(400).json({ charName, error: "Character Name already in use" });
+	} else { 
+		await Character.create({ UserID: userId, CharName: charName, Class: "", Level: 0, Race: "", Strength: 0, Dexterity: 0, 
+								 Constitution: 0, Intelligence: 0, Wisdom: 0, Charisma: 0 });
+		data = await Character.findOne({ UserID: userId, CharName: charName }).exec();
+		res.status(200).json({
+			data
+		});
+	}
+});
+
+//TODO: INCORPORATE AUTHENTICATION
+router.post("/editCharacter", async (req, res) => {
+});
+
+//TODO: INCORPORATE AUTHENTICATION
+router.post("/deleteCharacter", async (req, res) => {
 });
 
 export default router;
