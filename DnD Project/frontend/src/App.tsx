@@ -30,7 +30,7 @@ function App() {
           {/* Up to you guys if you want to combine it into one file  */}
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
-          {/* <Route path="dashboard" element={<Dashboard />} /> */}
+          <Route path="dashboard" element={<Dashboard />} /> 
           <Route path="character" element={<Character />} />
         </Route>
       </Routes>

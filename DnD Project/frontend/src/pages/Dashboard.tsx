@@ -9,7 +9,7 @@ export default function Dashboard() {
 
         <CardMedia
           component="img"
-          src={require("../media/dnd_img1.jpg")}
+          src={"images/dnd_img1.jpg"}
           alt="img1"
         />
         <Box
@@ -64,7 +64,7 @@ export default function Dashboard() {
           component="img"
           height="575"
           width="200"
-          src={require("../media/dnd_img2.jpg")}
+          src={"/images/dnd_img2.jpg"}
           alt="img1"
         />
 
@@ -115,7 +115,7 @@ export default function Dashboard() {
           component="img"
           height="575"
           width="200"
-          src={require("../media/dnd_img3.jpg")}
+          src={"/images/dnd_img3.jpg"}
           alt="img1"
         />
         <Box
