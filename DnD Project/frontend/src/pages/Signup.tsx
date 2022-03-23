@@ -45,19 +45,10 @@ export default function Signup() {
 
   return (
     <>
-      <Box
-        sx={{
-          flexGrow: 1,
-          width: 1,
-          height: 1,
-        }}
-        className="dragon-background"
-      >
-        <Grid container spacing={2} sx={{ height: 1 }}>
-          <Grid item xs={6}>
+      <Box sx={{ height: 1 }} className="dragon-background">
+        <Grid container sx={{ height: 1 }}>
+          <Grid item xs={6} sx={{ height: 1, backgroundColor: "gray" }}>
             <Box
-              py={4}
-              px={2}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -66,7 +57,7 @@ export default function Signup() {
                 textAlign: "center",
                 backgroundColor: "black",
                 color: "white",
-                height: "100vh",
+                height: 1,
               }}
             >
               <Typography variant="h4" component="h2" my={2}>
@@ -80,15 +71,13 @@ export default function Signup() {
                   width: "65%",
                 }}
               >
-                {/* <Box sx={{ width: 1, height: "50%" }}>
-                  <p>FUCK FUCK FUCK</p>
-                </Box> */}
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "center",
                     alignContent: "center",
+                    padding: "",
                   }}
                 >
                   <TextField
@@ -100,6 +89,7 @@ export default function Signup() {
                     placeholder="First Name"
                     value={form.firstName}
                     onChange={updateValue("firstName")}
+                    fullWidth
                   />
 
                   <TextField
@@ -111,6 +101,7 @@ export default function Signup() {
                     placeholder="Last Name"
                     value={form.lastName}
                     onChange={updateValue("lastName")}
+                    fullWidth
                   />
                 </Box>
 
@@ -123,6 +114,7 @@ export default function Signup() {
                   placeholder="Email"
                   value={form.email}
                   onChange={updateValue("email")}
+                  fullWidth
                 />
 
                 <TextField
@@ -133,6 +125,7 @@ export default function Signup() {
                   autoComplete="current-password"
                   margin="dense"
                   onChange={updateValue("username")}
+                  fullWidth
                 />
 
                 <Box
@@ -151,6 +144,7 @@ export default function Signup() {
                     autoComplete="password"
                     margin="dense"
                     onChange={updateValue("password")}
+                    fullWidth
                   />
 
                   <TextField
@@ -161,6 +155,7 @@ export default function Signup() {
                     autoComplete="current-password"
                     margin="dense"
                     onChange={(e) => setConfirmPass(e.target.value)}
+                    fullWidth
                   />
                 </Box>
 
@@ -175,8 +170,6 @@ export default function Signup() {
                 >
                   Create Account
                 </Button>
-
-                <Box my={2}></Box>
               </Box>
             </Box>
           </Grid>
