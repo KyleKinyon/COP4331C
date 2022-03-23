@@ -1,6 +1,6 @@
 import { Router } from "express";
 import User from "../models/User";
-import Character from "../models/Character";
+import Char from "../models/Character";
 import checkAuth from "../utils/CheckAuth";
 
 const router = Router();
@@ -12,7 +12,7 @@ router.use(checkAuth);
 // ERROR HANDLING - Crashes when no objectID is sent
 router.post("/createCharacter", async (req, res) => {
 	const { charName } = req.body;
-	const { userId } = res.locals;
+	const { _id: userId } = res.locals;
 
 	if (userId === null || userId === undefined) {
 		return res.status(400).json({ error: "No user provided" });
@@ -21,7 +21,7 @@ router.post("/createCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No character name provided" });
 	}
 
-	let data = await Character.findOne({ UserID: userId, CharName: charName })
+	let data = await Char.findOne({ userID: userId, charName: charName })
 	if (data) {
 		return res.status(400).json({ error: "Character already exists" })
 	}
@@ -30,9 +30,9 @@ router.post("/createCharacter", async (req, res) => {
 	if (data === null) {
 		return res.status(400).json({ error: "User does not exist" })
 	}
-	data = await Character.create({
-		UserID: userId, CharName: charName, Class: "", Level: 0, Race: "", Strength: 0, Dexterity: 0,
-		Constitution: 0, Intelligence: 0, Wisdom: 0, Charisma: 0
+	data = await Char.create({
+		userID: userId, charName: charName, class: "", level: 0, race: "", strength: 0, dexterity: 0,
+		constitution: 0, intelligence: 0, wisdom: 0, charisma: 0
 	});
 	res.status(200).json({
 		data
@@ -42,7 +42,8 @@ router.post("/createCharacter", async (req, res) => {
 // TODO: INCORPORATE AUTHENTICATION
 // ERROR HANDLING - Crashes when no objectID is sent
 router.post("/editCharacter", async (req, res) => {
-	const { userId, charId, charClass, level, race, strength, dexterity, constitution, intelligence, wisdom, charisma, equipment } = req.body;
+	const { charId, charClass, level, race, strength, dexterity, constitution, intelligence, wisdom, charisma, equipment } = req.body;
+	const { _id: userId } = res.locals;
 	if (userId === null || userId === undefined) {
 		return res.status(400).json({ error: "No user provided" });
 	}
@@ -50,15 +51,15 @@ router.post("/editCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No character provided" });
 	}
 
-	let data = await Character.findOne({ UserID: userId, _id: charId }).exec();
+	let data = await Char.findOne({ userID: userId, _id: charId }).exec();
 
 	if (data) {
 		const filter = { UserID: userId, _id: charId };
 		const update = {
-			Class: charClass, Level: level, Race: race, Strength: strength, Dexterity: dexterity, Constitution: constitution,
-			Intelligence: intelligence, Wisdom: wisdom, Charisma: charisma, Equipment: equipment
+			class: charClass, level: level, race: race, strength: strength, dexterity: dexterity, constitution: constitution,
+			intelligence: intelligence, wisdom: wisdom, charisma: charisma, equipment: equipment
 		};
-		await Character.findOneAndUpdate(filter, update).exec();
+		await Char.findOneAndUpdate(filter, update).exec();
 		res.status(200).json({
 			message: "Character info updated"
 		})
@@ -74,7 +75,8 @@ router.post("/editCharacter", async (req, res) => {
 // TODO: INCORPORATE AUTHENTICATION
 // ERROR HANDLING - Crashes when no objectID is sent
 router.post("/selectCharacter", async (req, res) => {
-	const { userId, charId } = req.body;
+	const { charId } = req.body;
+	const { _id: userId } = res.locals;
 	if (userId === null || userId === undefined) {
 		return res.status(400).json({ error: "No user provided" });
 	}
@@ -82,7 +84,7 @@ router.post("/selectCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No character provided" });
 	}
 
-	let data = await Character.findOne({ UserID: userId, _id: charId }).exec();
+	let data = await Char.findOne({ userID: userId, _id: charId }).exec();
 	if (data) {
 		res.status(200).json({
 			data
