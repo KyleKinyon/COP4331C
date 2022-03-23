@@ -8,21 +8,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import ChooseClass from "../components/Character/ChooseClass";
+import NumberField from "../components/NumberField";
 
-const classes = [
-  "wizard",
-  "warlock",
-  "sorcerer",
-  "cleric",
-  "fighter",
-  "barbarian",
-  "monk",
-  "rogue",
-  "ranger",
-  "artificer",
-  "druid",
-  "bard",
-];
 const races = [
   "dwarf",
   "elf",
@@ -36,6 +24,7 @@ const races = [
 ];
 
 export default function Character() {
+  // TODO: Pull data from backend
   const [charClass, setCharClass] = useState("");
   const [race, setRace] = useState("");
 
@@ -45,65 +34,32 @@ export default function Character() {
         <Navbar />
         <Box
           position="static"
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignContent: "center",
+            flexDirection: "column",
+            textAlign: "center",
+          }}
+          p={4}
         >
           <Typography variant="h5" component="h2">
             CHARACTER NAME
           </Typography>
-        </Box>
-        <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={40}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
+
           <TextField
             id="standard-basic"
             label="Enter Character Name"
             variant="standard"
-            inputProps={{ min: 0, style: { textAlign: "center" } }}
-            fullWidth
           />
         </Box>
-        <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
+        <Box position="static" sx={{ width: 1, textAlign: "center" }} my={4}>
           <Typography variant="h5" component="h2">
             SELECT A CLASS
           </Typography>
-        </Box>
 
-        <Grid container spacing={5} columns={32}>
-          {classes.map((item, i) => (
-            <Grid item xs={8} key={i}>
-              <CardContent
-                onClick={() => setCharClass(item)}
-                component="img"
-                height="125"
-                width="125"
-                src={require("../media/character_img1.jpg")}
-                title="character1"
-              />
-              <Box sx={{ ml: 5, textTransform: "uppercase" }}>
-                <p>{item}</p>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+          <ChooseClass />
+        </Box>
 
         <Box
           position="static"
@@ -127,7 +83,7 @@ export default function Character() {
                 component="img"
                 height="125"
                 width="125"
-                src={require("../media/character_img1.jpg")}
+                src={"/images/human.jpg"}
                 title="character1"
               />
               <Box sx={{ ml: 5, textTransform: "uppercase" }}>
@@ -150,6 +106,8 @@ export default function Character() {
             ENTER YOUR STATS
           </Typography>
         </Box>
+
+        {/* <NumberField value={number} callback={(value) => setNumber(value)} /> */}
 
         <Grid container spacing={6} columns={24}>
           <Grid item xs={8}>
@@ -242,6 +200,10 @@ export default function Character() {
 
         <Grid container spacing={6} columns={8}>
           <Grid item xs={8}>
+            {/* <NumberField
+              value={form.acrobatics}
+              callback={(value) => setForm({ ...format, acrobatics })}
+            /> */}
             <TextField
               id="standard-basic"
               fullWidth
