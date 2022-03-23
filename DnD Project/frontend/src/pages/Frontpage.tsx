@@ -18,6 +18,9 @@ export default function FrontPage() {
         <Link href="/dashboard" mx={1}>
           Front Page
         </Link>
+        <Link href="/character" mx={1}>
+          Character Creation
+        </Link>
       </div>
     </div>
   );
