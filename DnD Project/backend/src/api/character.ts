@@ -67,6 +67,12 @@ router.post("/editCharacter", async (req, res) => {
 	}
 });
 
+// When a charId is provided, a single character will be pulled from the database
+// The commented code below is supposed to pull all characters tied to a given user
+// when charId = null. It DOES do just that, however, it crashes because for some 
+// reason it is trying to set jwt headers after they've already been set.
+// To test, uncomment the code and remove the the line directly below it.
+// Then, in Arc/Postman, set charId = null and watch backend for crashes
 router.post("/selectCharacter", async (req, res) => {
 	const { charId } = req.body;
 	const { _id: userId } = res.locals;
@@ -74,7 +80,17 @@ router.post("/selectCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No user provided" });
 	}
 	if (charId === null || charId === undefined) {
-		return res.status(400).json({ error: "No character provided" });
+/* 		let data = await Char.find({ userId: userId }).exec();
+		if (data) {
+			res.status(200).json({
+				data
+			}) 
+		} else {
+				return res.status(400).json({ error: "User does not exist" });
+			}
+*/
+		// REMOVE ME WHEN FIXING THE COMMENTED CODE ABOVE ME
+		return res.status(400).json({ error: "No character provided" })
 	}
 
 	let data = await Char.findOne({ userId: userId, _id: charId }).exec();
@@ -86,6 +102,27 @@ router.post("/selectCharacter", async (req, res) => {
 		data = await User.findOne({ _id: userId }).exec();
 		if (data) {
 			return res.status(400).json({ error: "Character does not exist" })
+		}
+		return res.status(400).json({ error: "User does not exist" });
+	}
+});
+
+// This is just a TEST route that I would like to remove once select is working properly
+router.post("/selectAllCharacters", async (req, res) => {
+	const { _id: userId } = res.locals;
+	if (userId === null || userId === undefined) {
+		return res.status(400).json({ error: "No user provided" });
+	}
+
+	let data = await Char.find({ userId: userId }).exec();
+	if (data) {
+		res.status(200).json({
+			data
+		})
+	} else {
+		data = await User.findOne({ _id: userId }).exec();
+		if (data) {
+			return res.status(400).json({ error: "User has no characters" })
 		}
 		return res.status(400).json({ error: "User does not exist" });
 	}
