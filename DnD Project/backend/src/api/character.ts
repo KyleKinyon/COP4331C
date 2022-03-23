@@ -21,7 +21,7 @@ router.post("/createCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No character name provided" });
 	}
 
-	let data = await Char.findOne({ userID: userId, charName: charName })
+	let data = await Char.findOne({ userId: userId, charName: charName })
 	if (data) {
 		return res.status(400).json({ error: "Character already exists" })
 	}
@@ -51,10 +51,10 @@ router.post("/editCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No character provided" });
 	}
 
-	let data = await Char.findOne({ userID: userId, _id: charId }).exec();
+	let data = await Char.findOne({ userId: userId, _id: charId }).exec();
 
 	if (data) {
-		const filter = { UserID: userId, _id: charId };
+		const filter = { userId: userId, _id: charId };
 		const update = {
 			class: charClass, level: level, race: race, strength: strength, dexterity: dexterity, constitution: constitution,
 			intelligence: intelligence, wisdom: wisdom, charisma: charisma, equipment: equipment
@@ -84,7 +84,7 @@ router.post("/selectCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No character provided" });
 	}
 
-	let data = await Char.findOne({ userID: userId, _id: charId }).exec();
+	let data = await Char.findOne({ userId: userId, _id: charId }).exec();
 	if (data) {
 		res.status(200).json({
 			data
