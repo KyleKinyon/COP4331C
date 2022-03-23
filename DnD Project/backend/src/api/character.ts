@@ -8,7 +8,6 @@ const router = Router();
 router.use(checkAuth);
 
 //TODO:
-// INCORPORATE AUTHENTICATION
 // ERROR HANDLING - Crashes when no objectID is sent
 router.post("/createCharacter", async (req, res) => {
 	const { charName } = req.body;
@@ -31,7 +30,7 @@ router.post("/createCharacter", async (req, res) => {
 		return res.status(400).json({ error: "User does not exist" })
 	}
 	data = await Char.create({
-		userID: userId, charName: charName, class: "", level: 0, race: "", strength: 0, dexterity: 0,
+		userId, charName, class: "", level: 0, race: "", strength: 0, dexterity: 0,
 		constitution: 0, intelligence: 0, wisdom: 0, charisma: 0
 	});
 	res.status(200).json({
@@ -39,7 +38,6 @@ router.post("/createCharacter", async (req, res) => {
 	});
 });
 
-// TODO: INCORPORATE AUTHENTICATION
 // ERROR HANDLING - Crashes when no objectID is sent
 router.post("/editCharacter", async (req, res) => {
 	const { charId, charClass, level, race, strength, dexterity, constitution, intelligence, wisdom, charisma, equipment } = req.body;
@@ -72,7 +70,6 @@ router.post("/editCharacter", async (req, res) => {
 	}
 });
 
-// TODO: INCORPORATE AUTHENTICATION
 // ERROR HANDLING - Crashes when no objectID is sent
 router.post("/selectCharacter", async (req, res) => {
 	const { charId } = req.body;
