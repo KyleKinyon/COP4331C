@@ -73,38 +73,36 @@ router.post("/editCharacter", async (req, res) => {
 // reason it is trying to set jwt headers after they've already been set.
 // To test, uncomment the code and remove the the line directly below it.
 // Then, in Arc/Postman, set charId = null and watch backend for crashes
-router.post("/selectCharacter", async (req, res) => {
-	const { charId } = req.body;
+router.get("/selectCharacter", async (req, res) => {
+	const { charId } = req.query;
 	const { _id: userId } = res.locals;
-	if (userId === null || userId === undefined) {
+
+	if (!userId) {
 		return res.status(400).json({ error: "No user provided" });
 	}
-	if (charId === null || charId === undefined) {
-/* 		let data = await Char.find({ userId: userId }).exec();
-		if (data) {
-			res.status(200).json({
-				data
-			}) 
-		} else {
-				return res.status(400).json({ error: "User does not exist" });
-			}
-*/
-		// REMOVE ME WHEN FIXING THE COMMENTED CODE ABOVE ME
-		return res.status(400).json({ error: "No character provided" })
+
+	if (!charId) {
+		let data = await Char.find({ userId: userId }).exec();
+
+		if (!data) {
+			return res.status(400).json({ error: "User does not exist" });
+		}
+
+		return res.status(200).json({
+			data
+		});
 	}
 
 	let data = await Char.findOne({ userId: userId, _id: charId }).exec();
-	if (data) {
-		res.status(200).json({
-			data
-		})
-	} else {
+
+	if (!data) {
 		data = await User.findOne({ _id: userId }).exec();
-		if (data) {
-			return res.status(400).json({ error: "Character does not exist" })
-		}
-		return res.status(400).json({ error: "User does not exist" });
+		return res.status(400).json({ error: (data) ? "User does not exist" : "Character does not exist" });
 	}
+
+	return res.status(200).json({
+		data
+	});
 });
 
 // This is just a TEST route that I would like to remove once select is working properly
