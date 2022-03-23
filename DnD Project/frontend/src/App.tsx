@@ -3,6 +3,8 @@ import FrontPage from "./pages/Frontpage";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Character from "./pages/Character";
+
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -30,6 +32,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="character" element={<Character />} />
         </Route>
       </Routes>
     </BrowserRouter>
