@@ -7,8 +7,6 @@ const router = Router();
 
 router.use(checkAuth);
 
-//TODO:
-// ERROR HANDLING - Crashes when no objectID is sent
 router.post("/createCharacter", async (req, res) => {
 	const { charName } = req.body;
 	const { _id: userId } = res.locals;
@@ -38,7 +36,6 @@ router.post("/createCharacter", async (req, res) => {
 	});
 });
 
-// ERROR HANDLING - Crashes when no objectID is sent
 router.post("/editCharacter", async (req, res) => {
 	const { charId, charClass, level, race, strength, dexterity, constitution, intelligence, wisdom, charisma, equipment } = req.body;
 	const { _id: userId } = res.locals;
@@ -70,7 +67,6 @@ router.post("/editCharacter", async (req, res) => {
 	}
 });
 
-// ERROR HANDLING - Crashes when no objectID is sent
 router.post("/selectCharacter", async (req, res) => {
 	const { charId } = req.body;
 	const { _id: userId } = res.locals;
@@ -95,8 +91,28 @@ router.post("/selectCharacter", async (req, res) => {
 	}
 });
 
-// TODO: INCORPORATE AUTHENTICATION
 router.post("/deleteCharacter", async (req, res) => {
+	const { charId } = req.body;
+	const { _id: userId } = res.locals;
+	if (userId === null || userId === undefined) {
+		return res.status(400).json({ error: "No user provided" });
+	}
+	if (charId === null || charId === undefined) {
+		return res.status(400).json({ error: "No character provided" });
+	}
+
+	let data = await Char.findOneAndDelete({ userId: userId, _id: charId }).exec();
+	if (data) {
+		res.status(200).json({
+			message: "Character successfully deleted"
+		})
+	} else {
+		data = await User.findOne({ _id: userId }).exec();
+		if (data) {
+			return res.status(400).json({ error: "Character does not exist" })
+		}
+		return res.status(400).json({ error: "User does not exist" });
+	}
 });
 
 export default router;
