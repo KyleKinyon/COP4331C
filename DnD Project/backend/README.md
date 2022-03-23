@@ -17,6 +17,8 @@ ACCESS_TOKEN={token}
 REFRESH_TOKEN={token}
 ```
 
+For the Access and Refresh tokens in the env file, you can put whatever as there will be an official one later in development or when we push to production.
+
 This will allow for the backend application to use those variables custom variables when connecting to the database.
 
 ## Running
