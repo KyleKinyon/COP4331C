@@ -1,27 +1,9 @@
-import {
-  Box,
-  Typography,
-  Button,
-  Grid,
-  TextField,
-  CardContent,
-} from "@mui/material";
+import { Box, Typography, Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import ChooseClass from "../components/Character/ChooseClass";
-import NumberField from "../components/NumberField";
-
-const races = [
-  "dwarf",
-  "elf",
-  "gnome",
-  "human",
-  "halfling",
-  "dragonborn",
-  "half-elf",
-  "half-orc",
-  "tiefling",
-];
+import ChooseRace from "../components/Character/ChooseRace";
+// import NumberField from "../components/NumberField";
 
 export default function Character() {
   // TODO: Pull data from backend
@@ -53,45 +35,9 @@ export default function Character() {
             variant="standard"
           />
         </Box>
-        <Box position="static" sx={{ width: 1, textAlign: "center" }} my={4}>
-          <Typography variant="h5" component="h2">
-            SELECT A CLASS
-          </Typography>
+        <ChooseClass />
 
-          <ChooseClass />
-        </Box>
-
-        <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <Typography variant="h5" component="h2">
-            SELECT A RACE
-          </Typography>
-        </Box>
-
-        <Grid container spacing={5} columns={24}>
-          {races.map((item, i) => (
-            <Grid item xs={8} key={i}>
-              <CardContent
-                onClick={() => setRace(item)}
-                component="img"
-                height="125"
-                width="125"
-                src={"/images/human.jpg"}
-                title="character1"
-              />
-              <Box sx={{ ml: 5, textTransform: "uppercase" }}>
-                <p>{item}</p>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+        <ChooseRace />
 
         <Box
           position="static"
