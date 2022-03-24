@@ -5,6 +5,7 @@ import { connect, } from "mongoose";
 import cookieParser from 'cookie-parser';
 import auth from './api/auth';
 import character from "./api/character";
+import session from "./api/session"
 
 const env = dotenv.config(); // env variables
 
@@ -20,6 +21,7 @@ app.use(cors({
 
 app.use("/auth", auth);
 app.use("/char", character);
+app.use("/session", session);
 
 const mongoURI: string = `mongodb+srv://${process.env.ADDRESS}`;
 

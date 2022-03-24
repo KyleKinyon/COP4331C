@@ -18,7 +18,7 @@ router.post("/createCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No character name provided" });
 	}
 
-	let data = await Char.findOne({ userId: userId, charName: charName })
+	let data = await Char.findOne({ userId: userId, charName: charName }).exec();
 	if (data) {
 		return res.status(400).json({ error: "Character already exists" })
 	}
