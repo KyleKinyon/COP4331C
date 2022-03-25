@@ -15,19 +15,41 @@ export default function Login() {
     password: "",
   });
 
+  const [usernameIsValid, setUsernameIsValid] = useState(true);
+  const [passwordIsValid, setPasswordIsValid] = useState(true);
+
   const updateValue = (key: string) => {
     return (e: any) => setForm({ ...form, [key]: e.target.value });
   };
 
   const submitForm = async () => {
     try {
-      if (form.username.trim() === "" || form.username.trim() === "") {
+      if (form.username.trim() === "") {
+        setUsernameIsValid(false);
+
+        if (form.password.trim() === "")
+          setPasswordIsValid(false);
+
         throw new Error("Empty input field");
       }
+
+      if (form.password.trim() === "") {
+        setUsernameIsValid(true);
+        setPasswordIsValid(false);
+        throw new Error("Empty input field");
+      }
+
+      setUsernameIsValid(true);
+      setPasswordIsValid(true);
 
       let { data } = await request.post("/auth/login", form);
       console.log(data);
       // TODO: Add redirect when good response
+
+      localStorage.setItem("data", JSON.stringify(data));
+      window.location.href = "/Dashboard";
+      
+
       // TODO: Add error box to sign up
     } catch (error) {
       console.error(error);
@@ -82,6 +104,8 @@ export default function Login() {
                   margin="dense"
                   value={form.username}
                   onChange={updateValue("username")}
+                  error={!usernameIsValid}
+                  helperText={!usernameIsValid ? "Please enter a username" : ""}
                 />
 
                 <TextField
@@ -92,6 +116,8 @@ export default function Login() {
                   margin="dense"
                   value={form.password}
                   onChange={updateValue("password")}
+                  error={!passwordIsValid}
+                  helperText={!passwordIsValid ? "Please enter a password" : ""}
                 />
 
                 <Button
