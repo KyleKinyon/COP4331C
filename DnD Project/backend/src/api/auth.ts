@@ -43,19 +43,31 @@ router.get("/refreshToken", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-	const { username, password } = req.body;
-	if (!username) {
-		return res.status(400).json({ error: "Username not provided" });
+	const { username, email, password } = req.body;
+	if (!password || (!username && !email)) {
+		return res.status(400).json({ error: "User info not provided" });
 	}
 
-	let data = await User.findOne({ username }).exec();
+	let data;
+	if (username) {
+		data = await User.findOne({ username }).exec();
+	} else {
+		data = await User.findOne({ email }).exec();
+	}
+	
+	if (!data) {
+		return res.status(400).json({ error: "Incorrect login info" });
+	}
 
 	console.log(data);
-
 	const validPassword = await compare(password, data.password);
 
-	if (!data || !validPassword) {
-		return res.status(400).json({ error: "Incorrect username/password" });
+	if (!validPassword) {
+		return res.status(400).json({ error: "Incorrect login info" });
+	}
+
+	if (!data.verified) {
+		return res.status(400).json({ error: "E-mail not verified" });
 	}
 
 	sendRefreshToken(res, createRefreshToken(data));
@@ -67,8 +79,8 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-	const { username, password, firstName, lastName, email } = req.body;
-	if (!username || !password) {
+	const { username, password, firstName, lastName, email, verified} = req.body;
+	if (!username || !password || !email) {
 		return res.status(400).json({ error: "Sign up info not provided" });
 	}
 
@@ -78,11 +90,16 @@ router.post("/signup", async (req, res) => {
 		return res.status(400).json({ error: "Username already exists" });
 	}
 
-	const salt = await genSalt(12);
+	data = await User.findOne({ email }).exec();
 
+	if (data) {
+		return res.status(400).json({ error: "Email belongs to an existing account" });
+	}
+
+	const salt = await genSalt(12);
 	const hashedPassword: string = await hash(password, salt);
 
-	let user = new User({ username, password: hashedPassword, firstName: firstName ?? "", lastName: lastName ?? "", email: email ?? "" });
+	let user = new User({ username, password: hashedPassword, firstName: firstName ?? "", lastName: lastName ?? "", email, verified: verified ?? false });
 	await user.save();
 
 	sendRefreshToken(res, createRefreshToken(user));
@@ -90,7 +107,27 @@ router.post("/signup", async (req, res) => {
 		user,
 		accessToken: createAccessToken(user)
 	});
+});
 
+router.get("/getUser", async (req,res) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).json({ error: "No e-mail provided" });
+    }
+
+    let data = await User.findOne({ email: email }).exec();
+
+    if (!data) { 
+        return res.status(400).json({ error: "E-mail does not exist" });
+    }
+
+	sendRefreshToken(res, createRefreshToken(data));
+
+    return res.status(200).json({
+		data,
+		accessToken: createAccessToken(data)
+	});
 });
 
 export default router;
