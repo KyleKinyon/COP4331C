@@ -16,7 +16,7 @@ router.get("/getUser", async (req,res) => {
         return res.status(400).json({ error: "User does not exist" });
     }
 
-    return res.status(200).json({
+    res.status(200).json({
 		data
 	});
 });
@@ -49,9 +49,9 @@ router.post("/changePassword", async (req, res) => {
             return res.status(400).json({ error: "Incorrect password" });
         } 
         
-        return res.status(200).json({ message: "Password updated" });
+        res.status(200).json({ message: "Password updated" });
     } else { 
-        return res.status(400).json({ error: "User does not exist" });
+        res.status(400).json({ error: "User does not exist" });
     }
 });
 
@@ -68,7 +68,7 @@ router.post("/changeName", async (req, res) => {
 
     User.findOneAndUpdate(filter, update).exec();
 
-    return res.status(200).json({ message: "User info updated" });
+    res.status(200).json({ message: "User info updated" });
 });
 
 router.post("/resetPassword", async (req,res) => {
@@ -86,7 +86,7 @@ router.post("/resetPassword", async (req,res) => {
 
     User.findOneAndUpdate(filter, update).exec();
 
-    return res.status(200).json({ message: "Password updated" });
+    res.status(200).json({ message: "Password updated" });
 });
 
 router.get("/verifyUser", async (req,res) => {
@@ -101,7 +101,7 @@ router.get("/verifyUser", async (req,res) => {
         return res.status(400).json({ error: "User does not exist" });
     }
 
-    return res.status(200).json({ message: "E-mail verified"});
+    res.status(200).json({ message: "E-mail verified"});
 })
 
 export default router

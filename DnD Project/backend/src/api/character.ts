@@ -60,7 +60,7 @@ router.post("/editCharacter", async (req, res) => {
 			return res.status(400).json({ error: "User does not exist" });
 		}
 
-		return res.status(400).json({ error: "Character does not exist" });
+		res.status(400).json({ error: "Character does not exist" });
 	}
 });
 
@@ -85,7 +85,7 @@ router.get("/selectCharacter", async (req, res) => {
 		return res.status(400).json({ error: (data) ? "User does not exist" : "Character does not exist" });
 	}
 
-	return res.status(200).json({ data });
+	res.status(200).json({ data });
 });
 
 router.post("/deleteCharacter", async (req, res) => {
