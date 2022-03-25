@@ -1,4 +1,4 @@
-import { Box, Grid, Button, TextField, Link, Typography } from "@mui/material";
+import { Box, Grid, Button, TextField, Link, Typography, Alert } from "@mui/material";
 import { useState } from "react";
 import request from "../utils/request";
 
@@ -15,8 +15,10 @@ export default function Login() {
     password: "",
   });
 
-  const [usernameIsValid, setUsernameIsValid] = useState(true);
+  const [usernameIsValid, setUsernameIsValid] = useState(true); // Leaving in case we decide to implement
   const [passwordIsValid, setPasswordIsValid] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorEncountered, setErrorEncountered] = useState(false);
 
   const updateValue = (key: string) => {
     return (e: any) => setForm({ ...form, [key]: e.target.value });
@@ -24,23 +26,11 @@ export default function Login() {
 
   const submitForm = async () => {
     try {
-      if (form.username.trim() === "") {
-        setUsernameIsValid(false);
-
-        if (form.password.trim() === "")
-          setPasswordIsValid(false);
-
+      if (form.username.trim() === "" || form.password.trim() === "") {
         throw new Error("Empty input field");
       }
 
-      if (form.password.trim() === "") {
-        setUsernameIsValid(true);
-        setPasswordIsValid(false);
-        throw new Error("Empty input field");
-      }
-
-      setUsernameIsValid(true);
-      setPasswordIsValid(true);
+      setErrorEncountered(false);
 
       let { data } = await request.post("/auth/login", form);
       console.log(data);
@@ -50,9 +40,15 @@ export default function Login() {
       window.location.href = "/Dashboard";
       
 
-      // TODO: Add error box to sign up
+      // TODO: Make error box not look ass and fix missed first error
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error)
+      {
+        console.error(error);
+        setErrorMessage(error.toString());
+        setErrorEncountered(true);
+        document.getElementById("errorMessage")!.innerHTML = errorMessage;
+      }
     }
   };
 
@@ -85,6 +81,10 @@ export default function Login() {
                 height: 1,
               }}
             >
+              <Alert severity="error" id="errorMessage" sx={{
+                opacity: errorEncountered ? 1 : 0
+              }}/>
+
               <Typography variant="h5" component="h2">
                 Start Your D&D Campaign Today
               </Typography>

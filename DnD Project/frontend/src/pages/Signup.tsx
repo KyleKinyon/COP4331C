@@ -20,6 +20,9 @@ export default function Signup() {
     email: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorEncountered, setErrorEncountered] = useState(false);
+
   const updateValue = (key: string) => {
     return (e: any) => setForm({ ...form, [key]: e.target.value });
   };
@@ -34,13 +37,20 @@ export default function Signup() {
         throw new Error("Empty fields");
       }
 
+      setErrorEncountered(false);
+
       let { data } = await request.post("/auth/signup", form);
       console.log(data);
       // TODO: Add redirect when good response
-      // TODO: Add error box to sign up
+      // TODO: Make error box not look ass and fix missed first error
     } catch (error) {
-      console.error(error);
-      alert(error);
+      if (error instanceof Error)
+      {
+        console.error(error);
+        setErrorMessage(error.toString());
+        setErrorEncountered(true);
+        document.getElementById("errorMessage")!.innerHTML = errorMessage;
+      }
     }
   };
 
@@ -61,9 +71,10 @@ export default function Signup() {
                 height: 1,
               }}
             >
-              <Alert severity="error">
-                
-              </Alert>
+              <Alert severity="error" id="errorMessage" sx={{
+                opacity: errorEncountered ? 1 : 0
+              }}/>
+
               <Typography variant="h4" component="h2" my={2}>
                 Start Your D&D Campaign Today
               </Typography>
