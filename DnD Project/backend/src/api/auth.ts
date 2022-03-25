@@ -109,7 +109,7 @@ router.post("/signup", async (req, res) => {
 	});
 });
 
-router.get("/getUser", async (req,res) => {
+router.get("/getUserId", async (req,res) => {
     const { email } = req.query;
 
     if (!email) {

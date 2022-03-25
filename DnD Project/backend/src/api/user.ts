@@ -7,6 +7,20 @@ const router = Router();
 
 router.use(checkAuth);
 
+router.get("/getUser", async (req,res) => {
+    const { _id: userId } = res.locals;
+
+    let data = await User.findOne({ _id: userId }).exec();
+
+    if (!data) { 
+        return res.status(400).json({ error: "User does not exist" });
+    }
+
+    return res.status(200).json({
+		data
+	});
+});
+
 router.post("/changePassword", async (req, res) => {
 	const { password, newPassword } = req.body;
 	const { _id: userId } = res.locals;
