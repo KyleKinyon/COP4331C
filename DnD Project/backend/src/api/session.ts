@@ -37,11 +37,11 @@ router.delete("/deleteSession", async (req, res) => {
 
 	let data = await Session.findOneAndDelete({ _id: sessionId }).exec();
 
-	if (data) {
-		return res.status(200).json({ message: "Session successfully deleted" });
-	} else {
+	if (!data) {
 		return res.status(400).json({ error: "Session does not exist" });
 	}
+	
+	return res.status(200).json({ message: "Session successfully deleted" });
 });
 
 router.post("/changeMap", async (req, res) => {
@@ -59,15 +59,14 @@ router.post("/changeMap", async (req, res) => {
 
 	let data = await Session.findOneAndUpdate(filter, update).exec();
 
-	if (data) {
-		return res.status(200).json({ message: "Map updated" });
-	} else {
+	if (!data) {
 		return res.status(400).json({ error: "Session does not exist" });
 	}
+	
+	return res.status(200).json({ message: "Map updated" });
 });
 
 router.post("/updateCoords", async (req, res) => {
-
 });
 
 export default router;

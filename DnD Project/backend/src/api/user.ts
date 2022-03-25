@@ -34,11 +34,12 @@ router.post("/changePassword", async (req, res) => {
         const update = { password: hashedPassword };
 
         data = await User.findOneAndUpdate(filter, update).exec();
-        if (data) {
-            return res.status(200).json({ message: "Password updated" });
-        } else {
+        
+        if (!data) {
             return res.status(400).json({ error: "Incorrect password" });
-        }
+        } 
+        
+        return res.status(200).json({ message: "Password updated" });
     } else { 
         return res.status(400).json({ error: "User does not exist" });
     }
@@ -58,14 +59,27 @@ router.post("/changeName", async (req, res) => {
     const filter = { _id: userId };
     const update = { firstName: firstName, lastName: lastName };
 
-    let data = User.findOneAndUpdate(filter, update).exec();
+    User.findOneAndUpdate(filter, update).exec();
 
-    if (!data)
-    {
-        return res.status(400).json({ error: "User does not exist" });
-    } else {
-        return res.status(200).json({ message: "User info updated" });
+    return res.status(200).json({ message: "User info updated" });
+});
+
+router.post("/resetPassword", async (req,res) => {
+    const { _id: userId } = res.locals;
+    const { password } = req.body;
+
+    if (!userId || !password) {
+        return res.status(400).json({ error: "User info not provided" });
     }
+
+    const salt = await genSalt(12);
+    const hashedPassword: string = await hash(password, salt);
+    const filter = { _id: userId };
+    const update = { password: hashedPassword };
+
+    User.findOneAndUpdate(filter, update).exec();
+
+    return res.status(200).json({ message: "Password updated" });
 });
 
 export default router

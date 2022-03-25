@@ -44,7 +44,7 @@ router.get("/refreshToken", async (req, res) => {
 
 router.post("/login", async (req, res) => {
 	const { username, email, password } = req.body;
-	if (!username && !email) {
+	if (!password || (!username && !email)) {
 		return res.status(400).json({ error: "User info not provided" });
 	}
 
@@ -105,8 +105,25 @@ router.post("/signup", async (req, res) => {
 	});
 });
 
-router.post("/resetPassword", async (req,res) => {
-	
-})
+router.get("/getUser", async (req,res) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).json({ error: "No e-mail provided" });
+    }
+
+    let data = await User.findOne({ email: email }).exec();
+
+    if (!data) { 
+        return res.status(400).json({ error: "E-mail does not exist" });
+    }
+
+	sendRefreshToken(res, createRefreshToken(data));
+
+    return res.status(200).json({
+		data,
+		accessToken: createAccessToken(data)
+	});
+});
 
 export default router;

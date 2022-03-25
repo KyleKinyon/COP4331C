@@ -62,11 +62,11 @@ router.post("/editCharacter", async (req, res) => {
 	} else {
 		data = await User.findOne({ _id: userId }).exec();
 
-		if (data) {
-			return res.status(400).json({ error: "Character does not exist" });
+		if (!data) {
+			return res.status(400).json({ error: "User does not exist" });
 		}
 
-		return res.status(400).json({ error: "User does not exist" });
+		return res.status(400).json({ error: "Character does not exist" });
 	}
 });
 
@@ -111,17 +111,16 @@ router.post("/deleteCharacter", async (req, res) => {
 
 	let data = await Char.findOneAndDelete({ userId: userId, _id: charId }).exec();
 
-	if (data) {
-		res.status(200).json({ message: "Character successfully deleted" })
-	} else {
+	if (!data) {
 		data = await User.findOne({ _id: userId }).exec();
 
-		if (data) {
-			return res.status(400).json({ error: "Character does not exist" })
+		if (!data) {
+			return res.status(400).json({ error: "User does not exist" })
 		}
-
-		return res.status(400).json({ error: "User does not exist" });
+		return res.status(400).json({ error: "Character does not exist" });
 	}
+
+	res.status(200).json({ message: "Character successfully deleted" });
 });
 
 export default router;
