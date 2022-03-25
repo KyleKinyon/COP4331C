@@ -1,4 +1,4 @@
-import { Box, Grid, Button, TextField, Typography } from "@mui/material";
+import { Box, Grid, Button, TextField, Typography, Alert } from "@mui/material";
 import { useState } from "react";
 import request from "../utils/request";
 
@@ -40,6 +40,7 @@ export default function Signup() {
       // TODO: Add error box to sign up
     } catch (error) {
       console.error(error);
+      alert(error);
     }
   };
 
@@ -60,6 +61,9 @@ export default function Signup() {
                 height: 1,
               }}
             >
+              <Alert severity="error">
+                
+              </Alert>
               <Typography variant="h4" component="h2" my={2}>
                 Start Your D&D Campaign Today
               </Typography>
