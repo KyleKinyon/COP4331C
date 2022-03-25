@@ -11,9 +11,6 @@ router.post("/createCharacter", async (req, res) => {
 	const { charName } = req.body;
 	const { _id: userId } = res.locals;
 
-	if (!userId) {
-		return res.status(400).json({ error: "No user provided" });
-	}
 	if (!charName) {
 		return res.status(400).json({ error: "No character name provided" });
 	}
@@ -41,9 +38,6 @@ router.post("/editCharacter", async (req, res) => {
 	const { charId, charClass, level, race, strength, dexterity, constitution, intelligence, wisdom, charisma, equipment } = req.body;
 	const { _id: userId } = res.locals;
 
-	if (!userId) {
-		return res.status(400).json({ error: "No user provided" });
-	}
 	if (!charId) {
 		return res.status(400).json({ error: "No character provided" });
 	}
@@ -74,10 +68,6 @@ router.get("/selectCharacter", async (req, res) => {
 	const { charId } = req.query;
 	const { _id: userId } = res.locals;
 
-	if (!userId) {
-		return res.status(400).json({ error: "No user provided" });
-	}
-
 	if (!charId) {
 		let data = await Char.find({ userId: userId }).exec();
 
@@ -102,9 +92,6 @@ router.post("/deleteCharacter", async (req, res) => {
 	const { charId } = req.body;
 	const { _id: userId } = res.locals;
 
-	if (!userId) {
-		return res.status(400).json({ error: "No user provided" });
-	}
 	if (!charId) {
 		return res.status(400).json({ error: "No character provided" });
 	}

@@ -66,6 +66,10 @@ router.post("/login", async (req, res) => {
 		return res.status(400).json({ error: "Incorrect login info" });
 	}
 
+	if (!data.verified) {
+		return res.status(400).json({ error: "E-mail not verified" });
+	}
+
 	sendRefreshToken(res, createRefreshToken(data));
 
 	res.status(200).json({
@@ -75,7 +79,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-	const { username, password, firstName, lastName, email } = req.body;
+	const { username, password, firstName, lastName, email, verified} = req.body;
 	if (!username || !password || !email) {
 		return res.status(400).json({ error: "Sign up info not provided" });
 	}
@@ -95,7 +99,7 @@ router.post("/signup", async (req, res) => {
 	const salt = await genSalt(12);
 	const hashedPassword: string = await hash(password, salt);
 
-	let user = new User({ username, password: hashedPassword, firstName: firstName ?? "", lastName: lastName ?? "", email });
+	let user = new User({ username, password: hashedPassword, firstName: firstName ?? "", lastName: lastName ?? "", email, verified: verified ?? false });
 	await user.save();
 
 	sendRefreshToken(res, createRefreshToken(user));

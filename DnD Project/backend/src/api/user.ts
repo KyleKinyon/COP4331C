@@ -11,10 +11,6 @@ router.post("/changePassword", async (req, res) => {
 	const { password, newPassword } = req.body;
 	const { _id: userId } = res.locals;
 
-    if (!userId) {
-		return res.status(400).json({ error: "No user provided" });
-	}
-
     if (!password || !newPassword) {
         return res.status(400).json({ error: "No password provided "});
     }
@@ -49,9 +45,6 @@ router.post("/changeName", async (req, res) => {
     const { firstName, lastName } = req.body;
     const { _id: userId } = res.locals;
 
-    if (!userId) {
-        return res.status(400).json({ error: "No user provided" });
-    }
     if (!firstName || !lastName) {
         return res.status(400).json({ error: "First/Last name not provided" });
     }
@@ -68,8 +61,8 @@ router.post("/resetPassword", async (req,res) => {
     const { _id: userId } = res.locals;
     const { password } = req.body;
 
-    if (!userId || !password) {
-        return res.status(400).json({ error: "User info not provided" });
+    if (!password) {
+        return res.status(400).json({ error: "Password not provided" });
     }
 
     const salt = await genSalt(12);
@@ -81,5 +74,20 @@ router.post("/resetPassword", async (req,res) => {
 
     return res.status(200).json({ message: "Password updated" });
 });
+
+router.get("/verifyUser", async (req,res) => {
+    const { _id: userId } = res.locals;
+
+    const filter = { _id: userId };
+    const update = { verified: true };
+
+    let data = User.findOneAndUpdate(filter, update).exec();
+
+    if (!data) {
+        return res.status(400).json({ error: "User does not exist" });
+    }
+
+    return res.status(200).json({ message: "E-mail verified"});
+})
 
 export default router
