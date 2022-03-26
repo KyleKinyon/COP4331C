@@ -21,6 +21,15 @@ export default function FrontPage() {
         <Link href="/character" mx={1}>
           Character Creation
         </Link>
+         <Link href="/lobby" mx={1}>
+          Lobby
+        </Link>
+        <Link href="/dm_lobby" mx={1}>
+          DM Lobby Screen
+        </Link>
+        <Link href="/main_game" mx={1}>
+          Main Game Screen
+        </Link>
       </div>
     </div>
   );

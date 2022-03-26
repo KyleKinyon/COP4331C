@@ -4,7 +4,9 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Character from "./pages/Character";
-
+import Lobby from "./pages/Lobby";
+import DM_Lobby from "./pages/DM_Lobby";
+import MainGame from "./pages/MainGame";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -32,6 +34,9 @@ function App() {
           <Route path="signup" element={<Signup />} />
           <Route path="dashboard" element={<Dashboard />} /> 
           <Route path="character" element={<Character />} />
+          <Route path="lobby" element={<Lobby />} />
+          <Route path="dm_lobby" element={<DM_Lobby />} />
+          <Route path="main_game" element={<MainGame />} />
         </Route>
       </Routes>
     </BrowserRouter>
