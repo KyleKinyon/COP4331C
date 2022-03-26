@@ -1,5 +1,5 @@
 import { Box, Grid, Button, TextField, Typography, Alert } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import request from "../utils/request";
 
 const FieldStyle = {
@@ -23,6 +23,10 @@ export default function Signup() {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
 
+  useEffect(() => {
+    document.getElementById("errorMessage")!.innerHTML = errorMessage;
+  }, [errorMessage, setErrorMessage]);
+
   const updateValue = (key: string) => {
     return (e: any) => setForm({ ...form, [key]: e.target.value });
   };
@@ -42,7 +46,7 @@ export default function Signup() {
       let { data } = await request.post("/auth/signup", form);
       console.log(data);
       // TODO: Add redirect when good response
-      // TODO: Make error box not look ass and fix missed first error
+      // TODO: Make error box not look ass 
     } catch (error) {
       if (error instanceof Error)
       {

@@ -1,5 +1,5 @@
 import { Box, Grid, Button, TextField, Link, Typography, Alert } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import request from "../utils/request";
 
 const FieldStyle = {
@@ -20,15 +20,19 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
 
+  useEffect(() => {
+    document.getElementById("errorMessage")!.innerHTML = errorMessage;
+  }, [errorMessage, setErrorMessage]);
+
+
   const updateValue = (key: string) => {
     return (e: any) => setForm({ ...form, [key]: e.target.value });
   };
 
   const submitForm = async () => {
     try {
-      if (form.username.trim() === "" || form.password.trim() === "") {
+      if (form.username.trim() === "" || form.password.trim() === "")
         throw new Error("Empty input field");
-      }
 
       setErrorEncountered(false);
 
@@ -40,13 +44,13 @@ export default function Login() {
       window.location.href = "/Dashboard";
       
 
-      // TODO: Make error box not look ass and fix missed first error
+      // TODO: Make error box not look ass 
     } catch (error) {
       if (error instanceof Error)
       {
         console.error(error);
-        setErrorMessage(error.toString());
         setErrorEncountered(true);
+        setErrorMessage(error.name + ": " + error.message);
         document.getElementById("errorMessage")!.innerHTML = errorMessage;
       }
     }
@@ -82,8 +86,10 @@ export default function Login() {
               }}
             >
               <Alert severity="error" id="errorMessage" sx={{
-                opacity: errorEncountered ? 1 : 0
-              }}/>
+                opacity: errorEncountered ? 1 : 0,
+              }}>
+                Placeholder
+              </Alert>
 
               <Typography variant="h5" component="h2">
                 Start Your D&D Campaign Today
