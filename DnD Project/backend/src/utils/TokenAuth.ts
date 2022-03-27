@@ -15,11 +15,18 @@ Want to regenerate it after every time the user makes a request (todo on fronten
 
 */
 
+export interface TokenSchema {
+	_id: string;
+	username: string;
+	verified: boolean;
+}
+
 export function createAccessToken(user: any) {
 	return sign(
 		{
 			_id: user._id,
 			username: user.username,
+			verified: user.verified
 		},
 		process.env.ACCESS_TOKEN!,
 		{
@@ -33,6 +40,7 @@ export function createRefreshToken(user: any) {
 		{
 			_id: user._id,
 			username: user.username,
+			verified: user.verified
 		},
 		process.env.REFRESH_TOKEN!,
 		{

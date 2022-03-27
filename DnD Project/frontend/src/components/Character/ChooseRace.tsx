@@ -35,19 +35,18 @@ export default function CustomRace() {
           >
             <Box
               sx={{
-                width: 1,
-                height: 1,
                 display: "flex",
                 justifyContent: "center",
                 alignContent: "center",
               }}
+              p={2}
             >
               <CardContent
                 component="img"
                 height="125"
                 width="125"
                 src={item.src}
-                title="character1"
+                title={item.name}
               />
             </Box>
 

@@ -1,5 +1,6 @@
 import { verify } from "jsonwebtoken";
 import { Request, Response } from "express";
+import { TokenSchema } from "./TokenAuth";
 
 /*
 
@@ -14,26 +15,33 @@ export default function checkAuth(req: Request, res: Response, next: Function) {
 
 	if (!token) {
 		return res.status(401).json({
-			message: "No access token"
+			error: "No access token"
 		});
 	}
 
-	let payload: any = null;
+	let payload: TokenSchema | null = null;
 
 	try {
-		payload = verify(token, process.env.ACCESS_TOKEN!);
+		payload = verify(token, process.env.ACCESS_TOKEN!) as TokenSchema;
 
 	} catch (e) {
 		return res.status(401).json({
-			message: "Error with verifying token"
+			error: "Error with verifying token"
 		});
 	}
 
 	if (!payload) {
 		return res.status(401).json({
-			message: "No username in token"
+			error: "No username in token"
 		});
 	}
+
+	// TODO: Add email verification so that we can use this in our checkAuth middleware
+	// if (!payload.verified) {
+	// 	return res.status(401).json({
+	// 		error: "User is not verified"
+	// 	})
+	// }
 
 	// Save our username in the locals section so that other routes can use it
 	res.locals = { ...payload };

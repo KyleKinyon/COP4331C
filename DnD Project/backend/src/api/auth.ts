@@ -54,12 +54,11 @@ router.post("/login", async (req, res) => {
 	} else {
 		data = await User.findOne({ email }).exec();
 	}
-	
+
 	if (!data) {
 		return res.status(400).json({ error: "Incorrect login info" });
 	}
 
-	console.log(data);
 	const validPassword = await compare(password, data.password);
 
 	if (!validPassword) {
@@ -79,7 +78,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-	const { username, password, firstName, lastName, email, verified} = req.body;
+	const { username, password, firstName, lastName, email, verified } = req.body;
 	if (!username || !password || !email) {
 		return res.status(400).json({ error: "Sign up info not provided" });
 	}
@@ -109,22 +108,22 @@ router.post("/signup", async (req, res) => {
 	});
 });
 
-router.get("/getUserId", async (req,res) => {
-    const { email } = req.query;
+router.get("/getUserId", async (req, res) => {
+	const { email } = req.query;
 
-    if (!email) {
-        return res.status(400).json({ error: "No e-mail provided" });
-    }
+	if (!email) {
+		return res.status(400).json({ error: "No e-mail provided" });
+	}
 
-    let data = await User.findOne({ email: email }).exec();
+	let data = await User.findOne({ email: email }).exec();
 
-    if (!data) { 
-        return res.status(400).json({ error: "E-mail does not exist" });
-    }
+	if (!data) {
+		return res.status(400).json({ error: "E-mail does not exist" });
+	}
 
 	sendRefreshToken(res, createRefreshToken(data));
 
-    return res.status(200).json({
+	return res.status(200).json({
 		data,
 		accessToken: createAccessToken(data)
 	});
