@@ -78,7 +78,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-	const { username, password, firstName, lastName, email, verified } = req.body;
+	const { username, password, firstName, lastName, email, verified, sessionName } = req.body;
 	if (!username || !password || !email) {
 		return res.status(400).json({ error: "Sign up info not provided" });
 	}
@@ -98,7 +98,16 @@ router.post("/signup", async (req, res) => {
 	const salt = await genSalt(12);
 	const hashedPassword: string = await hash(password, salt);
 
-	let user = new User({ username, password: hashedPassword, firstName: firstName ?? "", lastName: lastName ?? "", email, verified: verified ?? false });
+	let user = new User({ 
+		username, 
+		password: hashedPassword, 
+		firstName: firstName ?? "", 
+		lastName: lastName ?? "", 
+		email, 
+		verified: verified ?? false, 
+		sessionName: sessionName ?? "" 
+	});
+
 	await user.save();
 
 	sendRefreshToken(res, createRefreshToken(user));
