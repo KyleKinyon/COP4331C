@@ -119,7 +119,7 @@ router.post("/signup", async (req, res) => {
 
 router.post("/logout", async (req, res) => {
 	sendRefreshToken(res, "");
-	res.status(200);
+	res.status(200).json({});
 });
 
 router.get("/getUserId", async (req, res) => {
