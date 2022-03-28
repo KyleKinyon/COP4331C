@@ -65,9 +65,9 @@ router.post("/login", async (req, res) => {
 		return res.status(400).json({ error: "Incorrect login info" });
 	}
 
-	if (!data.verified) {
-		return res.status(400).json({ error: "E-mail not verified" });
-	}
+	// if (!data.verified) {
+	// 	return res.status(400).json({ error: "E-mail not verified" });
+	// }
 
 	sendRefreshToken(res, createRefreshToken(data));
 
