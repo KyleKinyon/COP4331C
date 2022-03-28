@@ -29,7 +29,8 @@ router.post("/createCharacter", async (req, res) => {
 
 	data = await Char.create({
 		userId, charName, class: "", level: 0, race: "", strength: 0, dexterity: 0,
-		constitution: 0, intelligence: 0, wisdom: 0, charisma: 0 });
+		constitution: 0, intelligence: 0, wisdom: 0, charisma: 0
+	});
 
 	res.status(200).json({ data });
 });
@@ -48,7 +49,8 @@ router.post("/editCharacter", async (req, res) => {
 		const filter = { userId: userId, _id: charId };
 		const update = {
 			class: charClass, level: level, race: race, strength: strength, dexterity: dexterity, constitution: constitution,
-			intelligence: intelligence, wisdom: wisdom, charisma: charisma, equipment: equipment };
+			intelligence: intelligence, wisdom: wisdom, charisma: charisma, equipment: equipment
+		};
 
 		await Char.findOneAndUpdate(filter, update).exec();
 
@@ -75,7 +77,7 @@ router.get("/selectCharacter", async (req, res) => {
 			return res.status(400).json({ error: "User does not exist" });
 		}
 
-		return res.status(200).json({ data });
+		return res.status(200).json({ characters: data });
 	}
 
 	let data = await Char.findOne({ userId: userId, _id: charId }).exec();

@@ -98,14 +98,14 @@ router.post("/signup", async (req, res) => {
 	const salt = await genSalt(12);
 	const hashedPassword: string = await hash(password, salt);
 
-	let user = new User({ 
-		username, 
-		password: hashedPassword, 
-		firstName: firstName ?? "", 
-		lastName: lastName ?? "", 
-		email, 
-		verified: verified ?? false, 
-		sessionName: sessionName ?? "" 
+	let user = new User({
+		username,
+		password: hashedPassword,
+		firstName: firstName ?? "",
+		lastName: lastName ?? "",
+		email,
+		verified: verified ?? false,
+		sessionName: sessionName ?? ""
 	});
 
 	await user.save();
@@ -115,6 +115,11 @@ router.post("/signup", async (req, res) => {
 		user,
 		accessToken: createAccessToken(user)
 	});
+});
+
+router.post("/logout", async (req, res) => {
+	sendRefreshToken(res, "");
+	res.status(200);
 });
 
 router.get("/getUserId", async (req, res) => {
