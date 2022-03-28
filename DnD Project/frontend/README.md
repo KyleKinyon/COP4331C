@@ -1,8 +1,26 @@
-# Getting Started with Create React App
+# Setup
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Dependencies
 
-## Available Scripts
+Make sure to run `npm install -D` so that you install of the packages including the dev dependencies.
+
+## Required Files
+
+After doing that, you will need to create a file titled `.env.local` in the same folder that you have the `package-lock.json` file.
+
+Here's what must be put in the file (check discord for the actual details):
+
+```
+REACT_APP_BACKEND_ADDRESS={backend url or localhost if testing with a local backend}
+```
+
+This allows for the frontend to know where to make its API calls.
+
+## Running
+
+Run the command `npm start` to run the server in development mode. If you're building a production build then use `npm build`.
+
+# Available Scripts
 
 In the project directory, you can run:
 
@@ -28,19 +46,3 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

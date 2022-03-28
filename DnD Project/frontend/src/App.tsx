@@ -14,12 +14,12 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./css/styles.css";
+import ListCharacters from "./pages/ListCharacters";
 
 /*
 
-TODO: Add routing
-TODO: Add loading screen for getting jwt
 TODO: Complete Login, Signup, and Front pages
+TODO: Figure out double render bug
 
 */
 
@@ -27,10 +27,6 @@ const protectedRoutes = [
   {
     path: "dashboard",
     page: Dashboard,
-  },
-  {
-    path: "character",
-    page: Character,
   },
   {
     path: "lobby",
@@ -50,8 +46,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route index element={<FrontPage />} />
         <Route path="/">
-          <Route path="/" element={<FrontPage />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           {protectedRoutes.map(({ path, page }, i) => (
@@ -61,6 +57,24 @@ function App() {
               element={<ProtectedRoute>{page()}</ProtectedRoute>}
             />
           ))}
+          <Route path="character">
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <ListCharacters />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="create"
+              element={
+                <ProtectedRoute>
+                  <Character />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

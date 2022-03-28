@@ -1,8 +1,9 @@
 import { Box, CardContent, Grid, Typography } from "@mui/material";
 
+// TODO: Turn grid items to card with image cover and class info
+
 interface ClassProps {
-  charClass?: string;
-  update?: (str: string) => void;
+  update: any;
 }
 
 const classes = [
@@ -20,10 +21,10 @@ const classes = [
   { name: "bard", src: "/images/bard.jpg" },
 ];
 
-export default function ChooseClass({ charClass, update }: ClassProps) {
+export default function ChooseClass({ update }: ClassProps) {
   return (
     <Box position="static" sx={{ width: 1, textAlign: "center" }} my={4}>
-      <Typography variant="h5" component="h2">
+      <Typography variant="h5" component="h2" my={2}>
         SELECT A CLASS
       </Typography>
 
@@ -33,7 +34,7 @@ export default function ChooseClass({ charClass, update }: ClassProps) {
             item
             xs={8}
             key={i}
-            onClick={() => console.log(item.name)}
+            onClick={() => update(item.name)}
             sx={{ cursor: "pointer" }}
           >
             <Box

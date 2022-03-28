@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import req from "../utils/request";
-import LoadingScreen from "./LoadingScreen";
+import LoadingScreen from "./General/LoadingScreen";
 
 interface ProtectedRouteProps {
   children: React.ReactElement;
@@ -29,11 +29,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }, []);
 
   if (loading) {
-    return (
-      <>
-        <LoadingScreen />
-      </>
-    );
+    return <LoadingScreen />;
   }
 
   if (!loading && !valid) {

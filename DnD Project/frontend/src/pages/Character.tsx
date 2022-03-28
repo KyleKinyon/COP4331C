@@ -1,136 +1,103 @@
-import { Box, Typography, Button, Grid, TextField } from "@mui/material";
-import { useState } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  Grid,
+  TextField,
+  Tabs,
+  Tab,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ChooseClass from "../components/Character/ChooseClass";
 import ChooseRace from "../components/Character/ChooseRace";
-// import NumberField from "../components/NumberField";
+import ChooseStats from "../components/Character/ChooseStats";
+import TabPanel from "../components/General/TabPanel";
+
+// TODO: Pull data from backend
+// TODO: Make reusable for edit/create/view
+// TODO: Update this to be tabs where you update each section 🤔
 
 export default function Character() {
-  // TODO: Pull data from backend
+  const [page, setPage] = useState(0);
+
+  const [name, setName] = useState("");
   const [charClass, setCharClass] = useState("");
   const [race, setRace] = useState("");
+  const [stats, setStats] = useState({
+    strength: 0,
+    constitution: 0,
+    dexterity: 0,
+    wisdom: 0,
+    intelligence: 0,
+    charisma: 0,
+  });
+
+  useEffect(() => {
+    console.log("race change");
+    console.log(race);
+  }, [race]);
+  useEffect(() => {
+    console.log("class change");
+    console.log(charClass);
+  }, [charClass]);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setPage(newValue);
+  };
+
+  const save = async () => {
+    console.log("Saving to db");
+  };
 
   return (
     <>
       <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
         <Navbar />
-        <Box
-          position="static"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignContent: "center",
-            flexDirection: "column",
-            textAlign: "center",
-          }}
-          p={4}
-        >
-          <Typography variant="h5" component="h2">
-            CHARACTER NAME
-          </Typography>
+        <Tabs value={page} onChange={handleChange} centered>
+          <Tab label="Name" />
+          <Tab label="Class" />
+          <Tab label="Race" />
+          <Tab label="Stats" />
+        </Tabs>
 
-          <TextField
-            id="standard-basic"
-            label="Enter Character Name"
-            variant="standard"
-          />
-        </Box>
-        <ChooseClass />
+        <TabPanel value={0} index={page}>
+          <Box
+            position="static"
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              flexDirection: "column",
+              textAlign: "center",
+            }}
+            p={4}
+          >
+            <Typography variant="h5" component="h2">
+              CHARACTER NAME
+            </Typography>
 
-        <ChooseRace />
-
-        <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <Typography variant="h5" component="h2">
-            ENTER YOUR STATS
-          </Typography>
-        </Box>
-
-        {/* <NumberField value={number} callback={(value) => setNumber(value)} /> */}
-
-        <Grid container spacing={6} columns={24}>
-          <Grid item xs={8}>
             <TextField
               id="standard-basic"
-              fullWidth
-              label="Strength"
+              label="Enter Character Name"
               variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
-            <Box sx={{ ml: 1 }}>
-              <p>STRENGTH</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Constitution"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>CONSTITUTION</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Dexterity"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>DEXTERITY</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Wisdom"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>WISDOM</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Intelligence"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>INTELLIGENCE</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Charisma"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>CHARISMA</p>
-            </Box>
-          </Grid>
-        </Grid>
+          </Box>
+        </TabPanel>
 
-        <Box
+        <TabPanel value={1} index={page}>
+          <ChooseClass update={setCharClass} />
+        </TabPanel>
+        <TabPanel value={2} index={page}>
+          <ChooseRace updateRace={setRace} />
+        </TabPanel>
+        <TabPanel value={3} index={page}>
+          <ChooseStats statsObj={stats} updateStatsObj={setStats} />
+        </TabPanel>
+
+        {/* <Box
           position="static"
           display="flex"
           width={1300}
@@ -146,10 +113,6 @@ export default function Character() {
 
         <Grid container spacing={6} columns={8}>
           <Grid item xs={8}>
-            {/* <NumberField
-              value={form.acrobatics}
-              callback={(value) => setForm({ ...format, acrobatics })}
-            /> */}
             <TextField
               id="standard-basic"
               fullWidth
@@ -364,15 +327,10 @@ export default function Character() {
           justifyContent="center"
           sx={{ mx: "auto", width: 700 }}
         >
-          <Button
-            onClick={() => {
-              alert("Placeholder for Save Character");
-            }}
-            variant="contained"
-          >
+          <Button onClick={save} variant="contained">
             SAVE
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </>
   );

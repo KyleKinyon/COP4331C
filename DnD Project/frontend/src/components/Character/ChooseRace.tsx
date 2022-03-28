@@ -1,5 +1,9 @@
 import { Box, CardContent, Grid, Typography } from "@mui/material";
 
+interface ChooseRaceProps {
+  updateRace: any;
+}
+
 const races = [
   { name: "dwarf", src: "/images/dwarf.jpg" },
   { name: "elf", src: "/images/elf.jpg" },
@@ -12,7 +16,7 @@ const races = [
   { name: "tiefling", src: "/images/tiefling.jpg" },
 ];
 
-export default function CustomRace() {
+export default function ChooseRace({ updateRace }: ChooseRaceProps) {
   return (
     <Box sx={{ width: 1, textAlign: "center" }}>
       <Typography variant="h5" component="h2">
@@ -31,7 +35,8 @@ export default function CustomRace() {
               alignContent: "center",
               flexDirection: "column",
             }}
-            onClick={() => console.log(item.name)}
+            id={item.name}
+            onClick={() => updateRace(item.name)}
           >
             <Box
               sx={{
