@@ -94,12 +94,20 @@ export default function Character({ load }: CharacterPageProps) {
   const save = async () => {
     try {
       let route = load ? "/char/editCharacter" : "/char/createCharacter";
-      let body = {
-        charName: name,
-        charClass,
-        race,
-        ...stats,
-      };
+      let body = load
+        ? {
+            charName: name,
+            charClass,
+            race,
+            ...stats,
+            charId: params.charId,
+          }
+        : {
+            charName: name,
+            charClass,
+            race,
+            ...stats,
+          };
 
       await req.post(route, body);
       navigate("/character");
