@@ -1,24 +1,12 @@
 import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Character } from "../utils/interfaces";
 import Navbar from "../components/Navbar";
 import req from "../utils/request";
 
-interface Character {
-  _id: string;
-  charName: string;
-  race: string;
-  level: number;
-
-  charisma: number;
-  constitution: number;
-  dexterity: number;
-  intelligence: number;
-  strength: number;
-  wisdom: number;
-  equipment: string[];
-}
-
 export default function ListCharacters() {
+  const navigate = useNavigate();
   const [chars, setChars] = useState<Character[]>([]);
 
   useEffect(() => {
@@ -36,14 +24,9 @@ export default function ListCharacters() {
     };
 
     getCharData().then((data) => {
-      console.log(data);
+      // console.log(data);
       setChars(data);
     });
-
-    // getCharData();
-    return () => {
-      // getCharData();
-    };
   }, []);
 
   return (
@@ -53,11 +36,16 @@ export default function ListCharacters() {
 
         <Box p={2}>
           <Typography variant="h5" sx={{ textAlign: "center" }}>
-            Hello World
+            Character Created:
           </Typography>
           <List>
             {chars.map((item, i) => (
-              <ListItem key={i}>
+              <ListItem
+                key={i}
+                onClick={() => navigate(`/character/${item._id}`)}
+                sx={{ cursor: "pointer" }}
+                divider
+              >
                 <ListItemText primary={item.charName} secondary={item.race} />
               </ListItem>
             ))}

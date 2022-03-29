@@ -10,9 +10,7 @@ import ChooseAbilities from "../components/Character/ChooseAbilities";
 import req from "../utils/request";
 import { Abilities, Stats } from "../utils/interfaces";
 
-// TODO: Pull data from backend
-// TODO: Make reusable for edit/create/view
-// TODO: Update this to be tabs where you update each section 🤔
+// TODO: Have race and class show what is currently selected
 
 interface CharacterPageProps {
   load?: boolean;
@@ -25,6 +23,7 @@ export default function Character({ load }: CharacterPageProps) {
   const [page, setPage] = useState(0);
 
   const [name, setName] = useState("");
+  // const [level, setLevel] = useState(1);
   const [charClass, setCharClass] = useState("");
   const [race, setRace] = useState("");
   const [stats, setStats] = useState<Stats>({
@@ -37,7 +36,7 @@ export default function Character({ load }: CharacterPageProps) {
   });
 
   // I pray to optimize this somehow
-  // nothing in the backend for this, I'll update later - Alex
+  // nothing in the backend for this, remind to update later - Alex
   const [abilities, setAbilities] = useState<Abilities>({
     acrobatics: 0,
     sleightOfHand: 0,
@@ -134,7 +133,6 @@ export default function Character({ load }: CharacterPageProps) {
         </Tabs>
 
         <TabPanel value={0} index={page}>
-          {/* TODO: Have this take up more screen size */}
           {/* TODO: Allow for setting levels */}
           <Box
             position="static"
@@ -172,10 +170,12 @@ export default function Character({ load }: CharacterPageProps) {
         <TabPanel value={4} index={page}>
           <ChooseAbilities absObj={abilities} updateAbsObj={setAbilities} />
         </TabPanel>
+
         {/* TODO: Allow for equipment setup/editing */}
         {/* <TabPanel value={5} index={page}>
 						Equipment Panel
         </TabPanel> */}
+
         <TabPanel value={5} index={page}>
           <Box
             display="flex"
@@ -187,7 +187,6 @@ export default function Character({ load }: CharacterPageProps) {
               Ready to save?
             </Typography>
 
-            {/* Kinda jank, idk */}
             <Box
               display="flex"
               flexDirection="row"

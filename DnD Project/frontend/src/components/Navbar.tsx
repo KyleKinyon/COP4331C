@@ -3,9 +3,15 @@ import {
   Button,
   Drawer,
   IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
+import { Home, Person } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import req from "../utils/request";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +20,19 @@ import { useState } from "react";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  const routes = [
+    {
+      name: "Home",
+      link: "/dashboard",
+      icon: <Home />,
+    },
+    {
+      name: "Characters",
+      link: "/character",
+      icon: <Person />,
+    },
+  ];
 
   const logout = () => {
     req
@@ -47,8 +66,21 @@ export default function Navbar() {
         </Toolbar>
 
         <Drawer open={open} onClose={() => setOpen(false)}>
-          {/* TODO: Have this list the different routes you can go */}
-          <div>Drawer</div>
+          <List>
+            {routes.map((item, i) => (
+              <ListItem
+                key={i}
+                onClick={() => navigate(item.link)}
+                sx={{ cursor: "pointer" }}
+                divider
+              >
+                <ListItemButton>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
         </Drawer>
       </AppBar>
     </>

@@ -26,3 +26,18 @@ export interface Abilities {
 	persuasion: number;
 	athletics: number;
 }
+
+export interface Character {
+	_id: string;
+	charName: string;
+	race: string;
+	level: number;
+
+	charisma: number;
+	constitution: number;
+	dexterity: number;
+	intelligence: number;
+	strength: number;
+	wisdom: number;
+	equipment: string[];
+}
