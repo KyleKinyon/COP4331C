@@ -1,30 +1,33 @@
-import {
-  Box,
-  Typography,
-  Button,
-  Grid,
-  TextField,
-  Tabs,
-  Tab,
-} from "@mui/material";
+import { Box, Typography, Button, TextField, Tabs, Tab } from "@mui/material";
+import TabPanel from "../components/General/TabPanel";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ChooseClass from "../components/Character/ChooseClass";
 import ChooseRace from "../components/Character/ChooseRace";
 import ChooseStats from "../components/Character/ChooseStats";
-import TabPanel from "../components/General/TabPanel";
+import ChooseAbilities from "../components/Character/ChooseAbilities";
+import req from "../utils/request";
+import { Abilities, Stats } from "../utils/interfaces";
 
 // TODO: Pull data from backend
 // TODO: Make reusable for edit/create/view
 // TODO: Update this to be tabs where you update each section 🤔
 
-export default function Character() {
+interface CharacterPageProps {
+  load?: boolean;
+}
+
+export default function Character({ load }: CharacterPageProps) {
+  const navigate = useNavigate();
+  const params = useParams();
+
   const [page, setPage] = useState(0);
 
   const [name, setName] = useState("");
   const [charClass, setCharClass] = useState("");
   const [race, setRace] = useState("");
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<Stats>({
     strength: 0,
     constitution: 0,
     dexterity: 0,
@@ -33,35 +36,98 @@ export default function Character() {
     charisma: 0,
   });
 
-  useEffect(() => {
-    console.log("race change");
-    console.log(race);
-  }, [race]);
-  useEffect(() => {
-    console.log("class change");
-    console.log(charClass);
-  }, [charClass]);
+  // I pray to optimize this somehow
+  // nothing in the backend for this, I'll update later - Alex
+  const [abilities, setAbilities] = useState<Abilities>({
+    acrobatics: 0,
+    sleightOfHand: 0,
+    stealth: 0,
+    animalHealing: 0,
+    insight: 0,
+    medicine: 0,
+    survival: 0,
+    perception: 0,
+    arcana: 0,
+    history: 0,
+    investigation: 0,
+    nature: 0,
+    deception: 0,
+    intimidation: 0,
+    performance: 0,
+    persuasion: 0,
+    athletics: 0,
+  });
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  useEffect(() => {
+    if (!load) return;
+
+    (async () => {
+      try {
+        let {
+          data: { character },
+        } = await req.get("/char/selectCharacter", {
+          params: { charId: params.charId },
+        });
+
+        setName(character.charName);
+        setRace(character.race);
+        setCharClass(character.charClass);
+
+        setStats({
+          constitution: character.constitution,
+          wisdom: character.wisdom,
+          dexterity: character.dexterity,
+          strength: character.strength,
+          intelligence: character.intelligence,
+          charisma: character.charisma,
+        });
+      } catch (error) {
+        // TODO: Show error if bad load
+        navigate("/character");
+      }
+    })();
+  }, []);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) =>
     setPage(newValue);
-  };
 
   const save = async () => {
-    console.log("Saving to db");
+    try {
+      let route = load ? "/char/editCharacter" : "/char/createCharacter";
+      let body = {
+        charName: name,
+        charClass,
+        race,
+        ...stats,
+      };
+
+      await req.post(route, body);
+      navigate("/character");
+    } catch (error) {
+      // TODO: Make a dialog that says if there's an error
+      console.log("An error has occurred");
+      console.error(error);
+    }
   };
 
   return (
     <>
-      <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
+      <Box
+        sx={{ width: 1, height: 1, display: "flex", flexDirection: "column" }}
+      >
         <Navbar />
         <Tabs value={page} onChange={handleChange} centered>
           <Tab label="Name" />
           <Tab label="Class" />
           <Tab label="Race" />
           <Tab label="Stats" />
+          <Tab label="Abilities" />
+          <Tab label="Save" />
         </Tabs>
 
         <TabPanel value={0} index={page}>
+          {/* TODO: Have this take up more screen size */}
+          {/* TODO: Allow for setting levels */}
           <Box
             position="static"
             sx={{
@@ -69,11 +135,10 @@ export default function Character() {
               justifyContent: "center",
               alignContent: "center",
               flexDirection: "column",
-              textAlign: "center",
             }}
             p={4}
           >
-            <Typography variant="h5" component="h2">
+            <Typography variant="h5" component="h2" textAlign="center">
               CHARACTER NAME
             </Typography>
 
@@ -96,241 +161,42 @@ export default function Character() {
         <TabPanel value={3} index={page}>
           <ChooseStats statsObj={stats} updateStatsObj={setStats} />
         </TabPanel>
+        <TabPanel value={4} index={page}>
+          <ChooseAbilities absObj={abilities} updateAbsObj={setAbilities} />
+        </TabPanel>
+        {/* TODO: Allow for equipment setup/editing */}
+        {/* <TabPanel value={5} index={page}>
+						Equipment Panel
+        </TabPanel> */}
+        <TabPanel value={5} index={page}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignContent="center"
+          >
+            <Typography variant="h5" textAlign="center" mb={1}>
+              Ready to save?
+            </Typography>
 
-        {/* <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <Typography variant="h5" component="h2">
-            ENTER YOUR SKILLS
-          </Typography>
-        </Box>
-
-        <Grid container spacing={6} columns={8}>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Acrobatics"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>ACROBATICS (DEX)</p>
+            {/* Kinda jank, idk */}
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+              alignContent="center"
+            >
+              <Button
+                onClick={save}
+                variant="contained"
+                size="medium"
+                sx={{ width: "30%" }}
+              >
+                SAVE
+              </Button>
             </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Animal Healing"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>ANIMAL HEALING (WIS)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Arcana"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>ARCANA (INT)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Athletics"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>ATHLETICS (STR)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Deception"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>DECEPTION (CHA)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="History"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>HISTORY (INT)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Insight"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>INSIGHT (WIS)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Intimidation"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>INTIMIDATION (CHA)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Investigation"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>INVESTIGATION (INT)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Medicine"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>MEDICINE (WIS)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Nature"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>NATURE (INT)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Perception"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>PERCEPTION (WIS)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Performance"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>PERFORMANCE (CHA)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Persuassion"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>PERSUASSION (CHA)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Sleight of Hand"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>SLEIGHT OF HAND (DEX)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Stealth"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>STEALTH (DEX)</p>
-            </Box>
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              id="standard-basic"
-              fullWidth
-              label="Survival"
-              variant="standard"
-              inputProps={{ min: 0, style: { textAlign: "center" } }}
-            />
-            <Box sx={{ ml: 1 }}>
-              <p>SURVIVAL (WIS)</p>
-            </Box>
-          </Grid>
-        </Grid>
-
-        <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <Button onClick={save} variant="contained">
-            SAVE
-          </Button>
-        </Box> */}
+          </Box>
+        </TabPanel>
       </Box>
     </>
   );

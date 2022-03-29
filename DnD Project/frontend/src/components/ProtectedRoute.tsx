@@ -28,10 +28,6 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     })();
   }, []);
 
-  if (loading) {
-    return <LoadingScreen />;
-  }
-
   if (!loading && !valid) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them
@@ -41,5 +37,12 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {loading && <LoadingScreen />}
+      {children}
+    </>
+  );
+
+  // return !loading ? children : <LoadingScreen />;
 }

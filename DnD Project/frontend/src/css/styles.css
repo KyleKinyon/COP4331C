@@ -16,3 +16,12 @@ body,
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.tab-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-panel > * {
+  flex-grow: 1;
+}

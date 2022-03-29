@@ -36,6 +36,8 @@ export default function checkAuth(req: Request, res: Response, next: Function) {
 		});
 	}
 
+	// TODO: Check if userId exists
+
 	// TODO: Add email verification so that we can use this in our checkAuth middleware
 	// if (!payload.verified) {
 	// 	return res.status(401).json({

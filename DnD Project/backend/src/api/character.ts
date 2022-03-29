@@ -8,28 +8,27 @@ const router = Router();
 router.use(checkAuth);
 
 router.post("/createCharacter", async (req, res) => {
-	const { charName } = req.body;
+	const { charName, ...charInfo } = req.body;
 	const { _id: userId } = res.locals;
 
 	if (!charName) {
 		return res.status(400).json({ error: "No character name provided" });
 	}
 
-	let data = await Char.findOne({ userId: userId, charName: charName }).exec();
+	// let data = await Char.findOne({ userId: userId, charName: charName }).exec();
 
-	if (data) {
-		return res.status(400).json({ error: "Character already exists" });
-	}
+	// if (data) {
+	// 	return res.status(400).json({ error: "Character already exists" });
+	// }
 
-	data = await User.findOne({ _id: userId }).exec();
+	let data = await User.findOne({ _id: userId }).exec();
 
 	if (data === null) {
 		return res.status(400).json({ error: "User does not exist" });
 	}
 
 	data = await Char.create({
-		userId, charName, class: "", level: 0, race: "", strength: 0, dexterity: 0,
-		constitution: 0, intelligence: 0, wisdom: 0, charisma: 0
+		userId, charName, ...charInfo
 	});
 
 	res.status(200).json({ data });
@@ -87,7 +86,7 @@ router.get("/selectCharacter", async (req, res) => {
 		return res.status(400).json({ error: (data) ? "User does not exist" : "Character does not exist" });
 	}
 
-	res.status(200).json({ data });
+	res.status(200).json({ character: data });
 });
 
 router.post("/deleteCharacter", async (req, res) => {

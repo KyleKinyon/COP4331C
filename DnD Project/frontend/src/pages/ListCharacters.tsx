@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import req from "../utils/request";
 
-// TODO: Figure out memory leak error with this page
-
 interface Character {
   _id: string;
   charName: string;
@@ -24,18 +22,28 @@ export default function ListCharacters() {
   const [chars, setChars] = useState<Character[]>([]);
 
   useEffect(() => {
-    (async () => {
+    const getCharData = async () => {
       try {
         const {
           data: { characters },
         } = await req.get("/char/selectCharacter");
 
-        setChars(characters);
+        return characters;
       } catch (error) {
         console.log("Issue getting character data");
         console.error(error);
       }
-    })();
+    };
+
+    getCharData().then((data) => {
+      console.log(data);
+      setChars(data);
+    });
+
+    // getCharData();
+    return () => {
+      // getCharData();
+    };
   }, []);
 
   return (

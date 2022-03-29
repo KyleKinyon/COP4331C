@@ -74,6 +74,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path=":charId"
+              element={
+                <ProtectedRoute>
+                  <Character load />
+                </ProtectedRoute>
+              }
+            />
           </Route>
         </Route>
       </Routes>

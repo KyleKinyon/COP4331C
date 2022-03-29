@@ -1,15 +1,7 @@
 import { Box, Typography, TextField, Grid } from "@mui/material";
+import { Stats } from "../../utils/interfaces";
 
 // TODO: Update so that stats can be randomized with a cap (feature)
-
-type Stats = {
-  strength: number;
-  constitution: number;
-  dexterity: number;
-  wisdom: number;
-  intelligence: number;
-  charisma: number;
-};
 
 interface chooseStatsProps {
   statsObj: Stats;
