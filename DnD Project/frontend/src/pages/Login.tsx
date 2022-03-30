@@ -1,5 +1,14 @@
-import { Box, Grid, Button, TextField, Link, Typography, Alert } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Button,
+  TextField,
+  Link,
+  Typography,
+  Alert,
+} from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import request from "../utils/request";
 
 const FieldStyle = {
@@ -10,12 +19,16 @@ const FieldStyle = {
 };
 
 export default function Login() {
+  const navigation = useNavigate();
+
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
 
-  const [usernameIsValid, setUsernameIsValid] = useState(true); // Leaving in case we decide to implement
+  // TODO: finish implementing error box
+  // unused vars causes build errors
+  const [usernameIsValid, setUsernameIsValid] = useState(true);
   const [passwordIsValid, setPasswordIsValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
@@ -23,7 +36,6 @@ export default function Login() {
   useEffect(() => {
     document.getElementById("errorMessage")!.innerHTML = errorMessage;
   }, [errorMessage, setErrorMessage]);
-
 
   const updateValue = (key: string) => {
     return (e: any) => setForm({ ...form, [key]: e.target.value });
@@ -36,18 +48,14 @@ export default function Login() {
 
       setErrorEncountered(false);
 
-      let { data } = await request.post("/auth/login", form);
-      console.log(data);
+      await request.post("/auth/login", form);
       // TODO: Add redirect when good response
 
-      localStorage.setItem("data", JSON.stringify(data));
-      window.location.href = "/Dashboard";
-      
+      navigation("/dashboard");
 
-      // TODO: Make error box not look ass 
+      // TODO: Make error box not look ass
     } catch (error) {
-      if (error instanceof Error)
-      {
+      if (error instanceof Error) {
         console.error(error);
         setErrorEncountered(true);
         setErrorMessage(error.name + ": " + error.message);
@@ -85,9 +93,13 @@ export default function Login() {
                 height: 1,
               }}
             >
-              <Alert severity="error" id="errorMessage" sx={{
-                opacity: errorEncountered ? 1 : 0,
-              }}>
+              <Alert
+                severity="error"
+                id="errorMessage"
+                sx={{
+                  opacity: errorEncountered ? 1 : 0,
+                }}
+              >
                 Placeholder
               </Alert>
 

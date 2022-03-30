@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, CardMedia, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Grid from "@material-ui/core/Grid";
 import LobbyBar from "../components/LobbyBar";
 import Paper from "@mui/material/Paper";
