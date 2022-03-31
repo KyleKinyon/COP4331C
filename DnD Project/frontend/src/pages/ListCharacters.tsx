@@ -1,5 +1,6 @@
 import {
   Box,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -9,7 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Character } from "../utils/interfaces";
-import { Add } from "@mui/icons-material";
+import { Add, Delete } from "@mui/icons-material";
 import Navbar from "../components/Navbar";
 import req from "../utils/request";
 
@@ -17,21 +18,31 @@ export default function ListCharacters() {
   const navigate = useNavigate();
   const [chars, setChars] = useState<Character[]>([]);
 
+  const getCharData = async () => {
+    try {
+      const {
+        data: { characters },
+      } = await req.get("/char/selectCharacter");
+
+      setChars(characters);
+    } catch (error) {
+      console.log("Issue getting character data");
+      console.error(error);
+    }
+  };
+
+  const deleteChar = async (id: string) => {
+    try {
+      await req.post("/char/deleteCharacter", { charId: id });
+      await getCharData();
+    } catch (error) {
+      console.log("Issue with deleting character");
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    const getCharData = async () => {
-      try {
-        const {
-          data: { characters },
-        } = await req.get("/char/selectCharacter");
-
-        return characters;
-      } catch (error) {
-        console.log("Issue getting character data");
-        console.error(error);
-      }
-    };
-
-    getCharData().then((data) => setChars(data));
+    getCharData();
   }, []);
 
   return (
@@ -47,11 +58,23 @@ export default function ListCharacters() {
             {chars.map((item, i) => (
               <ListItem
                 key={i}
-                onClick={() => navigate(`/character/${item._id}`)}
                 sx={{ cursor: "pointer" }}
                 divider
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => deleteChar(item._id)}
+                  >
+                    <Delete />
+                  </IconButton>
+                }
               >
-                <ListItemText primary={item.charName} secondary={item.race} />
+                <ListItemText
+                  primary={item.charName}
+                  secondary={item.race}
+                  onClick={() => navigate(`/character/${item._id}`)}
+                />
               </ListItem>
             ))}
             <ListItem
