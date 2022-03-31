@@ -7,10 +7,15 @@ import auth from './api/auth';
 import character from "./api/character";
 import session from "./api/session";
 import user from "./api/user";
+import path from "path";
 
 const env = dotenv.config(); // env variables
+const port = process.env.PORT || 8080;
+const publicPath = path.resolve(__dirname, '../../frontend/build');
 
 let app = express(); // api library
+
+app.set('port', port);
 
 app.use(cookieParser()); // parsing cookie data (refresh token)
 app.use(express.json()); // allow for sending json
@@ -44,5 +49,19 @@ connect(mongoURI, {
 		console.error(err);
 	});
 
+// For Heroku deployment
+
+// Server static assets if in production
+if (process.env.NODE_ENV === 'production') 
+{
+  // Set static folder
+  app.use(express.static(publicPath));
+
+  app.get('*', (req, res) => 
+ {
+    res.sendFile(path.resolve(publicPath, 'index.html'));
+  });
+}
+
 // launching server
-app.listen(8080, () => console.log("Server running on port 8080"));
+app.listen(port, () => console.log("Server running on port " + port));

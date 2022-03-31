@@ -1,9 +1,7 @@
 import axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
-// const baseURL = `http://${process.env.REACT_APP_BACKEND_ADDRESS}:8080`;
-
-const app_name = "dnd-25";
+const app_name = "cop4331-dnd";
 const baseURL = process.env.NODE_ENV === "production"
   ? `https://${app_name}.herokuapp.com/`
   : `http://${process.env.REACT_APP_BACKEND_ADDRESS}:8080`;
