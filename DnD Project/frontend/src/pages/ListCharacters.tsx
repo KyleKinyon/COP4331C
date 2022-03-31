@@ -1,7 +1,15 @@
-import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Character } from "../utils/interfaces";
+import { Add } from "@mui/icons-material";
 import Navbar from "../components/Navbar";
 import req from "../utils/request";
 
@@ -23,10 +31,7 @@ export default function ListCharacters() {
       }
     };
 
-    getCharData().then((data) => {
-      // console.log(data);
-      setChars(data);
-    });
+    getCharData().then((data) => setChars(data));
   }, []);
 
   return (
@@ -49,6 +54,15 @@ export default function ListCharacters() {
                 <ListItemText primary={item.charName} secondary={item.race} />
               </ListItem>
             ))}
+            <ListItem
+              onClick={() => navigate("/character/create")}
+              sx={{ cursor: "pointer" }}
+            >
+              <ListItemIcon>
+                <Add />
+              </ListItemIcon>
+              <ListItemText primary="Add a new character" />
+            </ListItem>
           </List>
         </Box>
       </Box>

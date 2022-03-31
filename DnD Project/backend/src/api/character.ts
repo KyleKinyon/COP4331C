@@ -79,14 +79,19 @@ router.get("/selectCharacter", async (req, res) => {
 		return res.status(200).json({ characters: data });
 	}
 
-	let data = await Char.findOne({ userId: userId, _id: charId }).exec();
+	try {
+		let data = await Char.findOne({ userId: userId, _id: charId }).exec();
 
-	if (!data) {
-		data = await User.findOne({ _id: userId }).exec();
-		return res.status(400).json({ error: (data) ? "User does not exist" : "Character does not exist" });
+		if (!data) {
+			data = await User.findOne({ _id: userId }).exec();
+			return res.status(400).json({ error: (data) ? "User does not exist" : "Character does not exist" });
+		}
+
+		return res.status(200).json({ character: data });
+
+	} catch (error) {
+		res.status(200).json({ error: "Issue with finding character information" });
 	}
-
-	res.status(200).json({ character: data });
 });
 
 router.post("/deleteCharacter", async (req, res) => {

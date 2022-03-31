@@ -7,7 +7,7 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import request from "../utils/request";
 
@@ -33,34 +33,30 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
 
-  useEffect(() => {
-    document.getElementById("errorMessage")!.innerHTML = errorMessage;
-  }, [errorMessage, setErrorMessage]);
-
   const updateValue = (key: string) => {
-    return (e: any) => setForm({ ...form, [key]: e.target.value });
+    return (e: any) => {
+      setForm({ ...form, [key]: e.target.value });
+      key === "password" ? setPasswordIsValid(true) : setUsernameIsValid(true);
+      setErrorEncountered(false);
+    };
   };
 
   const submitForm = async () => {
     try {
-      if (form.username.trim() === "" || form.password.trim() === "")
-        throw new Error("Empty input field");
+      if (form.username.trim() === "" || form.password.trim() === "") {
+        if (form.username.trim() === "") setUsernameIsValid(false);
+        if (form.password.trim() === "") setPasswordIsValid(false);
+        return;
+      }
 
       setErrorEncountered(false);
-
       await request.post("/auth/login", form);
-      // TODO: Add redirect when good response
-
       navigation("/dashboard");
 
       // TODO: Make error box not look ass
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error);
-        setErrorEncountered(true);
-        setErrorMessage(error.name + ": " + error.message);
-        document.getElementById("errorMessage")!.innerHTML = errorMessage;
-      }
+      setErrorEncountered(true);
+      setErrorMessage((error as any)?.response.data.error);
     }
   };
 
@@ -93,15 +89,11 @@ export default function Login() {
                 height: 1,
               }}
             >
-              <Alert
-                severity="error"
-                id="errorMessage"
-                sx={{
-                  opacity: errorEncountered ? 1 : 0,
-                }}
-              >
-                Placeholder
-              </Alert>
+              {errorEncountered && (
+                <Alert severity="error" id="errorMessage">
+                  {errorMessage}
+                </Alert>
+              )}
 
               <Typography variant="h5" component="h2">
                 Start Your D&D Campaign Today

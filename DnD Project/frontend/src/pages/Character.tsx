@@ -85,7 +85,7 @@ export default function Character({ load }: CharacterPageProps) {
         navigate("/character");
       }
     })();
-  }, []);
+  }, [load, navigate, params.charId]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) =>
     setPage(newValue);
