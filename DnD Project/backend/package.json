@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "react-scripts test",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc src/index.ts --esModuleInterop --rootDir src --outDir dist"
   },
   "author": "",
   "license": "ISC",
