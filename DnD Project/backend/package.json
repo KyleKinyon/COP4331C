@@ -4,9 +4,11 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
+    "start": "ts-node src/index.js",
     "test": "react-scripts test",
     "dev": "nodemon src/index.ts",
-    "build": "tsc src/index.ts --esModuleInterop --rootDir src --outDir dist"
+    "build": "tsc src/index.ts --esModuleInterop --rootDir src --outDir dist",
+    "heroku-postbuild": " NPM_CONFIG_PRODUCTION=false npm install --prefix ../frontend && npm run build --prefix ../frontend"
   },
   "author": "",
   "license": "ISC",
