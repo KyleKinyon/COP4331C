@@ -43,20 +43,18 @@ router.get("/refreshToken", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-	const { username, email, password } = req.body;
-	if (!password || (!username && !email)) {
+	const { username, password } = req.body;
+	if (!username || !password) {
 		return res.status(400).json({ error: "User info not provided" });
 	}
 
-	let data;
-	if (username) {
-		data = await User.findOne({ username }).exec();
-	} else {
-		data = await User.findOne({ email }).exec();
-	}
+	let data = await User.findOne({ username: username }).exec();
 
 	if (!data) {
-		return res.status(400).json({ error: "Incorrect login info" });
+		data = await User.findOne({ email: username }).exec();
+		if (!data) {
+			return res.status(400).json({ error: "Incorrect login info" });
+		}
 	}
 
 	const validPassword = await compare(password, data.password);
@@ -78,7 +76,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-	const { username, password, firstName, lastName, email, verified, sessionName } = req.body;
+	const { username, password, firstName, lastName, email, verified } = req.body;
 	if (!username || !password || !email) {
 		return res.status(400).json({ error: "Sign up info not provided" });
 	}
@@ -104,8 +102,7 @@ router.post("/signup", async (req, res) => {
 		firstName: firstName ?? "",
 		lastName: lastName ?? "",
 		email,
-		verified: verified ?? false,
-		sessionName: sessionName ?? ""
+		verified: verified ?? false
 	});
 
 	await user.save();

@@ -3,15 +3,15 @@ import { Schema, model } from 'mongoose'
 const CharacterSchema = new Schema({
 	userId: Schema.Types.ObjectId,
 	charName: String,
-	class: String,
-	level: Number,
-	race: String,
-	strength: Number,
-	dexterity: Number,
-	constitution: Number,
-	intelligence: Number,
-	wisdom: Number,
-	charisma: Number,
+	class: { type: String, default: "" },
+	level: { type: Number, default: 0 },
+	race: { type: String, default: "" },
+	strength: { type: Number, default: 0 },
+	dexterity: { type: Number, default: 0 },
+	constitution: { type: Number, default: 0 },
+	intelligence: { type: Number, default: 0 },
+	wisdom: { type: Number, default: 0 },
+	charisma: { type: Number, default: 0 },
 	equipment: [String]
 })
 

@@ -47,18 +47,23 @@ router.delete("/deleteSession", async (req, res) => {
 		return res.status(400).json({ error: "Session info not provided" });
 	}
 
-	let data = await Session.findOneAndDelete({ _id: sessionId, sessionName: sessionName }).exec();
+	try {
+		let data = await Session.findOneAndDelete({ _id: sessionId, sessionName: sessionName }).exec();
 
-	if (!data) {
-		return res.status(400).json({ error: "Session does not exist" });
+		if (!data) {
+			return res.status(400).json({ error: "Session does not exist" });
+		}
+
+		const filter = { sessionName: sessionName };
+		const update = { sessionName: "" };
+
+		await User.updateMany(filter, update).exec();
+
+		res.status(200).json({ message: "Session successfully deleted" });
+
+	} catch (error) {
+		res.status(200).json({ error: "Invalid JSON value(s)" });
 	}
-
-	const filter = { sessionName: sessionName };
-	const update = { sessionName: "" };
-
-	await User.updateMany(filter, update).exec();
-
-	res.status(200).json({ message: "Session successfully deleted" });
 });
 
 router.post("/joinSession", async (req, res) => {
@@ -130,13 +135,18 @@ router.post("/changeMap", async (req, res) => {
 	const filter = { _id: sessionId };
 	const update = { map: map };
 
-	let data = await Session.findOneAndUpdate(filter, update).exec();
+	try {
+		let data = await Session.findOneAndUpdate(filter, update).exec();
 
-	if (!data) {
-		return res.status(400).json({ error: "Session does not exist" });
+		if (!data) {
+			return res.status(400).json({ error: "Session does not exist" });
+		}
+		
+		res.status(200).json({ message: "Map updated" });
+
+	} catch (error) {
+		res.status(200).json({ error: "Invalid JSON value(s)" });
 	}
-	
-	res.status(200).json({ message: "Map updated" });
 });
 
 router.post("/updateCoords", async (req, res) => {

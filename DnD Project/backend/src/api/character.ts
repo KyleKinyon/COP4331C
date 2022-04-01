@@ -35,33 +35,38 @@ router.post("/createCharacter", async (req, res) => {
 });
 
 router.post("/editCharacter", async (req, res) => {
-	const { charId, charClass, level, race, strength, dexterity, constitution, intelligence, wisdom, charisma, equipment } = req.body;
+	const { charId, charName, charClass, level, race, strength, dexterity, constitution, intelligence, wisdom, charisma, equipment } = req.body;
 	const { _id: userId } = res.locals;
 
 	if (!charId) {
 		return res.status(400).json({ error: "No character provided" });
 	}
 
-	let data = await Char.findOne({ userId: userId, _id: charId }).exec();
+	try { 
+		let data = await Char.findOne({ userId: userId, _id: charId }).exec();
 
-	if (data) {
-		const filter = { userId: userId, _id: charId };
-		const update = {
-			class: charClass, level: level, race: race, strength: strength, dexterity: dexterity, constitution: constitution,
-			intelligence: intelligence, wisdom: wisdom, charisma: charisma, equipment: equipment
-		};
+		if (data) {
+			const filter = { userId: userId, _id: charId };
+			const update = {
+				charName: charName, class: charClass, level: level, race: race, strength: strength, dexterity: dexterity,
+				constitution: constitution, intelligence: intelligence, wisdom: wisdom, charisma: charisma, equipment: equipment
+			};
 
-		await Char.findOneAndUpdate(filter, update).exec();
+			await Char.findOneAndUpdate(filter, update).exec();
 
-		res.status(200).json({ message: "Character info updated" });
-	} else {
-		data = await User.findOne({ _id: userId }).exec();
+			res.status(200).json({ message: "Character info updated" });
+		} else {
+			data = await User.findOne({ _id: userId }).exec();
 
-		if (!data) {
-			return res.status(400).json({ error: "User does not exist" });
+			if (!data) {
+				return res.status(400).json({ error: "User does not exist" });
+			}
+
+			res.status(400).json({ error: "Character does not exist" });
 		}
-
-		res.status(400).json({ error: "Character does not exist" });
+		
+	} catch (error) {
+		res.status(200).json({ error: "Invalid JSON value(s)" });
 	}
 });
 
@@ -90,7 +95,7 @@ router.get("/selectCharacter", async (req, res) => {
 		return res.status(200).json({ character: data });
 
 	} catch (error) {
-		res.status(200).json({ error: "Issue with finding character information" });
+		res.status(200).json({ error: "Invalid JSON value(s)" });
 	}
 });
 
@@ -102,18 +107,23 @@ router.post("/deleteCharacter", async (req, res) => {
 		return res.status(400).json({ error: "No character provided" });
 	}
 
-	let data = await Char.findOneAndDelete({ userId: userId, _id: charId }).exec();
-
-	if (!data) {
-		data = await User.findOne({ _id: userId }).exec();
+	try {
+		let data = await Char.findOneAndDelete({ userId: userId, _id: charId }).exec();
 
 		if (!data) {
-			return res.status(400).json({ error: "User does not exist" })
-		}
-		return res.status(400).json({ error: "Character does not exist" });
-	}
+			data = await User.findOne({ _id: userId }).exec();
 
-	res.status(200).json({ message: "Character successfully deleted" });
+			if (!data) {
+				return res.status(400).json({ error: "User does not exist" })
+			}
+			return res.status(400).json({ error: "Character does not exist" });
+		}
+
+		res.status(200).json({ message: "Character successfully deleted" });
+
+	} catch (error) {
+		res.status(200).json({ error: "Invalid JSON value(s)" });
+	}
 });
 
 export default router;
