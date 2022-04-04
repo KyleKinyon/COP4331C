@@ -1,20 +1,16 @@
 import { Box, Button, CardMedia } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import StartCampaign from "../components/StartCampaign";
-
 
 export default function Dashboard() {
+  const nav = useNavigate();
 
   return (
     <>
       <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
         <Navbar />
 
-        <CardMedia
-          component="img"
-          src={"images/dnd_img1.jpg"}
-          alt="img1"
-        />
+        <CardMedia component="img" src={"images/dnd_img1.jpg"} alt="img1" />
         <Box
           position="static"
           display="flex"
@@ -53,7 +49,14 @@ export default function Dashboard() {
           justifyContent="center"
           sx={{ mx: "auto", width: 700 }}
         >
-          <StartCampaign />
+          {/* <StartCampaign /> */}
+          <Button
+            onClick={() => nav("/lobby")}
+            variant="contained"
+            color="inherit"
+          >
+            Start Campaign
+          </Button>
         </Box>
 
         <CardMedia
@@ -97,12 +100,7 @@ export default function Dashboard() {
           justifyContent="center"
           sx={{ mx: "auto", width: 700 }}
         >
-          <Button
-            onClick={() => {
-              alert("Placeholder for Create Character function");
-            }}
-            variant="contained"
-          >
+          <Button onClick={() => nav("/character/create")} variant="contained">
             CREATE CHARACTER
           </Button>
         </Box>

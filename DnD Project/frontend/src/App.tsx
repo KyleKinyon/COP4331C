@@ -23,25 +23,6 @@ TODO: Figure out double render bug
 
 */
 
-const protectedRoutes = [
-  {
-    path: "dashboard",
-    page: Dashboard,
-  },
-  {
-    path: "lobby",
-    page: Lobby,
-  },
-  {
-    path: "dmLobby",
-    page: DMLobby,
-  },
-  {
-    path: "mainGame",
-    page: MainGame,
-  },
-];
-
 function App() {
   return (
     <BrowserRouter>
@@ -50,15 +31,40 @@ function App() {
         <Route path="/">
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
-          <Route path="lobby" element={<Lobby />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          {protectedRoutes.map(({ path, page }, i) => (
-            <Route
-              key={i}
-              path={path}
-              element={<ProtectedRoute>{page()}</ProtectedRoute>}
-            />
-          ))}
+
+          <Route
+            path={"dashboard"}
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={"lobby"}
+            element={
+              <ProtectedRoute>
+                <Lobby />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={"dmLobby"}
+            element={
+              <ProtectedRoute>
+                <DMLobby />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={"mainGame"}
+            element={
+              <ProtectedRoute>
+                <MainGame />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="character">
             <Route
               index
