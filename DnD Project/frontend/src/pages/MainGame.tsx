@@ -153,7 +153,7 @@ export default function MainGame() {
                   alert("Placeholder for Proceed function");
                 }}
               >
-                Proceed
+                ~Place Extra Functionality Here~
               </Button>
             </Grid>
           </Grid>

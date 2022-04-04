@@ -1,7 +1,10 @@
 import { Box, Button, CardMedia } from "@mui/material";
 import Navbar from "../components/Navbar";
+import StartCampaign from "../components/StartCampaign";
+
 
 export default function Dashboard() {
+
   return (
     <>
       <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
@@ -50,14 +53,7 @@ export default function Dashboard() {
           justifyContent="center"
           sx={{ mx: "auto", width: 700 }}
         >
-          <Button
-            onClick={() => {
-              alert("Placeholder for Start Campaign function");
-            }}
-            variant="contained"
-          >
-            Start Campaign
-          </Button>
+          <StartCampaign />
         </Box>
 
         <CardMedia

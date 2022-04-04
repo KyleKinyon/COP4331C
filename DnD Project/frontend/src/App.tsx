@@ -50,6 +50,8 @@ function App() {
         <Route path="/">
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
+          <Route path="lobby" element={<Lobby />} />
+          <Route path="dashboard" element={<Dashboard />} />
           {protectedRoutes.map(({ path, page }, i) => (
             <Route
               key={i}

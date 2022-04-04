@@ -11,7 +11,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Home, Person } from "@mui/icons-material";
+import { Home, Person, SportsEsports } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import req from "../utils/request";
 import { useNavigate } from "react-router-dom";
@@ -28,10 +28,15 @@ export default function Navbar() {
       icon: <Home />,
     },
     {
+      name: "Start New Campaign",
+      link: "/lobby",
+      icon: <SportsEsports />,
+    },
+    {
       name: "Characters",
       link: "/character",
       icon: <Person />,
-    },
+    }
   ];
 
   const logout = () => {

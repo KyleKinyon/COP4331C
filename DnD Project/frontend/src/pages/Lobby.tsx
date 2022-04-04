@@ -5,6 +5,7 @@ import LobbyBar from "../components/LobbyBar";
 import Paper from "@mui/material/Paper";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Image from "material-ui-image";
+import ForwardButton from "../components/ForwardButton";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -79,17 +80,7 @@ export default function Lobby() {
           </Box>
 
           <Grid container justify="center">
-            <Button
-              color="primary"
-              size="large"
-              type="submit"
-              variant="contained"
-              onClick={() => {
-                alert("Placeholder for Proceed function");
-              }}
-            >
-              Proceed
-            </Button>
+            <ForwardButton />
           </Grid>
         </Grid>
       </Box>

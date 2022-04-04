@@ -1,6 +1,8 @@
 import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { createTheme, ThemeProvider } from '@material-ui/core';
+import { useNavigate } from "react-router-dom";
+import BackButton from "../components/BackButton";
 
 const theme = createTheme({
   palette: {
@@ -14,6 +16,9 @@ const theme = createTheme({
 });
 
 export default function LobbyBar() {
+   const navigate = useNavigate();
+  
+  
   return (
        <ThemeProvider theme={theme}>
     <AppBar position="static">
@@ -30,14 +35,7 @@ export default function LobbyBar() {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           D&D 25
         </Typography>
-        <Button
-          onClick={() => {
-            alert("Placeholder for Quit Lobby function");
-          }}
-          color="inherit"
-        >
-          Quit
-        </Button>
+        <BackButton />
       </Toolbar>
     </AppBar>
 </ThemeProvider>
