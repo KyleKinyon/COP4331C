@@ -40,7 +40,7 @@ router.post("/createSession", async (req, res) => {
 	return res.status(200).json({ data });
 });
 
-router.delete("/deleteSession", async (req, res) => {
+router.post("/deleteSession", async (req, res) => {
 	const { sessionId, sessionName } = req.body;
 
 	if (!sessionId || !sessionName) {
