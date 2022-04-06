@@ -57,13 +57,18 @@ let io = new Server(server, {
   },
 });
 
-//Testing Socket IO implementation from Backend
+// Testing Socket IO implementation from Backend
+// TODO: FIND OUT WHY CONNECTION EVENT IS REPEATING FOR EACH KEYSTROKE
 io.sockets.on('connection', (socket) => {
   console.log("a user connected");
 
   socket.on('message', (message) => {
 	  console.log(message);
 	  io.emit('message', `${socket.id.substring(0,3)} said ${message}`);
+  });
+
+  socket.on('disconnect', () => {
+	  console.log("a user disconnected");
   });
 });
 
