@@ -58,8 +58,13 @@ let io = new Server(server, {
 });
 
 //Testing Socket IO implementation from Backend
-io.sockets.on('connection', (socket: any) => {
-  console.log("a user connected" + socket.id);
+io.sockets.on('connection', (socket) => {
+  console.log("a user connected");
+
+  socket.on('message', (message) => {
+	  console.log(message);
+	  io.emit('message', `${socket.id.substring(0,3)} said ${message}`);
+  });
 });
 
 // For Heroku deployment

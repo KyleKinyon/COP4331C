@@ -1,35 +1,26 @@
 import * as React from "react";
 import { Box, Button, TextField, FormLabel, IconButton } from "@mui/material";
-import Grid from "@material-ui/core/Grid";
 import SendIcon from "@mui/icons-material/Send";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 import {useState} from 'react';
 
 export default function TestChat() {
     const [value, setValue] = useState("");
     const textInput = React.useRef(null);
-    var io = require('socket.io-client');
-    const socket = io.connect('http://localhost:8080', {reconnect:true});
+    const socket = io('http://localhost:8080');
 
-    //Test if socket is connected
-      function sendMsg() {
-          console.log("Socket connected"+socket.connected);
-        socket.emit("message", "HELLO WORLD");
-      }
+    //WebSocket event that emits a console logged message to all users
+    socket.on('message', text => {
+      console.log("The message was "+ "'" + text + "'");
+      setValue('');
+    });
 
-      function testingMessage(){
-        console.log("The message was"+"'"+ value+"'");
-         setValue('');
-      }
   //Create button to test function (will eventually be sending messages)
     const SendButton = () => (
-    <IconButton  onClick={() =>testingMessage() }>
+    <IconButton onClick = {() => socket.emit('message', value) }>
       <SendIcon />
     </IconButton>
-
-  )
- 
-  ;
+    );
 
   return (
     <>
