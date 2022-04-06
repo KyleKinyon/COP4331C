@@ -110,7 +110,7 @@ export default function Login() {
                   style={FieldStyle}
                   placeholder="Username"
                   type="text"
-                  autoComplete="current-password"
+                  id="username"
                   margin="dense"
                   value={form.username}
                   onChange={updateValue("username")}

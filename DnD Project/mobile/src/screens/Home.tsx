@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const arr = ["FUUUUUUUUUUUUUUUUUUUUUUUUUUUU", "S", "L"];
+const arr = ["Hello", "World", "Alex"];
 
 const ListSectionExample = () => {
   const {
@@ -44,10 +44,16 @@ const ListSectionExample = () => {
         ))}
       </List.Section>
       <Divider />
-      <View>
-        <Button mode="contained" onPress={() => console.log("Fuck")}>
-          Sign out
-        </Button>
+      <View style={[styles.container, styles.column]}>
+        <View style={{ width: "60%" }}>
+          <Button
+            mode="contained"
+            onPress={() => console.log("Hello")}
+            // style={{ width: "60%" }}
+          >
+            Sign out
+          </Button>
+        </View>
       </View>
     </ScrollView>
   );

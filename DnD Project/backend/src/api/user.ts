@@ -2,6 +2,8 @@ import { Router } from "express";
 import User from "../models/User";
 import checkAuth from "../utils/CheckAuth";
 import { compare, genSalt, hash } from "bcrypt";
+import Character from "../models/Character";
+import { sendRefreshToken } from "../utils/TokenAuth";
 
 const router = Router();
 
@@ -103,5 +105,22 @@ router.get("/verifyUser", async (req,res) => {
 
     res.status(200).json({ message: "E-mail verified"});
 })
+
+router.post("/delete", async (req, res) => {
+	const { _id: userId } = res.locals;
+
+	try {
+		await Character.deleteMany({ userId }).exec();
+		await User.deleteOne({ userId }).exec();
+
+		sendRefreshToken(res, "");
+
+		res.status(200).json({});
+	} catch (error) {
+		res.status(400).json({
+			error: "Could not delete data"
+		});
+	}
+});
 
 export default router
