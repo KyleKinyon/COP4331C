@@ -9,13 +9,30 @@ import session from "./api/session";
 import user from "./api/user";
 import path from "path";
 
+
 const env = dotenv.config(); // env variables
 const port = process.env.PORT || 8080;
+
 const publicPath = path.resolve(__dirname, '../../frontend/build');
+
 
 let app = express(); // api library
 
+//var http = require('http').Server(app);
+//var io   = require('socket.io')(http);
+var server = app.listen(8080);
+var socket = require('socket.io');
+var io = socket(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
 app.set('port', port);
+
+
 
 app.use(cookieParser()); // parsing cookie data (refresh token)
 app.use(express.json()); // allow for sending json
@@ -63,5 +80,17 @@ if (process.env.NODE_ENV === 'production')
   });
 }
 
+//Testing Socket IO implementation from Backend
+io.sockets.on('connection', function(socket: any) {
+  console.log("a user connected" + socket.id);
+});
+
+
+
+/*http.listen(port, function(){
+    console.log('Websocket listening on :' + port);
+});
+*/
+
 // launching server
-app.listen(port, () => console.log("Server running on port " + port));
+//app.listen(port, () => console.log("Server running on port " + port));

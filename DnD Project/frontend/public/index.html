@@ -29,6 +29,19 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+  <!-- <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+      integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    
+    <button onClick="sendMsg()">Hit Me</button>
+    <script>
+      const socket = io();
+      console.log("Socket connected"+socket.connected);
+      function sendMsg() {
+        socket.emit("message", "HELLO WORLD");
+      }
+    </script>
+
+    -->
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

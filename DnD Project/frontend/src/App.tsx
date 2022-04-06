@@ -8,6 +8,7 @@ import Character from "./pages/Character";
 import Lobby from "./pages/Lobby";
 import DMLobby from "./pages/DMLobby";
 import MainGame from "./pages/MainGame";
+import TestChat from "./pages/TestChat"
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -31,7 +32,7 @@ function App() {
         <Route path="/">
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
-
+          <Route path="testChat" element={<TestChat />} />
           <Route
             path={"dashboard"}
             element={
