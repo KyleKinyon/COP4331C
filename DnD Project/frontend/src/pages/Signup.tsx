@@ -1,5 +1,6 @@
 import { Box, Grid, Button, TextField, Typography, Alert } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import request from "../utils/request";
 
 const FieldStyle = {
@@ -10,6 +11,7 @@ const FieldStyle = {
 };
 
 export default function Signup() {
+  const nav = useNavigate();
   const [confirmPass, setConfirmPass] = useState("");
 
   const [form, setForm] = useState({
@@ -23,12 +25,11 @@ export default function Signup() {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
 
-  useEffect(() => {
-    document.getElementById("errorMessage")!.innerHTML = errorMessage;
-  }, [errorMessage, setErrorMessage]);
-
   const updateValue = (key: string) => {
-    return (e: any) => setForm({ ...form, [key]: e.target.value });
+    return (e: any) => {
+      setForm({ ...form, [key]: e.target.value });
+      setErrorEncountered(false);
+    };
   };
 
   const submitForm = async () => {
@@ -37,24 +38,19 @@ export default function Signup() {
         throw new Error("Passwords do not match");
       }
 
-      if (Object.values(form).some((item) => item.trim() === "")) {
+      if ([form.username, form.email].some((item) => item.trim() === "")) {
         throw new Error("Empty fields");
       }
 
       setErrorEncountered(false);
 
-      let { data } = await request.post("/auth/signup", form);
-      console.log(data);
-      // TODO: Add redirect when good response
-      // TODO: Make error box not look ass 
+      request.post("/auth/signup", form).then(() => nav("/dashboard"));
     } catch (error) {
-      if (error instanceof Error)
-      {
-        console.error(error);
-        setErrorMessage(error.toString());
-        setErrorEncountered(true);
-        document.getElementById("errorMessage")!.innerHTML = errorMessage;
-      }
+      // console.error(error);
+      setErrorEncountered(true);
+      setErrorMessage(
+        (error as any)?.response?.data.error || (error as Error).toString()
+      );
     }
   };
 
@@ -75,9 +71,11 @@ export default function Signup() {
                 height: 1,
               }}
             >
-              <Alert severity="error" id="errorMessage" sx={{
-                opacity: errorEncountered ? 1 : 0
-              }}/>
+              {errorEncountered && (
+                <Alert severity="error" id="errorMessage">
+                  {errorMessage}
+                </Alert>
+              )}
 
               <Typography variant="h4" component="h2" my={2}>
                 Start Your D&D Campaign Today
