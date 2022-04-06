@@ -107,11 +107,11 @@ router.get("/verifyUser", async (req,res) => {
 })
 
 router.post("/delete", async (req, res) => {
-	const { _id: userId } = res.locals;
+	const { _id: userId, username } = res.locals;
 
 	try {
 		await Character.deleteMany({ userId }).exec();
-		await User.deleteOne({ userId }).exec();
+		await User.deleteMany({ username }).exec();
 
 		sendRefreshToken(res, "");
 

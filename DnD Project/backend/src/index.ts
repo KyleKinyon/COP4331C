@@ -8,7 +8,7 @@ import character from "./api/character";
 import session from "./api/session";
 import user from "./api/user";
 import path from "path";
-import socket from "socket.io";
+import { Server } from "socket.io";
 
 const env = dotenv.config(); // env variables
 const port = process.env.PORT || 8080;
@@ -49,7 +49,7 @@ connect(mongoURI, {
 
 // launching server
 let server = app.listen(port, () => console.log(`Server running on port ${port}`));
-let io = socket(server, {
+let io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
@@ -58,7 +58,7 @@ let io = socket(server, {
 });
 
 //Testing Socket IO implementation from Backend
-io.sockets.on('connection', function(socket: any) {
+io.sockets.on('connection', (socket: any) => {
   console.log("a user connected" + socket.id);
 });
 
