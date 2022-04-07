@@ -65,6 +65,10 @@ io.sockets.on('connection', (socket) => {
 	  console.log(message);
 	  io.emit('message', `${socket.id.substring(0,3)} said ${message}`);
   });
+
+   socket.on('create', (room) => {
+    socket.join(room);
+  });
 });
 
 // For Heroku deployment

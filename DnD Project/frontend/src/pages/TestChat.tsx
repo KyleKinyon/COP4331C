@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Button, TextField, FormLabel, IconButton } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
+import {Send, MeetingRoom} from "@mui/icons-material";
 import { io } from "socket.io-client";
 import {useState} from 'react';
 
@@ -18,7 +18,14 @@ export default function TestChat() {
   //Create button to test function (will eventually be sending messages)
     const SendButton = () => (
     <IconButton onClick = {() => socket.emit('message', value) }>
-      <SendIcon />
+      <Send />
+    </IconButton>
+    );
+
+   //Will trigger the event for joining a room, will join the room based on textfield value 
+    const JoinButton = () => (
+    <IconButton onClick = {() => socket.emit('create', value) }>
+      <MeetingRoom />
     </IconButton>
     );
 
@@ -36,7 +43,20 @@ export default function TestChat() {
           }}
           InputProps={{ endAdornment: <SendButton /> }}
         />
+
+        <TextField
+          id="standard-basic"
+          label="Join Room"
+          variant="standard"
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
+          InputProps={{ endAdornment: <JoinButton /> }}
+        />
       </Box>
+
+      
     </>
   );
 }
