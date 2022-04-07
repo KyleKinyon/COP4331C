@@ -24,6 +24,7 @@ export default function Signup() {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
+  const [needToVerify, setNeedToVerify] = useState(false);
 
   const updateValue = (key: string) => {
     return (e: any) => {
@@ -188,6 +189,11 @@ export default function Signup() {
                   Create Account
                 </Button>
               </Box>
+              {needToVerify && (
+                <Alert sx={{ px: 4}}>
+                  Your account has been made. Please check your email to verify.
+                </Alert>
+              )}
             </Box>
           </Grid>
           <Grid item xs={4}></Grid>

@@ -57,17 +57,20 @@ let io = new Server(server, {
   },
 });
 
-//Testing Socket IO implementation from Backend
+// Testing Socket IO implementation from Backend
+// TODO: FIND OUT WHY CONNECTION EVENT IS REPEATING FOR EACH KEYSTROKE
+// Update: Connection event is occuring anytime there is a state change
+// in the text box. Might be an error on TestChat.tsx
 io.sockets.on('connection', (socket) => {
-  console.log("a user connected");
+  console.log(`User ${socket.id.substring(0,3)} connected`);
 
   socket.on('message', (message) => {
 	  console.log(message);
 	  io.emit('message', `${socket.id.substring(0,3)} said ${message}`);
   });
 
-   socket.on('create', (room) => {
-    socket.join(room);
+  socket.on('disconnect', () => {
+	  console.log(`User ${socket.id.substring(0,3)} disconnected`);
   });
 });
 
