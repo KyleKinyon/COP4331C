@@ -1,9 +1,7 @@
-import Login from "../Login";
 import { mount, configure } from "enzyme";
 import { TextField } from "@mui/material";
+import Login from './Login';
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-// import { timeStamp } from "console";
-// import { render, fireEvent } from "@testing-library/react";
 
 configure({ adapter: new Adapter() });
 
@@ -33,36 +31,16 @@ describe("Test case for testing login", () => {
 
     expect(wrapper.find(TextField).at(0).props().value).toEqual("user");
   });
+  test("Password check", () => {
+    wrapper = mount(<Login />);
 
-  // it("password check", () => {
-  //   wrapper = shallow(<Login />);
-  //   wrapper
-  //     .find('input[type="password"]')
-  //     .simulate("change", { target: { name: "password", value: "pass" } });
-  //   expect(wrapper.state("password")).toEqual("pass");
-  // });
+    // Get all TextFields, get first, get input element from it, simulate change
+    wrapper
+      .find(TextField)
+      .at(0)
+      .find("input")
+      .simulate("change", { target: { value: "password" } });
 
-  // it("login check with right data", () => {
-  //   wrapper = shallow(<Login />);
-  //   wrapper
-  //     .find('input[type="text"]')
-  //     .simulate("change", { target: { name: "username", value: "user" } });
-  //   wrapper
-  //     .find('input[type="password"]')
-  //     .simulate("change", { target: { name: "password", value: "pass" } });
-  //   wrapper.find("button").simulate("click");
-  //   expect(wrapper.state("isLogined")).toBe(true);
-  // });
-
-  // it("login check with wrong data", () => {
-  //   wrapper = shallow(<Login />);
-  //   wrapper
-  //     .find('input[type="text"]')
-  //     .simulate("change", { target: { name: "username", value: "user" } });
-  //   wrapper
-  //     .find('input[type="password"]')
-  //     .simulate("change", { target: { name: "password", value: "pass" } });
-  //   wrapper.find("button").simulate("click");
-  //   expect(wrapper.state("isLogined")).toBe(false);
-  // });
+    expect(wrapper.find(TextField).at(0).props().value).toEqual("password");
+  });
 });
