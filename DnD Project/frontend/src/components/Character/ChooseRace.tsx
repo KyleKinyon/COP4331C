@@ -1,8 +1,11 @@
 import { Box, CardContent, Grid, Typography } from "@mui/material";
 
-interface ChooseRaceProps {
-  updateRace: any;
-}
+const border = {
+  cursor: "pointer",
+  borderColor: "secondary.main",
+  borderWidth: "2px",
+  borderStyle: "dashed",
+};
 
 const races = [
   { name: "dwarf", src: "/images/dwarf.jpg" },
@@ -16,55 +19,72 @@ const races = [
   { name: "tiefling", src: "/images/tiefling.jpg" },
 ];
 
-export default function ChooseRace({ updateRace }: ChooseRaceProps) {
+interface ChooseRaceProps {
+  updateRace: any;
+  selected: string;
+}
+
+export default function ChooseRace({ selected, updateRace }: ChooseRaceProps) {
   return (
-    <Box sx={{ width: 1, textAlign: "center" }}>
-      <Typography variant="h5" component="h2">
-        SELECT A RACE
-      </Typography>
+    <>
+      <Box position="static" sx={{ width: 1, textAlign: "center" }} my={4}>
+        <Typography variant="h5" component="h2" my={2}>
+          SELECT A CLASS
+        </Typography>
 
-      <Grid container spacing={5} columns={24} sx={{ cursor: "pointer" }}>
-        {races.map((item, i) => (
-          <Grid
-            item
-            xs={8}
-            key={i}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignContent: "center",
-              flexDirection: "column",
-            }}
-            id={item.name}
-            onClick={() => updateRace(item.name)}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignContent: "center",
-              }}
-              p={2}
+        <Grid container columns={9}>
+          {races.map((item, i) => (
+            <Grid
+              item
+              xs={3}
+              key={i}
+              onClick={() => updateRace(item.name)}
+              sx={
+                selected.toLowerCase() !== item.name.toLowerCase()
+                  ? {
+                      cursor: "pointer",
+                    }
+                  : border
+              }
             >
-              <CardContent
-                component="img"
-                height="125"
-                width="125"
-                src={item.src}
-                title={item.name}
-              />
-            </Box>
-
-            <Typography
-              variant="subtitle1"
-              component="h2"
-              sx={{ textTransform: "uppercase", textAlign: "center" }}
-            >
-              {item.name}
-            </Typography>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+              <Box
+                sx={{
+                  width: 1,
+                  height: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 1,
+                    height: 1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignContent: "center",
+                  }}
+                >
+                  <CardContent
+                    component="img"
+                    height="125"
+                    width="125"
+                    src={item.src}
+                    title={item.name}
+                  />
+                </Box>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ textTransform: "uppercase", textAlign: "center" }}
+                >
+                  {item.name}
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </>
   );
 }

@@ -22,6 +22,7 @@ export default function Signup() {
     email: "",
   });
 
+  // [^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+ regex for email
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
   const [needToVerify, setNeedToVerify] = useState(false);
@@ -190,7 +191,7 @@ export default function Signup() {
                 </Button>
               </Box>
               {needToVerify && (
-                <Alert sx={{ px: 4}}>
+                <Alert sx={{ px: 4 }}>
                   Your account has been made. Please check your email to verify.
                 </Alert>
               )}
