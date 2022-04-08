@@ -10,6 +10,7 @@ import DMLobby from "./pages/DMLobby";
 import MainGame from "./pages/MainGame";
 import TestChat from "./pages/TestChat";
 import ListCharacters from "./pages/ListCharacters";
+import ResetPassword from "./pages/ResetPassword";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -47,6 +48,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="testChat" element={<TestChat />} />
+            <Route path="resetPassword" element={<ResetPassword />} />
             <Route
               path={"dashboard"}
               element={
