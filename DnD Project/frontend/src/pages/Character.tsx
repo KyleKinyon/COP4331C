@@ -70,7 +70,7 @@ export default function Character({ load }: CharacterPageProps) {
 
         setName(character.charName);
         setRace(character.race);
-        setCharClass(character.charClass);
+        setCharClass(character.class);
 
         setStats({
           constitution: character.constitution,
@@ -159,10 +159,10 @@ export default function Character({ load }: CharacterPageProps) {
         </TabPanel>
 
         <TabPanel value={1} index={page}>
-          <ChooseClass update={setCharClass} />
+          <ChooseClass selected={charClass} update={setCharClass} />
         </TabPanel>
         <TabPanel value={2} index={page}>
-          <ChooseRace updateRace={setRace} />
+          <ChooseRace selected={race} updateRace={setRace} />
         </TabPanel>
         <TabPanel value={3} index={page}>
           <ChooseStats statsObj={stats} updateStatsObj={setStats} />

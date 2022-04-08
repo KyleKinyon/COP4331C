@@ -32,6 +32,7 @@ export interface Character {
 	charName: string;
 	race: string;
 	level: number;
+	class: string;
 
 	charisma: number;
 	constitution: number;

@@ -6,6 +6,7 @@ import {
   Link,
   Typography,
   Alert,
+  Tooltip,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +33,7 @@ export default function Login() {
   const [passwordIsValid, setPasswordIsValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const updateValue = (key: string) => {
     return (e: any) => {
@@ -60,6 +62,24 @@ export default function Login() {
     }
   };
 
+  const submitEmail = async () => {
+    try {
+      if (form.username.trim() === "") {
+        throw new Error("Please enter your email");
+      }
+
+      setErrorEncountered(false);
+      // changed to promise to ensure state change
+      request
+        .post("/auth/getUserId", form.username)
+        .then(() => setEmailSent(true));
+      // Once we have id send an email that contains their id and directs them to reset password page
+    } catch (error) {
+      setErrorEncountered(true);
+      setErrorMessage((error as any)?.response.data.error);
+    }
+  };
+
   return (
     <>
       <Box
@@ -74,7 +94,6 @@ export default function Login() {
         <Grid container spacing={2} sx={{ height: "100%" }}>
           <Grid item xs={6}>
             {" "}
-            {/*  still deciding between 6,7,and 8  */}
             <Box
               py={4}
               px={2}
@@ -110,7 +129,7 @@ export default function Login() {
                   style={FieldStyle}
                   placeholder="Username"
                   type="text"
-                  autoComplete="current-password"
+                  id="username"
                   margin="dense"
                   value={form.username}
                   onChange={updateValue("username")}
@@ -136,7 +155,7 @@ export default function Login() {
                     submitForm();
                   }}
                   variant="contained"
-                  color="error"
+                  color="primary"
                   sx={{ px: 2, my: 1 }}
                 >
                   Log In
@@ -145,10 +164,36 @@ export default function Login() {
                 <Box my={2}>
                   <Typography variant="subtitle1">
                     Don't have an account?
-                    <Link href="/signup" mx={1} underline="none" color="red">
+                    <Link
+                      href="/signup"
+                      mx={1}
+                      underline="none"
+                      color="secondary"
+                    >
                       Sign up
                     </Link>
                   </Typography>
+
+                  <Typography variant="subtitle1">
+                    Forgot your password? Click
+                    <Tooltip title="Enter your email and click me!">
+                      <Button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          submitEmail();
+                        }}
+                        color="secondary"
+                      >
+                        here
+                      </Button>
+                    </Tooltip>
+                  </Typography>
+
+                  {emailSent && (
+                    <Alert id="emailSent">
+                      Please check your email to finish resetting your password
+                    </Alert>
+                  )}
                 </Box>
               </Box>
             </Box>

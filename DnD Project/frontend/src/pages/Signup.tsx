@@ -1,6 +1,15 @@
-import { Box, Grid, Button, TextField, Typography, Alert } from "@mui/material";
-import { useState, useEffect } from "react";
+import {
+  Box,
+  Grid,
+  Button,
+  TextField,
+  Typography,
+  Alert,
+  Link,
+} from "@mui/material";
+import { useState } from "react";
 import request from "../utils/request";
+// import { useNavigate } from "react-router-dom";
 
 const FieldStyle = {
   backgroundColor: "white",
@@ -10,6 +19,7 @@ const FieldStyle = {
 };
 
 export default function Signup() {
+  // const nav = useNavigate();
   const [confirmPass, setConfirmPass] = useState("");
 
   const [form, setForm] = useState({
@@ -20,15 +30,16 @@ export default function Signup() {
     email: "",
   });
 
+  // [^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+ regex for email
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
-
-  useEffect(() => {
-    document.getElementById("errorMessage")!.innerHTML = errorMessage;
-  }, [errorMessage, setErrorMessage]);
+  const [needToVerify, setNeedToVerify] = useState(false);
 
   const updateValue = (key: string) => {
-    return (e: any) => setForm({ ...form, [key]: e.target.value });
+    return (e: any) => {
+      setForm({ ...form, [key]: e.target.value });
+      setErrorEncountered(false);
+    };
   };
 
   const submitForm = async () => {
@@ -37,24 +48,22 @@ export default function Signup() {
         throw new Error("Passwords do not match");
       }
 
-      if (Object.values(form).some((item) => item.trim() === "")) {
+      if ([form.username, form.email].some((item) => item.trim() === "")) {
         throw new Error("Empty fields");
       }
 
       setErrorEncountered(false);
 
-      let { data } = await request.post("/auth/signup", form);
-      console.log(data);
-      // TODO: Add redirect when good response
-      // TODO: Make error box not look ass 
+      request.post("/auth/signup", form).then(() => {
+        setNeedToVerify(true);
+        // nav("/dashboard")
+      });
     } catch (error) {
-      if (error instanceof Error)
-      {
-        console.error(error);
-        setErrorMessage(error.toString());
-        setErrorEncountered(true);
-        document.getElementById("errorMessage")!.innerHTML = errorMessage;
-      }
+      // console.error(error);
+      setErrorEncountered(true);
+      setErrorMessage(
+        (error as any)?.response?.data.error || (error as Error).toString()
+      );
     }
   };
 
@@ -75,9 +84,11 @@ export default function Signup() {
                 height: 1,
               }}
             >
-              <Alert severity="error" id="errorMessage" sx={{
-                opacity: errorEncountered ? 1 : 0
-              }}/>
+              {errorEncountered && (
+                <Alert severity="error" id="errorMessage">
+                  {errorMessage}
+                </Alert>
+              )}
 
               <Typography variant="h4" component="h2" my={2}>
                 Start Your D&D Campaign Today
@@ -184,15 +195,34 @@ export default function Signup() {
                     submitForm();
                   }}
                   variant="contained"
-                  color="error"
+                  color="primary"
                   sx={{ px: 2, py: 1, my: 1 }}
                 >
                   Create Account
                 </Button>
+
+                <Box my={2}>
+                  <Typography variant="subtitle1">
+                    Already have an account?
+                    <Link
+                      href="/login"
+                      mx={1}
+                      underline="none"
+                      color="secondary"
+                    >
+                      Login
+                    </Link>
+                  </Typography>
+                </Box>
               </Box>
+              {needToVerify && (
+                <Alert sx={{ px: 4 }}>
+                  Your account has been made. Please check your email to verify.
+                </Alert>
+              )}
             </Box>
           </Grid>
-          <Grid item xs={4}></Grid>
+          <Grid item xs={4} />
         </Grid>
       </Box>
     </>
