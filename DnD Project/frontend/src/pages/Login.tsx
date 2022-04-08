@@ -73,7 +73,7 @@ export default function Login() {
       // Once we have id send an email that contains their id and directs them to reset password page
     } catch (error) {
       setErrorEncountered(true);
-      setErrorMessage((error as any)?.response.data.error)
+      setErrorMessage((error as any)?.response.data.error);
     }
   };
 
