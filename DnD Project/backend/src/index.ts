@@ -57,21 +57,63 @@ let io = new Server(server, {
   },
 });
 
-// Testing Socket IO implementation from Backend
-// TODO: FIND OUT WHY CONNECTION EVENT IS REPEATING FOR EACH KEYSTROKE
-// Update: Connection event is occuring anytime there is a state change
-// in the text box. Might be an error on TestChat.tsx
-io.sockets.on('connection', (socket) => {
-  console.log(`User ${socket.id.substring(0,3)} connected`);
+// Socket.io ServerToClient Events
+io.sockets.on("connection", (socket) => {
+  console.log(`User ${socket.id} connected`);
 
-  socket.on('message', (message) => {
-	  console.log(message);
-	  io.emit('message', `${socket.id.substring(0,3)} said ${message}`);
+  // Console logs which socket.id left (for debugging)
+  // Emits which user left, for text chat
+  socket.on("disconnect", (username: string) => {
+	console.log(`User ${socket.id} disconnected`)
+	io.emit(username);
   });
 
-  socket.on('disconnect', () => {
-	  console.log(`User ${socket.id.substring(0,3)} disconnected`);
+  // Emits which user has joined the lobby
+  // Should be used to display in text chat
+  socket.on("join", (username: string) => {
+	io.emit(username);
   });
+  
+  // Emits a message sent by a user for text chat
+  socket.on("message", (username: string, message: string) => {
+	io.emit("message", username, message);
+  });
+
+  // PRE-GAME SOCKET EVENTS
+  //------------------------------------------------------------\\
+
+  // Emits the DM's userId
+  socket.on("electDm", (username: string) => {
+	io.emit("electDm", username);
+  });
+
+  // Emits User's ID and the ID of their chosen Character
+  socket.on("chooseChar", (userId: string, charId: string) => {
+	io.emit("chooseChar", userId, charId);
+  });
+
+  // Emits the map selection
+  socket.on("chooseMap", (map: string) => {
+	io.emit("chooseMap", map);
+  });
+
+  // Uhh... still not sure what all this needs...
+  socket.on("beginGame", () => {
+  });
+
+  // MAIN GAME SOCKET EVENTS
+  //------------------------------------------------------------\\
+
+  socket.on("moveChars", (data) => {
+  });
+
+  socket.on("editCharSheet", (data) => {
+  });
+
+  socket.on("rollDice", (data) => {
+  });
+
+  
 });
 
 // For Heroku deployment

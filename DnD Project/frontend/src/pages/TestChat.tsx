@@ -10,14 +10,14 @@ export default function TestChat() {
     const socket = io('http://localhost:8080');
 
     //WebSocket event that emits a console logged message to all users
-    socket.on('message', text => {
-      console.log("The message was "+ "'" + text + "'");
+    socket.on("message", (username: String, message: String) => {
+      console.log(username + " said " + message);
       setValue('');
     });
 
   //Create button to test function (will eventually be sending messages)
     const SendButton = () => (
-    <IconButton onClick = {() => socket.emit('message', value) }>
+    <IconButton onClick = {() => socket.emit("message", socket.id, value) }>
       <Send />
     </IconButton>
     );
