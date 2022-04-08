@@ -1,6 +1,6 @@
 import { mount, configure } from "enzyme";
 import { TextField } from "@mui/material";
-import Login from './Login';
+import Login from "../Login";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 
 configure({ adapter: new Adapter() });

@@ -17,7 +17,11 @@ import req from "../utils/request";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-export default function Navbar() {
+interface NavProps {
+  fixed?: boolean;
+}
+
+export default function Navbar({ fixed }: NavProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -36,7 +40,7 @@ export default function Navbar() {
       name: "Characters",
       link: "/character",
       icon: <Person />,
-    }
+    },
   ];
 
   const logout = () => {
@@ -48,7 +52,7 @@ export default function Navbar() {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position={fixed ? "fixed" : "static"}>
         <Toolbar>
           <IconButton
             size="large"

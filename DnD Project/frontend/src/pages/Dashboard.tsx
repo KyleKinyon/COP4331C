@@ -1,159 +1,106 @@
-import { Box, Button, CardMedia } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
+  CardActions,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+
+const cards = [
+  {
+    image: {
+      src: "/images/dnd_img1.jpg",
+      alt: "Dragon over a castle",
+    },
+    title: "Start Your Campaign",
+    body: `Grab a group of players, select a DM, and get started. D&D 25's
+                campaign manager will make your D&D sessions feel like a breeze,
+                whether you are an experienced player or just starting out.`,
+    button: {
+      route: "/lobby",
+      text: "Start Campaign",
+    },
+  },
+  {
+    image: {
+      src: "/images/dnd_img2.jpg",
+      alt: "Team of adventurers",
+    },
+    title: "Create Your Character",
+    body: `Our interactive character builder guides you through the
+                necessary steps to create your own character to use in your D&D
+                sessions.`,
+    button: {
+      route: "/character",
+      text: "Create Character",
+    },
+  },
+  {
+    image: {
+      src: "/images/dnd_img3.jpg",
+      alt: "A City of Floating Islands",
+    },
+    title: "Start a Campaign",
+    body: `Struggling to visualize your campaign? No problem. Select from
+                our list of pre-created campaign maps or upload maps of your own
+                for your D&D sessions to take place in.`,
+    button: {
+      route: "/lobby",
+      text: "Start Map",
+    },
+  },
+];
 
 export default function Dashboard() {
   const nav = useNavigate();
 
   return (
     <>
-      <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
+      <Box display="flex" flexDirection="column" sx={{ width: 1, height: 1 }}>
         <Navbar />
 
-        <CardMedia component="img" src={"images/dnd_img1.jpg"} alt="img1" />
         <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={100}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            overflowY: "auto",
+            height: 1,
+            width: 1,
+          }}
+          py={2}
         >
-          {/* <Typography variant="h5">START YOUR CAMPAIGN</Typography> */}
-          <h1>START YOUR CAMPAIGN</h1>
-        </Box>
-
-        <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <p>
-            Grab a group of players, select a DM, and get started. D&D 25's
-            campaign manager will make your D&D sessions feel like a breeze,
-            whether you are an experienced player or just starting out.
-          </p>
-        </Box>
-
-        <Box
-          position="static"
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          {/* <StartCampaign /> */}
-          <Button
-            onClick={() => nav("/lobby")}
-            variant="contained"
-            color="inherit"
-          >
-            Start Campaign
-          </Button>
-        </Box>
-
-        <CardMedia
-          component="img"
-          height="575"
-          width="200"
-          src={"/images/dnd_img2.jpg"}
-          alt="img1"
-        />
-
-        <Box
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <h1>CREATE YOUR CHARACTER</h1>
-        </Box>
-
-        <Box
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <p>
-            Our interactive character builder guides you through the necessary
-            steps to create your own character to use in your D&D sessions.
-          </p>
-        </Box>
-
-        <Box
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <Button onClick={() => nav("/character/create")} variant="contained">
-            CREATE CHARACTER
-          </Button>
-        </Box>
-
-        <CardMedia
-          component="img"
-          height="575"
-          width="200"
-          src={"/images/dnd_img3.jpg"}
-          alt="img1"
-        />
-        <Box
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <h1>BUILD YOUR WORLD</h1>
-        </Box>
-
-        <Box
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <p>
-            Struggling to visualize your campaign? No problem. Select from our
-            list of pre-created campaign maps or upload maps of your own for
-            your D&D sessions to take place in.
-          </p>
-        </Box>
-
-        <Box
-          display="flex"
-          width={1300}
-          height={90}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ mx: "auto", width: 700 }}
-        >
-          <Button
-            onClick={() => {
-              alert("Placeholder for Start Map function");
-            }}
-            variant="contained"
-          >
-            START MAP
-          </Button>
+          {cards.map((item, i) => (
+            <Card key={i} sx={{ maxWidth: 350, margin: "1rem" }}>
+              <CardMedia
+                component="img"
+                src={item.image.src}
+                alt={item.image.alt}
+                height="180"
+              />
+              <CardContent>
+                <Typography variant="h5">{item.title}</Typography>
+                <Typography variant="body2" my={1}>
+                  {item.body}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  onClick={() => nav(item.button.route)}
+                  variant="contained"
+                  color="primary"
+                >
+                  {item.button.text}
+                </Button>
+              </CardActions>
+            </Card>
+          ))}
         </Box>
       </Box>
     </>

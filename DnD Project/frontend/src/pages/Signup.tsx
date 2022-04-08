@@ -1,7 +1,15 @@
-import { Box, Grid, Button, TextField, Typography, Alert } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Button,
+  TextField,
+  Typography,
+  Alert,
+  Link,
+} from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import request from "../utils/request";
+// import { useNavigate } from "react-router-dom";
 
 const FieldStyle = {
   backgroundColor: "white",
@@ -11,7 +19,7 @@ const FieldStyle = {
 };
 
 export default function Signup() {
-  const nav = useNavigate();
+  // const nav = useNavigate();
   const [confirmPass, setConfirmPass] = useState("");
 
   const [form, setForm] = useState({
@@ -46,7 +54,10 @@ export default function Signup() {
 
       setErrorEncountered(false);
 
-      request.post("/auth/signup", form).then(() => nav("/dashboard"));
+      request.post("/auth/signup", form).then(() => {
+        setNeedToVerify(true);
+        // nav("/dashboard")
+      });
     } catch (error) {
       // console.error(error);
       setErrorEncountered(true);
@@ -184,11 +195,25 @@ export default function Signup() {
                     submitForm();
                   }}
                   variant="contained"
-                  color="error"
+                  color="primary"
                   sx={{ px: 2, py: 1, my: 1 }}
                 >
                   Create Account
                 </Button>
+
+                <Box my={2}>
+                  <Typography variant="subtitle1">
+                    Already have an account?
+                    <Link
+                      href="/login"
+                      mx={1}
+                      underline="none"
+                      color="secondary"
+                    >
+                      Login
+                    </Link>
+                  </Typography>
+                </Box>
               </Box>
               {needToVerify && (
                 <Alert sx={{ px: 4 }}>
@@ -197,7 +222,7 @@ export default function Signup() {
               )}
             </Box>
           </Grid>
-          <Grid item xs={4}></Grid>
+          <Grid item xs={4} />
         </Grid>
       </Box>
     </>

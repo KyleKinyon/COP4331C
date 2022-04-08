@@ -1,4 +1,4 @@
-import Signup from './Signup';
+import Signup from "../Signup";
 import { mount, configure } from "enzyme";
 import { TextField } from "@mui/material";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
@@ -96,5 +96,4 @@ describe("Test case for testing signup", () => {
 
     expect(wrapper.find(TextField).at(0).props().value).toEqual("confirm");
   });
-
 });
