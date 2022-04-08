@@ -32,6 +32,7 @@ export default function Login() {
   const [passwordIsValid, setPasswordIsValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorEncountered, setErrorEncountered] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const updateValue = (key: string) => {
     return (e: any) => {
@@ -57,6 +58,22 @@ export default function Login() {
     } catch (error) {
       setErrorEncountered(true);
       setErrorMessage((error as any)?.response.data.error);
+    }
+  };
+  
+  const submitEmail = async () => {
+    try {
+      if (form.username.trim() === "") {
+        throw new Error("Please enter your email");
+      }
+
+      setErrorEncountered(false);
+      await request.post("/auth/getUserId", form.username);
+      setEmailSent(true);
+      // Once we have id send an email that contains their id and directs them to reset password page
+    } catch (error) {
+      setErrorEncountered(true);
+      setErrorMessage((error as any)?.response.data.error)
     }
   };
 
@@ -149,6 +166,21 @@ export default function Login() {
                       Sign up
                     </Link>
                   </Typography>
+                  <Typography variant="subtitle1">
+                    Forgot your password? Type in your email and click
+                    <Button onClick={(e) => {
+                      e.preventDefault();
+                      submitEmail();
+                    }}
+                    sx={{ color: "white", fontFamily: "Roboto", fontweight: 400}}>
+                      here
+                    </Button>
+                  </Typography>
+                  {emailSent && (
+                    <Alert id="emailSent">
+                      Please check your email to finish resseting your password
+                    </Alert>
+                  )}
                 </Box>
               </Box>
             </Box>
