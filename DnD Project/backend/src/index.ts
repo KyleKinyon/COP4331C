@@ -14,6 +14,11 @@ const env = dotenv.config(); // env variables
 const port = process.env.PORT || 8080;
 const publicPath = path.resolve(__dirname, '../../frontend/build');
 
+const app_name = "cop4331-dnd";
+const baseURL = process.env.NODE_ENV === "production"
+  ? `https://${app_name}.herokuapp.com/`
+  : `http://localhost:3000`;
+
 let app = express(); // api library
 app.use(cookieParser()); // parsing cookie data (refresh token)
 app.use(express.json()); // allow for sending json
@@ -51,7 +56,7 @@ connect(mongoURI, {
 let server = app.listen(port, () => console.log(`Server running on port ${port}`));
 let io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: baseURL,
     methods: ["GET", "POST"],
     credentials: true,
   },
