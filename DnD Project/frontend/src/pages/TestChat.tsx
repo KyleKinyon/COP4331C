@@ -7,7 +7,13 @@ import {useState} from 'react';
 export default function TestChat() {
     const [value, setValue] = useState("");
     const textInput = React.useRef(null);
-    const socket = io('http://localhost:8080');
+
+    const app_name = "cop4331-dnd";
+    const baseURL = process.env.NODE_ENV === "production"
+      ? `https://${app_name}.herokuapp.com/`
+      : `http://${process.env.REACT_APP_BACKEND_ADDRESS}:8080`;
+
+    let socket = io(baseURL);
 
     //WebSocket event that emits a console logged message to all users
     socket.on("message", (username: String, message: String) => {
