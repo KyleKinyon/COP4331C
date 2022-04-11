@@ -22,7 +22,6 @@ import "./css/styles.css";
 
 /*
 
-TODO: Get theming done
 TODO: Main app functionality implemented
 
 */

@@ -44,7 +44,7 @@ const cards = [
       src: "/images/dnd_img3.jpg",
       alt: "A City of Floating Islands",
     },
-    title: "Start a Campaign",
+    title: "Choose A Map",
     body: `Struggling to visualize your campaign? No problem. Select from
                 our list of pre-created campaign maps or upload maps of your own
                 for your D&D sessions to take place in.`,
@@ -60,7 +60,11 @@ export default function Dashboard() {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" sx={{ width: 1, height: 1 }}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        sx={{ width: 1, height: 1, backgroundColor: "rgba(75,21,31, 0.1)" }}
+      >
         <Navbar />
 
         <Box
