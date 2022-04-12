@@ -30,26 +30,29 @@ export default function TestChat() {
 
    //Will trigger the event for joining a room, will join the room based on textfield value 
     const JoinButton = () => (
-    <IconButton onClick = {() => socket.emit('create', value) }>
+    <IconButton onClick = {() => {
+      socket.emit('create', value);
+      //socket.emit()
+      socket.emit("display", value)
+    }}>
       <MeetingRoom />
     </IconButton>
     );
+
+    const DisplayButton = () => (
+    <IconButton onClick = {() => socket.emit("display", value) }>
+      <Send />
+    </IconButton>
+    );
+
+    
 
   return (
     <>
       <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
 
-        <TextField
-          id="standard-basic"
-          label="Message"
-          variant="standard"
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          InputProps={{ endAdornment: <SendButton /> }}
-        />
-
+  
+        <DisplayButton /> 
         <TextField
           id="standard-basic"
           label="Join Room"

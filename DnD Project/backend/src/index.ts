@@ -62,6 +62,7 @@ let io = new Server(server, {
   },
 });
 
+
 // Socket.io ServerToClient Events
 io.sockets.on("connection", (socket) => {
   console.log(`User ${socket.id} connected`);
@@ -78,6 +79,19 @@ io.sockets.on("connection", (socket) => {
   socket.on("join", (username: string) => {
 	io.emit(username);
   });
+
+  socket.on("create",(room: string) => {
+    socket.join(room);
+    console.log(`User ${socket.id} connected to room `+ room);
+  });
+
+  socket.on("display",async (room: string) => {
+    const sockets =  await io.in(room).fetchSockets();
+    console.log(sockets.length);
+ 
+  });
+
+  
   
   // Emits a message sent by a user for text chat
   socket.on("message", (username: string, message: string) => {
