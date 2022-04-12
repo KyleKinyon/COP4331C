@@ -1,4 +1,4 @@
-package com.example.mobileapp
+package com.flutterflow.courts
 
 import io.flutter.embedding.android.FlutterActivity
 

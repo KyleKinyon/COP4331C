@@ -1,92 +1,80 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'auth/firebase_user_provider.dart';
 
-const backendAddress = String.fromEnvironment('backendAddress',
-    defaultValue: '192.168.0.165:8080');
+import 'flutter_flow/flutter_flow_util.dart';
+import 'flutter_flow/flutter_flow_theme.dart';
+import 'flutter_flow/internationalization.dart';
+import 'package:test2/login/login_widget.dart';
+import 'package:test2/profile_page/profile_page_widget.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
 
-  void login() async {
-    try {
-      var url = Uri.parse('https://cop4331-dnd.herokuapp.com/auth/login');
-      // var url = Uri.parse('https://randomuser.me/api/?results=2');
-      print(url);
-      var response = await http.post(url,
-          body: {'username': 'Password=Sneaky', 'password': 'Sneaky'});
+  static _MyAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
+}
 
-      // var response = await http.get(url);
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-    } catch (error) {
-      print(error);
-    }
-    // print(await http.read(Uri.parse('https://example.com/foobar.txt')));
+class _MyAppState extends State<MyApp> {
+  Locale _locale;
+  ThemeMode _themeMode = ThemeMode.system;
+  Stream<Test2FirebaseUser> userStream;
+  Test2FirebaseUser initialUser;
+  bool displaySplashImage = true;
+
+  void setLocale(Locale value) => setState(() => _locale = value);
+  void setThemeMode(ThemeMode mode) => setState(() {
+        _themeMode = mode;
+      });
+
+  @override
+  void initState() {
+    super.initState();
+    userStream = test2FirebaseUserStream()
+      ..listen((user) => initialUser ?? setState(() => initialUser = user));
+    Future.delayed(
+        Duration(seconds: 1), () => setState(() => displaySplashImage = false));
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      home: Scaffold(
-          appBar: AppBar(title: const Text("DnD 25")),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Expanded(
-                  child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      child: Text(
-                        "Hello World",
-                        textAlign: TextAlign.center,
-                      ))),
-              Expanded(
-                  flex: 2,
-                  child: Column(children: [
-                    const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Username',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Password',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        child: Row(
-                          children: [
-                            TextButton(
-                                onPressed: () {},
-                                child: const Text("Click here to sign up")),
-                            Expanded(
-                                child: ElevatedButton(
-                                    onPressed: () async {
-                                      login();
-                                    },
-                                    child: const Text("Login")))
-                          ],
-                        ))
-                  ]))
-            ],
-          )),
+      title: 'test2',
+      localizationsDelegates: [
+        FFLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: _locale,
+      supportedLocales: const [Locale('en', '')],
+      theme: ThemeData(brightness: Brightness.light),
+      themeMode: _themeMode,
+      home: initialUser == null || displaySplashImage
+          ? Container(
+              color: Colors.transparent,
+              child: Builder(
+                builder: (context) => Image.asset(
+                  'assets/images/9b6773d1bd65e5e4d97af3b07ebf934a.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            )
+          : currentUser.loggedIn
+              ? ProfilePageWidget()
+              : LoginWidget(),
     );
   }
 }
