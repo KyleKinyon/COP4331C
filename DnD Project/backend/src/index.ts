@@ -132,10 +132,10 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(publicPath, 'index.html'));
   });
 }
-/*
+
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-
+/*
 const msg = {
   to: 'group25DemoGod@gmail.com', // Change to your recipient
   from: 'group25DemoGod@gmail.com', // Change to your verified sender
