@@ -56,14 +56,25 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path={"lobby"}
-              element={
-                <ProtectedRoute>
-                  <Lobby />
-                </ProtectedRoute>
-              }
-            />
+
+            <Route path="lobby">
+              <Route
+                index
+                element={
+                  <ProtectedRoute>
+                    <Lobby show />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={":id"}
+                element={
+                  <ProtectedRoute>
+                    <Lobby />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
             <Route
               path={"dmLobby"}
               element={

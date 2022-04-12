@@ -19,9 +19,10 @@ import { useState } from "react";
 
 interface NavProps {
   fixed?: boolean;
+  back?: boolean;
 }
 
-export default function Navbar({ fixed }: NavProps) {
+export default function Navbar({ fixed, back }: NavProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -74,8 +75,13 @@ export default function Navbar({ fixed }: NavProps) {
             D&D 25
           </Typography>
 
-          <Button onClick={() => logout()} color="inherit">
-            Log Out
+          <Button
+            onClick={() => {
+              back ? logout() : navigate(-1);
+            }}
+            color="inherit"
+          >
+            {back ? "Go Back" : "Logout"}
           </Button>
         </Toolbar>
 

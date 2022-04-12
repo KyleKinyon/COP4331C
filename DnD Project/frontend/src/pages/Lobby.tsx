@@ -1,89 +1,107 @@
-import * as React from "react";
-import { Box, Button } from "@mui/material";
-import Grid from "@material-ui/core/Grid";
-import LobbyBar from "../components/LobbyBar";
-import Paper from "@mui/material/Paper";
-import { experimentalStyled as styled } from "@mui/material/styles";
-import Image from "material-ui-image";
-import ForwardButton from "../components/ForwardButton";
+import { Box, Button, Grid, MenuItem, Select, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import PersistentDialog from "../components/General/PersistentDialog";
+import Navbar from "../components/Navbar";
+import { Character } from "../utils/interfaces";
+import req from "../utils/request";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
-function FormRow() {
-  return (
-    <React.Fragment>
-      <Grid item xs={4}>
-        <Item>Item</Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>Item</Item>
-      </Grid>
-      <Grid item xs={4}>
-        <Item>Item</Item>
-      </Grid>
-    </React.Fragment>
-  );
+interface User {
+  username: string;
+  character: string;
+  isDM: boolean;
 }
 
-export default function Lobby() {
+interface LobbyProps {
+  show?: boolean;
+}
+
+export default function Lobby({ show }: LobbyProps) {
+  const navigate = useNavigate();
+  const param = useParams();
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [character, setCharacter] = useState("");
+  const [charList, setCharList] = useState<Character[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const {
+        data: { characters },
+      } = await req.get("/char/selectCharacter");
+
+      setCharList(characters);
+    })();
+  }, []);
+
   return (
     <>
-      <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
-        <LobbyBar />
+      <Box
+        sx={{ width: 1, height: 1, display: "flex", flexDirection: "column" }}
+      >
+        <Navbar back />
 
-        {/* ADD CARD MEDIA LATER */}
         <Grid container spacing={1}>
-          <Box
-            position="static"
-            display="flex"
-            width={1300}
-            alignItems="left"
-            justifyContent="left"
-            sx={{ mx: "auto", width: 700 }}
-          >
-            <Grid item xs={2}>
-              <h1>7</h1>
-              <p>Players</p>
-            </Grid>
-          </Box>
-          <Box
-            position="static"
-            display="flex"
-            width={1300}
-            alignItems="center"
-            justifyContent="center"
-            left={0}
-            sx={{ mx: "auto", width: 1000 }}
-          >
-            <Grid item xs={2}>
-              <Image src={"images/dnd_logo.png"} />
-            </Grid>
-          </Box>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={1}>
-              <Grid container item spacing={3}>
-                <FormRow />
-              </Grid>
-              <Grid container item spacing={3}>
-                <FormRow />
-              </Grid>
-              <Grid container item spacing={3}>
-                <FormRow />
-              </Grid>
-            </Grid>
-          </Box>
+          <Box>
+            <Box
+              my={2}
+              sx={{
+                width: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src="/images/dnd_logo.png"
+                alt="DnD Logo"
+                loading="lazy"
+                style={{
+                  width: "65%",
+                  height: "auto",
+                }}
+              />
+            </Box>
 
-          <Grid container justify="center">
-            <ForwardButton />
-          </Grid>
+            <Typography
+              variant="h5"
+              textAlign="center"
+            >{`${users.length} Players`}</Typography>
+          </Box>
+          <Box display="flex" width={1}>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={character}
+              onChange={(e) => {
+                setCharacter(e.target.value);
+              }}
+              label="Age"
+            >
+              {charList.map((item, i) => (
+                <MenuItem value={item.charName} key={i}>
+                  {item.charName}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
         </Grid>
+
+        <Box my={2} p={3}>
+          <Button
+            color="primary"
+            size="large"
+            type="submit"
+            variant="contained"
+            onClick={() => navigate("/dmLobby")}
+            fullWidth
+          >
+            Proceed
+          </Button>
+        </Box>
       </Box>
+
+      {show && <PersistentDialog url="/lobby" show />}
     </>
   );
 }
