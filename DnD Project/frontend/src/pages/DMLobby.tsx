@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Box, Button, TextField } from "@mui/material";
 import Grid from "@material-ui/core/Grid";
-import LobbyBar from "../components/LobbyBar";
+import Navbar from "../components/Navbar";
 import Paper from "@mui/material/Paper";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Image from "material-ui-image";
@@ -69,7 +69,7 @@ export default function DM_Lobby() {
   return (
     <>
       <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
-        <LobbyBar />
+        <Navbar />
         <Grid container spacing={1}>
           {/* ADD CARD MEDIA LATER */}
 

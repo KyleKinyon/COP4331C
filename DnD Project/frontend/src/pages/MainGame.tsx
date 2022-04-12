@@ -8,7 +8,7 @@ import {
   // Paper,
 } from "@mui/material";
 import Grid from "@material-ui/core/Grid";
-import LobbyBar from "../components/LobbyBar";
+import Navbar from "../components/Navbar";
 import Image from "material-ui-image";
 import { Stars, Circle } from "@mui/icons-material";
 // import { experimentalStyled as styled } from "@mui/material/styles";
@@ -121,7 +121,7 @@ export default function MainGame() {
   return (
     <>
       <Box sx={{ flexGrow: 1, width: 1, height: 1 }}>
-        <LobbyBar />
+        <Navbar />
 
         {/* ADD CARD MEDIA LATER */}
 

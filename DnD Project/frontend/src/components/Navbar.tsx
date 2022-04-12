@@ -77,7 +77,7 @@ export default function Navbar({ fixed, back }: NavProps) {
 
           <Button
             onClick={() => {
-              back ? logout() : navigate(-1);
+              back ? navigate(-1) : logout();
             }}
             color="inherit"
           >
