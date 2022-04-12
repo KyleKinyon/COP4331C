@@ -25,7 +25,7 @@ function FormRow() {
   return (
     <React.Fragment>
       <Grid item xs={4}>
-        <Image src={"images/dnd_map.png"} />
+        <Image src={"images/map_TownCenter.jpg"} />
       </Grid>
 
       <Grid
