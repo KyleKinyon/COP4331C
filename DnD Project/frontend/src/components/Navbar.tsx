@@ -11,7 +11,13 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Home, Person, SportsEsports, Settings } from "@mui/icons-material";
+import {
+  Home,
+  Person,
+  SportsEsports,
+  Settings,
+  Map,
+} from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import req from "../utils/request";
 import { useNavigate } from "react-router-dom";
@@ -41,6 +47,11 @@ export default function Navbar({ fixed, back }: NavProps) {
       name: "Characters",
       link: "/character",
       icon: <Person />,
+    },
+    {
+      name: "Maps",
+      link: "/maps",
+      icon: <Map />,
     },
     {
       name: "Settings",

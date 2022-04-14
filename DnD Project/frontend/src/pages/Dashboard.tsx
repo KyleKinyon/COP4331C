@@ -44,12 +44,11 @@ const cards = [
       src: "/images/dnd_img3.jpg",
       alt: "A City of Floating Islands",
     },
-    title: "Choose A Map",
-    body: `Struggling to visualize your campaign? No problem. Select from
-                our list of pre-created campaign maps or upload maps of your own
-                for your D&D sessions to take place in.`,
+    title: "View Maps",
+    body: `Curious of the adventure that sets forth? Through the map viewer, 
+						you may understand the hardships that will be upon you.`,
     button: {
-      route: "/lobby",
+      route: "/maps",
       text: "Start Map",
     },
   },

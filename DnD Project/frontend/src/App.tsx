@@ -19,6 +19,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./css/styles.css";
+import Maps from "./pages/Maps";
 
 /*
 
@@ -88,6 +89,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainGame />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path={"maps"}
+              element={
+                <ProtectedRoute>
+                  <Maps />
                 </ProtectedRoute>
               }
             />
