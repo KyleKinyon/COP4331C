@@ -5,9 +5,6 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Character from "./pages/Character";
-import Lobby from "./pages/Lobby";
-import DMLobby from "./pages/DMLobby";
-import MainGame from "./pages/MainGame";
 import TestChat from "./pages/TestChat";
 import ListCharacters from "./pages/ListCharacters";
 import ResetPassword from "./pages/ResetPassword";
@@ -54,41 +51,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route path="lobby">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <Lobby show />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path={":id"}
-                element={
-                  <ProtectedRoute>
-                    <Lobby />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-            <Route
-              path={"dmLobby"}
-              element={
-                <ProtectedRoute>
-                  <DMLobby />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path={"mainGame"}
-              element={
-                <ProtectedRoute>
-                  <MainGame />
                 </ProtectedRoute>
               }
             />
