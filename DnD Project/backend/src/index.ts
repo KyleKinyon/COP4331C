@@ -5,6 +5,7 @@ import { connect, } from "mongoose";
 import cookieParser from 'cookie-parser';
 import auth from './api/auth';
 import character from "./api/character";
+import mobile from "./api/mobile";
 import session from "./api/session";
 import user from "./api/user";
 import path from "path";
@@ -30,6 +31,7 @@ app.use(cors({
 
 app.use("/auth", auth);
 app.use("/char", character);
+app.use("/mobile", mobile);
 app.use("/session", session);
 app.use("/user", user);
 
