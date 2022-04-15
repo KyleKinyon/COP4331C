@@ -5,12 +5,10 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Character from "./pages/Character";
-import Lobby from "./pages/Lobby";
-import DMLobby from "./pages/DMLobby";
-import MainGame from "./pages/MainGame";
-import TestChat from "./pages/TestChat";
 import ListCharacters from "./pages/ListCharacters";
 import ResetPassword from "./pages/ResetPassword";
+import Maps from "./pages/Maps";
+import Game from "./pages/Game";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -22,7 +20,6 @@ import "./css/styles.css";
 
 /*
 
-TODO: Get theming done
 TODO: Main app functionality implemented
 
 */
@@ -47,7 +44,6 @@ function App() {
           <Route path="/">
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
-            <Route path="testChat" element={<TestChat />} />
             <Route path="resetPassword" element={<ResetPassword />} />
             <Route
               path={"dashboard"}
@@ -57,27 +53,21 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
             <Route
-              path={"lobby"}
+              path={"game"}
               element={
                 <ProtectedRoute>
-                  <Lobby />
+                  <Game />
                 </ProtectedRoute>
               }
             />
+
             <Route
-              path={"dmLobby"}
+              path={"maps"}
               element={
                 <ProtectedRoute>
-                  <DMLobby />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path={"mainGame"}
-              element={
-                <ProtectedRoute>
-                  <MainGame />
+                  <Maps />
                 </ProtectedRoute>
               }
             />

@@ -5,10 +5,10 @@ import { connect, } from "mongoose";
 import cookieParser from 'cookie-parser';
 import auth from './api/auth';
 import character from "./api/character";
+import mobile from "./api/mobile";
 import session from "./api/session";
 import user from "./api/user";
 import path from "path";
-import { Server } from "socket.io";
 
 const env = dotenv.config(); // env variables
 const port = process.env.PORT || 8080;
@@ -30,6 +30,7 @@ app.use(cors({
 
 app.use("/auth", auth);
 app.use("/char", character);
+app.use("/mobile", mobile);
 app.use("/session", session);
 app.use("/user", user);
 
@@ -54,72 +55,6 @@ connect(mongoURI, {
 
 // launching server
 let server = app.listen(port, () => console.log(`Server running on port ${port}`));
-let io = new Server(server, {
-  cors: {
-    origin: baseURL,
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
-
-// Socket.io ServerToClient Events
-io.sockets.on("connection", (socket) => {
-  console.log(`User ${socket.id} connected`);
-
-  // Console logs which socket.id left (for debugging)
-  // Emits which user left, for text chat
-  socket.on("disconnect", (username: string) => {
-	console.log(`User ${socket.id} disconnected`)
-	io.emit(username);
-  });
-
-  // Emits which user has joined the lobby
-  // Should be used to display in text chat
-  socket.on("join", (username: string) => {
-	io.emit(username);
-  });
-  
-  // Emits a message sent by a user for text chat
-  socket.on("message", (username: string, message: string) => {
-	io.emit("message", username, message);
-  });
-
-  // PRE-GAME SOCKET EVENTS
-  //------------------------------------------------------------\\
-
-  // Emits the DM's userId
-  socket.on("electDm", (username: string) => {
-	io.emit("electDm", username);
-  });
-
-  // Emits User's ID and the ID of their chosen Character
-  socket.on("chooseChar", (userId: string, charId: string) => {
-	io.emit("chooseChar", userId, charId);
-  });
-
-  // Emits the map selection
-  socket.on("chooseMap", (map: string) => {
-	io.emit("chooseMap", map);
-  });
-
-  // Uhh... still not sure what all this needs...
-  socket.on("beginGame", () => {
-  });
-
-  // MAIN GAME SOCKET EVENTS
-  //------------------------------------------------------------\\
-
-  socket.on("moveChars", (data) => {
-  });
-
-  socket.on("editCharSheet", (data) => {
-  });
-
-  socket.on("rollDice", (data) => {
-  });
-
-  
-});
 
 // For Heroku deployment
 
@@ -133,4 +68,19 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-export default server;
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+/*
+const msg = {
+  to: 'group25DemoGod@gmail.com', // Change to your recipient
+  from: 'group25DemoGod@gmail.com', // Change to your verified sender
+  subject: 'Sending with SendGrid is Fun',
+  text: 'and easy to do anywhere, even with Node.js',
+  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+}
+
+sgMail
+  .send(msg)
+
+*/
+  export default server;

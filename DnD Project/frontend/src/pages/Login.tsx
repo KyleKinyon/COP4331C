@@ -52,8 +52,10 @@ export default function Login() {
       }
 
       setErrorEncountered(false);
-      await request.post("/auth/login", form);
-      navigation("/dashboard");
+      request.post("/auth/login", form).then(({ data }) => {
+        localStorage.setItem("username", data.data.username);
+        navigation("/dashboard");
+      });
 
       // TODO: Make error box not look ass
     } catch (error) {

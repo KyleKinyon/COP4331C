@@ -106,7 +106,7 @@ router.get("/verifyUser", async (req,res) => {
     res.status(200).json({ message: "E-mail verified"});
 })
 
-router.post("/delete", async (req, res) => {
+router.delete("/delete", async (req, res) => {
 	const { _id: userId, username } = res.locals;
 
 	try {

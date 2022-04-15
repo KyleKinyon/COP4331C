@@ -11,7 +11,13 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Home, Person, SportsEsports } from "@mui/icons-material";
+import {
+  Home,
+  Person,
+  SportsEsports,
+  Settings,
+  Map,
+} from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import req from "../utils/request";
 import { useNavigate } from "react-router-dom";
@@ -19,9 +25,10 @@ import { useState } from "react";
 
 interface NavProps {
   fixed?: boolean;
+  back?: boolean;
 }
 
-export default function Navbar({ fixed }: NavProps) {
+export default function Navbar({ fixed, back }: NavProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -33,13 +40,23 @@ export default function Navbar({ fixed }: NavProps) {
     },
     {
       name: "Start New Campaign",
-      link: "/lobby",
+      link: "/game",
       icon: <SportsEsports />,
     },
     {
       name: "Characters",
       link: "/character",
       icon: <Person />,
+    },
+    {
+      name: "Maps",
+      link: "/maps",
+      icon: <Map />,
+    },
+    {
+      name: "Settings",
+      link: "/settings",
+      icon: <Settings />,
     },
   ];
 
@@ -69,8 +86,13 @@ export default function Navbar({ fixed }: NavProps) {
             D&D 25
           </Typography>
 
-          <Button onClick={() => logout()} color="inherit">
-            Log Out
+          <Button
+            onClick={() => {
+              back ? navigate(-1) : logout();
+            }}
+            color="inherit"
+          >
+            {back ? "Go Back" : "Logout"}
           </Button>
         </Toolbar>
 
