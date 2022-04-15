@@ -40,7 +40,7 @@ export default function Navbar({ fixed, back }: NavProps) {
     },
     {
       name: "Start New Campaign",
-      link: "/lobby",
+      link: "/game",
       icon: <SportsEsports />,
     },
     {
