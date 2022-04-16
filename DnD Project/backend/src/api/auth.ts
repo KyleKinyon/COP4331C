@@ -66,8 +66,8 @@ router.post("/login", async (req, res) => {
 	const msg = {
 		to: data.email, // Change to your recipient
 		from: 'group25DemoGod@gmail.com', // Change to your verified sender
-		subject: 'Sending with SendGrid is Fun',
-		text: 'and easy to do anywhere, even with Node.js',
+		subject: 'Verfication email',
+		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
 		html: '<strong>and easy to do anywhere, even with Node.js</strong>',
 	  }
 
@@ -123,8 +123,8 @@ router.post("/signup", async (req, res) => {
 	const msg = {
 		to: data.email, // Change to your recipient
 		from: 'group25DemoGod@gmail.com', // Change to your verified sender
-		subject: 'Sending with SendGrid is Fun',
-		text: 'and easy to do anywhere, even with Node.js',
+		subject: 'Verfication email',
+		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
 		html: '<strong>and easy to do anywhere, even with Node.js</strong>',
 	  }
 
