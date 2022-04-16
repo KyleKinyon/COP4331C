@@ -3,6 +3,10 @@ import { verify } from "jsonwebtoken";
 import User from "../models/User";
 import { sendRefreshToken, createAccessToken, createRefreshToken } from "../utils/TokenAuth";
 import { compare, genSalt, hash } from "bcrypt";
+import sgMail from "../index"
+import msg from "../index"
+import "@sendgrid/mail"
+
 
 const router = Router();
 
@@ -58,14 +62,24 @@ router.post("/login", async (req, res) => {
 	}
 
 	const validPassword = await compare(password, data.password);
+	const sgMail = require('@sendgrid/mail')
+	const msg = {
+		to: data.email, // Change to your recipient
+		from: 'group25DemoGod@gmail.com', // Change to your verified sender
+		subject: 'Sending with SendGrid is Fun',
+		text: 'and easy to do anywhere, even with Node.js',
+		html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+	  }
 
 	if (!validPassword) {
 		return res.status(400).json({ error: "Incorrect login info" });
 	}
 
-	// if (!data.verified) {
-	// 	return res.status(400).json({ error: "E-mail not verified" });
-	// }
+	if (!data.verified) {
+	 	return res.status(400).json({ error: "E-mail not verified" });
+		 sgMail
+		 .send(msg)
+	}
 
 	sendRefreshToken(res, createRefreshToken(data));
 
@@ -105,6 +119,19 @@ router.post("/signup", async (req, res) => {
 		verified: verified ?? false
 	});
 
+	const sgMail = require('@sendgrid/mail')
+	const msg = {
+		to: data.email, // Change to your recipient
+		from: 'group25DemoGod@gmail.com', // Change to your verified sender
+		subject: 'Sending with SendGrid is Fun',
+		text: 'and easy to do anywhere, even with Node.js',
+		html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+	  }
+
+	if (user.verified == false) {
+		sgMail.send(msg)
+	}
+
 	await user.save();
 
 	sendRefreshToken(res, createRefreshToken(user));
@@ -112,6 +139,8 @@ router.post("/signup", async (req, res) => {
 		user,
 		accessToken: createAccessToken(user)
 	});
+
+
 });
 
 router.post("/logout", async (req, res) => {
