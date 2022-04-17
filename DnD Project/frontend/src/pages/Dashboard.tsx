@@ -21,7 +21,7 @@ const cards = [
                 campaign manager will make your D&D sessions feel like a breeze,
                 whether you are an experienced player or just starting out.`,
     button: {
-      route: "/lobby",
+      route: "/game",
       text: "Start Campaign",
     },
   },

@@ -42,3 +42,14 @@ export interface Character {
 	wisdom: number;
 	equipment: string[];
 }
+
+export interface CharList {
+  name: string;
+	x: number;
+	y: number;
+}
+
+export interface MapList {
+  link: string;
+  name: string;
+}

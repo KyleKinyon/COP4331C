@@ -1,97 +1,57 @@
-import {
-  Box,
-  Collapse,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { useState } from "react";
+import { Box, Grid } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import MapDropdown from "../components/Game/MapDropdown";
+import { gameContext } from "../components/Game/GameContext";
+import * as d3 from "d3";
+import CharacterDropdown from "../components/Game/CharacterDropdown";
 
-const maps = [
-  {
-    link: "/images/map_LavaVault.jpg",
-    name: "Lava Vault",
-  },
-  {
-    link: "/images/map_FireArena.jpg",
-    name: "Fire Arena",
-  },
-  {
-    link: "/images/map_AncientDesertTemple.jpg",
-    name: "Ancient Desert Temple",
-  },
-  {
-    link: "/images/map_DesertCatacombs.jpg",
-    name: "Desert Catacombs",
-  },
-  {
-    link: "/images/map_DesertIslandTropic.jpg",
-    name: "Desert Island Tropic",
-  },
-  {
-    link: "/images/map_MountainTopMonastery.jpg",
-    name: "Mountain Top Monastery",
-  },
-  {
-    link: "/images/map_MountainTopMonasteryInterior.jpg",
-    name: "Mountain Top Monastery Interior",
-  },
-  {
-    link: "/images/map_ArcadeCenter.jpg ",
-    name: "Arcade Center",
-  },
-  {
-    link: "/images/map_ClearForest.jpg",
-    name: "Clear Forest",
-  },
-  {
-    link: "/images/map_RiverFort.jpg",
-    name: "River Fort",
-  },
-  {
-    link: "/images/map_NomadicCamp.jpg",
-    name: "Nomadic Camp",
-  },
-  {
-    link: "/images/map_SpringLake.jpg",
-    name: "Spring Lake",
-  },
-  {
-    link: "/images/map_TownCenter.jpg",
-    name: "Town Center",
-  },
-  {
-    link: "/images/map_HauntedGraveyard.jpg",
-    name: "Haunted Graveyard",
-  },
-  {
-    link: "/images/map_AbandonedTunnels.jpg",
-    name: "Abandoned Tunnels",
-  },
-  {
-    link: "/images/map_HotSprings.jpg ",
-    name: "Hot Springs",
-  },
-  {
-    link: "/images/map_WizardSchoolClassroom.jpg",
-    name: "Wizard School Classroom",
-  },
-  {
-    link: "/images/map_WizardSchoolCourtyard.jpg",
-    name: "Wizard School Courtyard",
-  },
-];
+interface Point {
+  id: number;
+  x: number;
+  y: number;
+}
+
+let data: Array<Point> = [];
+let numPoints = 100;
+
+function updateData() {
+  data = [];
+  for (let i = 0; i < numPoints; i++) {
+    data.push({
+      id: i,
+      x: Math.random() * 500,
+      y: Math.random() * 500,
+    });
+  }
+}
 
 export default function Game() {
-  const [chosenMap, setChosenMap] = useState(maps[0]);
-  const [showMaps, setShowMaps] = useState(false);
+  // const { chosenMap } = useContext(gameContext);
+
+  useEffect(() => {
+    updateData();
+    let zoom = d3.zoom().on("zoom", (e: any) => {
+      d3.select("#main g").attr("transform", e.transform);
+    });
+
+    d3.zoom().on("zoom", (e: any) => {
+      d3.select("#main g").attr("transform", e.transform);
+    });
+
+    d3.select("#main").call(zoom as any);
+
+    d3.select("#main g")
+      .selectAll("circle")
+      .data(data)
+      .join("circle")
+      .attr("cx", (d) => d.x)
+      .attr("cy", (d) => d.y)
+      .attr("r", 3);
+  }, []);
 
   return (
-    <Box width={1} height={1}>
+    <Box width={1} height={1} overflow="hidden">
       <Navbar />
       <Box
         display="flex"
@@ -113,13 +73,9 @@ export default function Game() {
                 alignContent: "center",
               }}
             >
-              <img
-                src={chosenMap.link}
-                alt={chosenMap.name}
-                style={{
-                  alignSelf: "center",
-                }}
-              />
+              <svg id="main" width="100%" height="100%">
+                <g></g>
+              </svg>
             </Box>
           </Grid>
 
@@ -132,28 +88,8 @@ export default function Game() {
               overflow: "auto",
             }}
           >
-            <List sx={{}}>
-              <ListItemButton onClick={() => setShowMaps(!showMaps)}>
-                <ListItemText primary="Maps" />
-                {showMaps ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={showMaps} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {maps.map((item, i) => (
-                    <ListItem
-                      key={i}
-                      onClick={() => setChosenMap(item)}
-                      sx={{ cursor: "pointer" }}
-                      divider
-                    >
-                      <ListItemButton>
-                        <ListItemText primary={item.name} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-            </List>
+            <MapDropdown />
+            <CharacterDropdown />
           </Grid>
         </Grid>
       </Box>

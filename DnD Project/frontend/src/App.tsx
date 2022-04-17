@@ -17,6 +17,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./css/styles.css";
+import GameProvider from "./components/Game/GameContext";
 
 /*
 
@@ -57,9 +58,11 @@ function App() {
             <Route
               path={"game"}
               element={
-                <ProtectedRoute>
-                  <Game />
-                </ProtectedRoute>
+                <GameProvider>
+                  <ProtectedRoute>
+                    <Game />
+                  </ProtectedRoute>
+                </GameProvider>
               }
             />
 
