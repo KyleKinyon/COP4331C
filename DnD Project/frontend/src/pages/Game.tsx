@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import Navbar from "../components/Navbar";
 import MapDropdown from "../components/Game/MapDropdown";
 import { gameContext } from "../components/Game/GameContext";
@@ -12,43 +12,61 @@ interface Point {
   y: number;
 }
 
-let data: Array<Point> = [];
-let numPoints = 100;
-
-function updateData() {
-  data = [];
-  for (let i = 0; i < numPoints; i++) {
-    data.push({
-      id: i,
-      x: Math.random() * 500,
-      y: Math.random() * 500,
-    });
-  }
-}
+let numPoints = 5;
 
 export default function Game() {
-  // const { chosenMap } = useContext(gameContext);
+  const [data, setData] = useState<Point[]>([]);
+  const { chosenMap } = useContext(gameContext);
+
+  const updateData = useCallback(() => {
+    let temp = [];
+    for (let i = 0; i < numPoints; i++) {
+      temp.push({
+        id: i,
+        x: Math.random() * 500,
+        y: Math.random() * 500,
+      });
+    }
+
+    setData(temp);
+  }, []);
 
   useEffect(() => {
     updateData();
-    let zoom = d3.zoom().on("zoom", (e: any) => {
-      d3.select("#main g").attr("transform", e.transform);
-    });
+  }, [updateData]);
 
-    d3.zoom().on("zoom", (e: any) => {
+  useEffect(() => {
+    let zoom = d3.zoom().on("zoom", (e: any) => {
+      // console.log(d3.zoomTransform());
       d3.select("#main g").attr("transform", e.transform);
     });
 
     d3.select("#main").call(zoom as any);
+    d3.select("#main").on("click", (e) => {
+      const [x, y] = d3.pointer(e);
+      setData([
+        ...data,
+        {
+          id: data.length,
+          x,
+          y,
+        },
+      ]);
+    });
+
+    // d3.select("#main g").style("background-image", chosenMap.link);
 
     d3.select("#main g")
       .selectAll("circle")
+      .on("mouseover", (e) => {
+        console.log(d3.pointer(e));
+      })
       .data(data)
       .join("circle")
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y)
       .attr("r", 3);
-  }, []);
+  }, [data, chosenMap]);
 
   return (
     <Box width={1} height={1} overflow="hidden">
@@ -74,7 +92,9 @@ export default function Game() {
               }}
             >
               <svg id="main" width="100%" height="100%">
-                <g></g>
+                <g>
+                  <image href={chosenMap.link} x="0" y="0" />
+                </g>
               </svg>
             </Box>
           </Grid>

@@ -97,7 +97,14 @@ export default function CharacterDropdown() {
             size="large"
             type="submit"
             variant="contained"
-            onClick={() => setShowDialog(false)}
+            onClick={() => {
+              addCharacter({
+                name: charName,
+                x: 0,
+                y: 0,
+              });
+              setShowDialog(false);
+            }}
           >
             Add
           </Button>
