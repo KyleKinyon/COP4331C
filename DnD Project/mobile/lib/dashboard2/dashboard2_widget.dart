@@ -22,7 +22,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).nickel,
+        backgroundColor: Color(0x066E726E),
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
@@ -60,7 +60,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
           ),
         ],
         centerTitle: true,
-        elevation: 0,
+        elevation: 2,
       ),
       body: SafeArea(
         child: Column(
