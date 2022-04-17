@@ -3,9 +3,7 @@ import { verify } from "jsonwebtoken";
 import User from "../models/User";
 import { sendRefreshToken, createAccessToken, createRefreshToken } from "../utils/TokenAuth";
 import { compare, genSalt, hash } from "bcrypt";
-import sgMail from "../index"
-import msg from "../index"
-import "@sendgrid/mail"
+import sendgrid from "@sendgrid/mail";
 
 
 const router = Router();
@@ -62,13 +60,17 @@ router.post("/login", async (req, res) => {
 	}
 
 	const validPassword = await compare(password, data.password);
-	const sgMail = require('@sendgrid/mail')
+
 	const msg = {
 		to: data.email, // Change to your recipient
 		from: 'group25DemoGod@gmail.com', // Change to your verified sender
 		subject: 'Verfication email',
 		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
-		html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+		html: `
+		<div>
+			<h1>Welcome to <strong>DnD 25</strong></h1>
+			<h4>Click this link <a href='https://cop4331-dnd.herokuapp.com/dashboard/verify'>here</a> to verify yourself!</h4>
+		</div>`,
 	  }
 
 	if (!validPassword) {
@@ -76,9 +78,8 @@ router.post("/login", async (req, res) => {
 	}
 
 	if (!data.verified) {
+		sendgrid.send(msg);
 	 	return res.status(400).json({ error: "E-mail not verified" });
-		 sgMail
-		 .send(msg)
 	}
 
 	sendRefreshToken(res, createRefreshToken(data));
@@ -119,18 +120,19 @@ router.post("/signup", async (req, res) => {
 		verified: verified ?? false
 	});
 
-	const sgMail = require('@sendgrid/mail')
 	const msg = {
-		to: data.email, // Change to your recipient
+		to: email, // Change to your recipient
 		from: 'group25DemoGod@gmail.com', // Change to your verified sender
 		subject: 'Verfication email',
 		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
-		html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-	  }
-
-	if (user.verified == false) {
-		sgMail.send(msg)
+		html: `
+		<div>
+			<h1>Welcome to <strong>DnD 25</strong></h1>
+			<h4>Click this link <a href='https://cop4331-dnd.herokuapp.com/dashboard/verify'>here</a> to verify yourself!</h4>
+		</div>`,
 	}
+
+	sendgrid.send(msg);
 
 	await user.save();
 

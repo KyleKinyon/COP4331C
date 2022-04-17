@@ -9,6 +9,7 @@ import mobile from "./api/mobile";
 import session from "./api/session";
 import user from "./api/user";
 import path from "path";
+import sendgrid from "@sendgrid/mail";
 
 
 const env = dotenv.config(); // env variables
@@ -69,19 +70,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-const msg = {
-  to: 'group25DemoGod@gmail.com', // Change to your recipient
-  from: 'group25DemoGod@gmail.com', // Change to your verified sender
-  subject: 'Verfication email',
-  text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
-  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-}
-/*
-sgMail
-  .send(msg)
-*/
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY as string)
 
-  export default server;
+export default server;
