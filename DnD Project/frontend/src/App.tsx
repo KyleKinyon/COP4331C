@@ -5,12 +5,10 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Character from "./pages/Character";
-import Lobby from "./pages/Lobby";
-import DMLobby from "./pages/DMLobby";
-import MainGame from "./pages/MainGame";
-import TestChat from "./pages/TestChat";
 import ListCharacters from "./pages/ListCharacters";
 import ResetPassword from "./pages/ResetPassword";
+import Maps from "./pages/Maps";
+import Game from "./pages/Game";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -19,7 +17,6 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./css/styles.css";
-import Maps from "./pages/Maps";
 
 /*
 
@@ -47,7 +44,6 @@ function App() {
           <Route path="/">
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
-            <Route path="testChat" element={<TestChat />} />
             <Route path="resetPassword" element={<ResetPassword />} />
             <Route
               path={"dashboard"}
@@ -58,37 +54,11 @@ function App() {
               }
             />
 
-            <Route path="lobby">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <Lobby show />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path={":id"}
-                element={
-                  <ProtectedRoute>
-                    <Lobby />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
             <Route
-              path={"dmLobby"}
+              path={"game"}
               element={
                 <ProtectedRoute>
-                  <DMLobby />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path={"mainGame"}
-              element={
-                <ProtectedRoute>
-                  <MainGame />
+                  <Game />
                 </ProtectedRoute>
               }
             />

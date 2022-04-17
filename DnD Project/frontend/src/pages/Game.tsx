@@ -1,11 +1,13 @@
 import {
   Box,
+  Collapse,
   Grid,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
 } from "@mui/material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 
@@ -84,19 +86,12 @@ const maps = [
   },
 ];
 
-export default function Maps() {
+export default function Game() {
   const [chosenMap, setChosenMap] = useState(maps[0]);
+  const [showMaps, setShowMaps] = useState(false);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      sx={{
-        width: 1,
-        height: 1,
-        backgroundColor: "rgba(75,21,31, 0.1)",
-      }}
-    >
+    <Box width={1} height={1}>
       <Navbar />
       <Box
         display="flex"
@@ -105,7 +100,6 @@ export default function Maps() {
           width: 1,
           height: 1,
           backgroundColor: "rgba(75,21,31, 0.1)",
-          overflow: "hidden",
         }}
       >
         <Grid container columns={4} height={1} width={1} overflow="hidden">
@@ -139,18 +133,26 @@ export default function Maps() {
             }}
           >
             <List sx={{}}>
-              {maps.map((item, i) => (
-                <ListItem
-                  key={i}
-                  onClick={() => setChosenMap(item)}
-                  sx={{ cursor: "pointer" }}
-                  divider
-                >
-                  <ListItemButton>
-                    <ListItemText primary={item.name} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
+              <ListItemButton onClick={() => setShowMaps(!showMaps)}>
+                <ListItemText primary="Maps" />
+                {showMaps ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={showMaps} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {maps.map((item, i) => (
+                    <ListItem
+                      key={i}
+                      onClick={() => setChosenMap(item)}
+                      sx={{ cursor: "pointer" }}
+                      divider
+                    >
+                      <ListItemButton>
+                        <ListItemText primary={item.name} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </Collapse>
             </List>
           </Grid>
         </Grid>
