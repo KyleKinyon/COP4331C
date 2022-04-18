@@ -91,21 +91,6 @@ router.post("/resetPassword", async (req,res) => {
     res.status(200).json({ message: "Password updated" });
 });
 
-router.get("/verifyUser", async (req,res) => {
-    const { _id: userId } = res.locals;
-
-    const filter = { _id: userId };
-    const update = { verified: true };
-
-    let data = User.findOneAndUpdate(filter, update).exec();
-
-    if (!data) {
-        return res.status(400).json({ error: "User does not exist" });
-    }
-
-    res.status(200).json({ message: "E-mail verified"});
-})
-
 router.delete("/delete", async (req, res) => {
 	const { _id: userId, username } = res.locals;
 
