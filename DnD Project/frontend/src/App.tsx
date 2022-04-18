@@ -45,7 +45,8 @@ function App() {
           <Route path="/">
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
-            <Route path="resetPassword" element={<ResetPassword />} />
+            <Route path="resetPassword/:username" element={<ResetPassword />} />
+            <Route path="verify/:username" element={<Verify/>}/>
             <Route
               path={"dashboard"}
               element={
