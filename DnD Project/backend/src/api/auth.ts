@@ -3,6 +3,7 @@ import { verify } from "jsonwebtoken";
 import User from "../models/User";
 import { sendRefreshToken, createAccessToken, createRefreshToken } from "../utils/TokenAuth";
 import { compare, genSalt, hash } from "bcrypt";
+import sendgrid from "@sendgrid/mail";
 
 const router = Router();
 
@@ -58,14 +59,27 @@ router.post("/login", async (req, res) => {
 	}
 
 	const validPassword = await compare(password, data.password);
+	
+	const msg = {
+		to: data.email, // Change to your recipient
+		from: 'group25DemoGod@gmail.com', // Change to your verified sender
+		subject: 'Verfication email',
+		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
+		html: `
+		<div>
+			<h1>Welcome to <strong>DnD 25</strong></h1>
+			<h4>Click this link <a href='http://localhost:3000/verify/${data.username}'>here</a> to verify yourself!</h4>
+		</div>`, // replace link with https://cop4331-dnd.herokuapp.com/verify/${data.username} for production build
+	  }
 
 	if (!validPassword) {
 		return res.status(400).json({ error: "Incorrect login info" });
 	}
 
-	// if (!data.verified) {
-	// 	return res.status(400).json({ error: "E-mail not verified" });
-	// }
+	if (!data.verified) {
+		sendgrid.send(msg);
+	 	return res.status(400).json({ error: "E-mail not verified" });
+	}
 
 	sendRefreshToken(res, createRefreshToken(data));
 
@@ -104,6 +118,20 @@ router.post("/signup", async (req, res) => {
 		email,
 		verified: verified ?? false
 	});
+	
+	const msg = {
+		to: email, // Change to your recipient
+		from: 'group25DemoGod@gmail.com', // Change to your verified sender
+		subject: 'Verfication email',
+		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
+		html: `
+		<div>
+			<h1>Welcome to <strong>DnD 25</strong></h1>
+			<h4>Click this link <a href='http://localhost:3000/verify/${user.username}'>here</a> to verify yourself!</h4>
+		</div>`, // replace link with https://cop4331-dnd.herokuapp.com/verify/${user.username} for production build
+	}
+
+	sendgrid.send(msg);
 
 	await user.save();
 
@@ -138,6 +166,19 @@ router.get("/getUserId", async (req, res) => {
 		data,
 		accessToken: createAccessToken(data)
 	});
+});
+
+router.post("/verifyUser", async (req,res) => {
+    const { username } = req.body;
+
+    const filter = { username };
+    const update = { verified: true };
+
+    let data = User.findOneAndUpdate(filter, update).exec();
+
+    if (!data) {
+        return res.status(400).json({ error: "User does not exist" });
+    }
 });
 
 export default router;
