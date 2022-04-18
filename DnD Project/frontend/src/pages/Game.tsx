@@ -41,12 +41,11 @@ export default function Game() {
 
   useEffect(() => {
     let zoom = d3.zoom().on("zoom", (e: any) => {
-      // console.log(d3.zoomTransform());
       d3.select("#canvas g").attr("transform", e.transform);
     });
 
     d3.select("#canvas").call(zoom as any);
-    d3.select("#canvas").on("click", (e) => {
+    d3.select("#canvas g").on("click", (e) => {
       const [x, y] = d3.pointer(e);
 
       const num = Math.floor(Math.random() * (25 - 0 + 1)) + 0;
