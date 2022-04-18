@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Character from "./pages/Character";
 import ListCharacters from "./pages/ListCharacters";
 import ResetPassword from "./pages/ResetPassword";
+import Verify from "./pages/Verify";
 import Maps from "./pages/Maps";
 import Game from "./pages/Game";
 
