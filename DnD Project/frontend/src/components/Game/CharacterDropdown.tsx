@@ -133,8 +133,8 @@ export default function CharacterDropdown() {
             onClick={() => {
               addCharacter({
                 ...charInfo,
-                x: 0,
-                y: 0,
+                x: 10,
+                y: 10,
               });
               setShowDialog(false);
             }}

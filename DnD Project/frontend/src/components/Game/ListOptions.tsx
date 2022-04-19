@@ -8,9 +8,11 @@ import {
 import { useContext, useState } from "react";
 import { gameContext } from "./GameContext";
 import Dropdown from "../General/Dropdown";
+import LoadGameModal from "./LoadGameModal";
 
 export default function ListOptions() {
   const { setCircleSize } = useContext(gameContext);
+  const [loadGameDialog, setLoadGameDialog] = useState(false);
 
   return (
     <>
@@ -22,7 +24,7 @@ export default function ListOptions() {
           }}
           divider
         >
-          <ListItemButton>
+          <ListItemButton onClick={() => setLoadGameDialog(true)}>
             <ListItemText primary={"Load Session"} />
           </ListItemButton>
         </ListItem>
@@ -43,6 +45,11 @@ export default function ListOptions() {
           />
         </Box>
       </Dropdown>
+
+      <LoadGameModal
+        open={loadGameDialog}
+        close={() => setLoadGameDialog(false)}
+      />
     </>
   );
 }

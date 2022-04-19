@@ -3,7 +3,16 @@ import { Schema, model } from "mongoose";
 const SessionSchema = new Schema({
   userId: Schema.Types.ObjectId,
   name: { type: String },
-  map: { type: String, default: "/images/map_LavaVault.jpg" },
+  map: {
+    link: {
+      type: String,
+      default: "/images/map_LavaVault.jpg",
+    },
+    name: {
+      type: String,
+      default: "Lava Vault",
+    },
+  },
   characters: [
     {
       x: { type: Number, default: 0 },

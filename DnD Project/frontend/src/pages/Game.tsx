@@ -1,13 +1,16 @@
 import * as d3 from "d3";
+import { CharList } from "../utils/interfaces";
+
 import { Box, Grid } from "@mui/material";
 import Navbar from "../components/Navbar";
+
 import { useContext, useEffect, useState } from "react";
 import { gameContext } from "../components/Game/GameContext";
+
 import MapDropdown from "../components/Game/MapDropdown";
 import CharacterDropdown from "../components/Game/CharacterDropdown";
 import ListOptions from "../components/Game/ListOptions";
 import SaveGame from "../components/Game/SaveGame";
-import { CharList } from "../utils/interfaces";
 
 export default function Game() {
   const { characters, chosenMap, updateChar, circleSize } =
@@ -54,7 +57,7 @@ export default function Game() {
           .style("left", `${e.clientX + 5}px`)
           .style("top", `${e.clientY + 5}px`);
       });
-  }, [characters, chosenMap, circleSize, updateChar]);
+  }, [characters, circleSize, updateChar]);
 
   return (
     <Box width={1} height={1} overflow="hidden">
