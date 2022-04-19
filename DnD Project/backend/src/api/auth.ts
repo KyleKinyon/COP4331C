@@ -7,6 +7,12 @@ import sendgrid from "@sendgrid/mail";
 
 const router = Router();
 
+const app_name = "cop4331-dnd";
+const baseURL =
+  process.env.NODE_ENV === "production"
+    ? `https://${app_name}.herokuapp.com`
+    : `http://localhost:3000`;
+
 router.get("/refreshToken", async (req, res) => {
 	const { refreshToken } = req.cookies;
 	let payload = null;
@@ -61,15 +67,15 @@ router.post("/login", async (req, res) => {
 	const validPassword = await compare(password, data.password);
 	
 	const msg = {
-		to: data.email, // Change to your recipient
-		from: 'group25DemoGod@gmail.com', // Change to your verified sender
+		to: data.email,
+		from: 'group25DemoGod@gmail.com',
 		subject: 'Verfication email',
 		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
 		html: `
 		<div>
 			<h1>Welcome to <strong>DnD 25</strong></h1>
-			<h4>Click this link <a href='http://localhost:3000/verify/${data.username}'>here</a> to verify yourself!</h4>
-		</div>`, // replace link with https://cop4331-dnd.herokuapp.com/verify/${data.username} for production build
+			<h4>Click this link <a href='${baseURL}/verify/${data.username}'>here</a> to verify yourself!</h4>
+		</div>`,
 	  }
 
 	if (!validPassword) {
@@ -120,15 +126,15 @@ router.post("/signup", async (req, res) => {
 	});
 	
 	const msg = {
-		to: email, // Change to your recipient
-		from: 'group25DemoGod@gmail.com', // Change to your verified sender
+		to: email,
+		from: 'group25DemoGod@gmail.com',
 		subject: 'Verfication email',
 		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
 		html: `
 		<div>
 			<h1>Welcome to <strong>DnD 25</strong></h1>
-			<h4>Click this link <a href='http://localhost:3000/verify/${user.username}'>here</a> to verify yourself!</h4>
-		</div>`, // replace link with https://cop4331-dnd.herokuapp.com/verify/${user.username} for production build
+			<h4>Click this link <a href='${baseURL}/verify/${user.username}'>here</a> to verify yourself!</h4>
+		</div>`,
 	}
 
 	sendgrid.send(msg);
