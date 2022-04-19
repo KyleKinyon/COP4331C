@@ -3,6 +3,7 @@ import User from "../models/User";
 import checkAuth from "../utils/CheckAuth";
 import { compare, genSalt, hash } from "bcrypt";
 import Character from "../models/Character";
+import Session from "../models/Session";
 import { sendRefreshToken } from "../utils/TokenAuth";
 
 const router = Router();
@@ -95,6 +96,7 @@ router.delete("/delete", async (req, res) => {
 	const { _id: userId, username } = res.locals;
 
 	try {
+        await Session.deleteMany({ userId }).exec();
 		await Character.deleteMany({ userId }).exec();
 		await User.deleteMany({ username }).exec();
 
