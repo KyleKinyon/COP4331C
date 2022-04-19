@@ -13,10 +13,10 @@ import { Add, Delete, Edit } from "@mui/icons-material";
 import Navbar from "../components/Navbar";
 import req from "../utils/request";
 
-import ChangeUserModal from "../components/ChangeUserModal";
-import ChangePassModal from "../components/ChangePassModal";
-import ChangeFirstNameModal from "../components/ChangeFirstNameModal";
-import ChangeLastNameModal from "../components/ChangeLastNameModal";
+import ChangeUserModal from "../components/Settings/ChangeUserModal";
+import ChangePassModal from "../components/Settings/ChangePassModal";
+import ChangeFirstNameModal from "../components/Settings/ChangeFirstNameModal";
+import ChangeLastNameModal from "../components/Settings/ChangeLastNameModal";
 
 export default function Settings() {
   const navigate = useNavigate();
