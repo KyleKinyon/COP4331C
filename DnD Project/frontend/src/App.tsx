@@ -10,6 +10,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Verify from "./pages/Verify";
 import Maps from "./pages/Maps";
 import Game from "./pages/Game";
+import Settings from "./pages/Settings";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/">
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
+            <Route path="settings" element={<Settings />} />
             <Route path="resetPassword/:username" element={<ResetPassword />} />
             <Route path="verify/:username" element={<Verify/>}/>
             <Route
