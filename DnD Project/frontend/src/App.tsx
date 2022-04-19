@@ -56,7 +56,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            
             <Route
               path={"game"}
               element={

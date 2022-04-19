@@ -7,8 +7,11 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../profile_page/profile_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import '../utils/User.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({Key key}) : super(key: key);
@@ -22,6 +25,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   TextEditingController passwordController;
   bool passwordVisibility;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  Future<User> _user;
 
   @override
   void initState() {
@@ -29,6 +33,32 @@ class _LoginWidgetState extends State<LoginWidget> {
     emailAddressController = TextEditingController();
     passwordController = TextEditingController();
     passwordVisibility = false;
+  }
+
+  Future<User> getUser() async {
+    final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/auth/login'),
+      headers: <String, String>{
+        'Content-Type' : 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'username' : emailAddressController.text,
+        'password' : passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      await Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ProfilePageWidget(),
+        ),
+            (r) => false,
+      );
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Error logging in');
+    }
   }
 
   @override
@@ -273,24 +303,10 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 ),
                               ),
                               FFButtonWidget(
-                                onPressed: () async {
-                                  final user = await signInWithEmail(
-                                    context,
-                                    emailAddressController.text,
-                                    passwordController.text,
-                                  );
-                                  if (user == null) {
-                                    return;
-                                  }
-
-                                  await Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProfilePageWidget(),
-                                    ),
-                                    (r) => false,
-                                  );
+                                onPressed: () async => {
+                                  getUser(),
                                 },
+
                                 text: 'Login',
                                 options: FFButtonOptions(
                                   width: 130,
