@@ -87,6 +87,7 @@ export default function GameProvider({ children }: GameProviderProps) {
   const [chosenMap, setChosenMap] = useState(maps[0]);
   const [chosenChar, setChosenChar] = useState<CharList | null>(null);
   const [characters, setCharacters] = useState<CharList[]>([]);
+  const [circleSize, setCircleSize] = useState(5);
   const [sessionUrl, setSessionUrl] = useState<string | null>(null);
 
   const updateChar = (x: number, y: number) => {
@@ -132,15 +133,23 @@ export default function GameProvider({ children }: GameProviderProps) {
   return (
     <gameContext.Provider
       value={{
+        // variables
         maps,
+
+        // state and updates
         chosenMap,
         setChosenMap,
         characters,
         setCharacters,
-        addCharacter,
-        updateChar,
         chosenChar,
         setChosenChar,
+        circleSize,
+        setCircleSize,
+
+        // methods
+        loadGame,
+        addCharacter,
+        updateChar,
         saveGame,
       }}
     >

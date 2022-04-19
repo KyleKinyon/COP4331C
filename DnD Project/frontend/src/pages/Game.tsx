@@ -1,16 +1,17 @@
-import { Box, Button, Grid, Slider } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import MapDropdown from "../components/Game/MapDropdown";
-import { gameContext } from "../components/Game/GameContext";
 import * as d3 from "d3";
+import { Box, Grid } from "@mui/material";
+import Navbar from "../components/Navbar";
+import { useContext, useEffect, useState } from "react";
+import { gameContext } from "../components/Game/GameContext";
+import MapDropdown from "../components/Game/MapDropdown";
 import CharacterDropdown from "../components/Game/CharacterDropdown";
-import { CharList } from "../utils/interfaces";
+import ListOptions from "../components/Game/ListOptions";
 import SaveGame from "../components/Game/SaveGame";
+import { CharList } from "../utils/interfaces";
 
 export default function Game() {
-  const { characters, chosenMap, updateChar } = useContext(gameContext);
-  const [circleSize, setCircleSize] = useState(5);
+  const { characters, chosenMap, updateChar, circleSize } =
+    useContext(gameContext);
 
   useEffect(() => {
     let zoom = d3.zoom().on("zoom", (e: any) => {
@@ -38,12 +39,12 @@ export default function Game() {
       .attr("r", circleSize)
       .style("fill", (d) => `#${(d as CharList).color}`)
       .style("stroke", "rgba(180, 180, 180, 0.8)")
-      .on("mouseover", (_, i) => {
+      .on("mouseover", (_, item) => {
         d3.select("#tooltip")
           .transition()
           .duration(200)
           .style("opacity", 1)
-          .text((i as CharList).name);
+          .text((item as CharList).name);
       })
       .on("mouseout", () => {
         d3.select("#tooltip").style("opacity", 0);
@@ -108,22 +109,7 @@ export default function Game() {
             >
               <MapDropdown />
               <CharacterDropdown />
-              <Box p={3}>
-                <Slider
-                  onChange={(e, newVal) => {
-                    e.preventDefault();
-                    setCircleSize(newVal as number);
-                  }}
-                  aria-label="Temperature"
-                  valueLabelDisplay="auto"
-                  defaultValue={5}
-                  step={1}
-                  min={5}
-                  max={15}
-                  marks
-                />
-              </Box>
-
+              <ListOptions />
               <SaveGame />
             </Box>
           </Grid>

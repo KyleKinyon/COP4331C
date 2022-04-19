@@ -1,9 +1,20 @@
-import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import {
+  Box,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Slider,
+} from "@mui/material";
+import { useContext, useState } from "react";
+import { gameContext } from "./GameContext";
+import Dropdown from "../General/Dropdown";
 
 export default function ListOptions() {
+  const { setCircleSize } = useContext(gameContext);
+
   return (
     <>
-      <List>
+      <Dropdown title="Options">
         <ListItem
           onClick={() => {}}
           sx={{
@@ -15,7 +26,23 @@ export default function ListOptions() {
             <ListItemText primary={"Load Session"} />
           </ListItemButton>
         </ListItem>
-      </List>
+
+        <Box p={3}>
+          <Slider
+            onChange={(e, newVal) => {
+              e.preventDefault();
+              setCircleSize(newVal as number);
+            }}
+            aria-label="Temperature"
+            valueLabelDisplay="auto"
+            defaultValue={5}
+            step={1}
+            min={5}
+            max={15}
+            marks
+          />
+        </Box>
+      </Dropdown>
     </>
   );
 }
