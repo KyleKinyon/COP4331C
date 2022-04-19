@@ -1,12 +1,5 @@
 import { Schema, model } from "mongoose";
 
-const SessionCharacterSchema = new Schema({
-  x: { type: Number },
-  y: { type: Number },
-  name: { type: String },
-  color: { type: String },
-});
-
 const SessionSchema = new Schema({
   userId: Schema.Types.ObjectId,
   name: { type: String },
@@ -17,9 +10,6 @@ const SessionSchema = new Schema({
       y: { type: Number, default: 0 },
       name: { type: String, default: "Jesus" },
       color: { type: String, default: "000" },
-      _id: {
-        required: false,
-      },
     },
   ],
 });

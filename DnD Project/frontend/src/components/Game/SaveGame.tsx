@@ -68,7 +68,9 @@ export default function SaveGame() {
             type="submit"
             variant="contained"
             onClick={() => {
-              saveGame(sessionName, true);
+              saveGame(sessionName, true)
+                ? setShowDialog(false)
+                : console.log("Pain");
             }}
           >
             Add

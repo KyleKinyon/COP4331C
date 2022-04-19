@@ -77,14 +77,15 @@ router.post("/createSession", async (req, res) => {
     //   ),
     // });
 
-    let session = await Session.create({
+    let session = new Session({
       userId,
       name,
       map,
+      characters,
     });
 
     console.log(session);
-    await session.save({ validateBeforeSave: false });
+    await session.save();
 
     return res.status(200).json({ message: "Session saved!" });
   } catch (err) {
