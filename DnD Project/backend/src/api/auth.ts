@@ -3,8 +3,15 @@ import { verify } from "jsonwebtoken";
 import User from "../models/User";
 import { sendRefreshToken, createAccessToken, createRefreshToken } from "../utils/TokenAuth";
 import { compare, genSalt, hash } from "bcrypt";
+import sendgrid from "@sendgrid/mail";
 
 const router = Router();
+
+const app_name = "cop4331-dnd";
+const baseURL =
+  process.env.NODE_ENV === "production"
+    ? `https://${app_name}.herokuapp.com`
+    : `http://localhost:3000`;
 
 router.get("/refreshToken", async (req, res) => {
 	const { refreshToken } = req.cookies;
@@ -58,14 +65,27 @@ router.post("/login", async (req, res) => {
 	}
 
 	const validPassword = await compare(password, data.password);
+	
+	const msg = {
+		to: data.email,
+		from: 'group25DemoGod@gmail.com',
+		subject: 'Verfication email',
+		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
+		html: `
+		<div>
+			<h1>Welcome to <strong>DnD 25</strong></h1>
+			<h4>Click this link <a href='${baseURL}/verify/${data.username}'>here</a> to verify yourself!</h4>
+		</div>`,
+	  }
 
 	if (!validPassword) {
 		return res.status(400).json({ error: "Incorrect login info" });
 	}
 
-	// if (!data.verified) {
-	// 	return res.status(400).json({ error: "E-mail not verified" });
-	// }
+	if (!data.verified) {
+		sendgrid.send(msg);
+	 	return res.status(400).json({ error: "E-mail not verified" });
+	}
 
 	sendRefreshToken(res, createRefreshToken(data));
 
@@ -104,6 +124,20 @@ router.post("/signup", async (req, res) => {
 		email,
 		verified: verified ?? false
 	});
+	
+	const msg = {
+		to: email,
+		from: 'group25DemoGod@gmail.com',
+		subject: 'Verfication email',
+		text: 'https://cop4331-dnd.herokuapp.com/dashboard/verify',
+		html: `
+		<div>
+			<h1>Welcome to <strong>DnD 25</strong></h1>
+			<h4>Click this link <a href='${baseURL}/verify/${user.username}'>here</a> to verify yourself!</h4>
+		</div>`,
+	}
+
+	sendgrid.send(msg);
 
 	await user.save();
 
@@ -138,6 +172,19 @@ router.get("/getUserId", async (req, res) => {
 		data,
 		accessToken: createAccessToken(data)
 	});
+});
+
+router.post("/verifyUser", async (req,res) => {
+    const { username } = req.body;
+
+    const filter = { username };
+    const update = { verified: true };
+
+    let data = User.findOneAndUpdate(filter, update).exec();
+
+    if (!data) {
+        return res.status(400).json({ error: "User does not exist" });
+    }
 });
 
 export default router;

@@ -1,3 +1,6 @@
+@import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap";
+@import "https://fonts.googleapis.com/icon?family=Material+Icons";
+
 html,
 body,
 #root {
@@ -24,4 +27,15 @@ body,
 
 .tab-panel > * {
   flex-grow: 1;
+}
+
+#tooltip {
+  padding: 0.2rem 1rem;
+  border-radius: 5px;
+  color: white;
+  background-color: rgba(55, 55, 55, 0.5);
+
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }

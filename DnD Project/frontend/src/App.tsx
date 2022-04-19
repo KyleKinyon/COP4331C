@@ -7,8 +7,11 @@ import Signup from "./pages/Signup";
 import Character from "./pages/Character";
 import ListCharacters from "./pages/ListCharacters";
 import ResetPassword from "./pages/ResetPassword";
+import Verify from "./pages/Verify";
 import Maps from "./pages/Maps";
 import Game from "./pages/Game";
+import GameProvider from "./components/Game/GameContext";
+import Settings from "./pages/Settings";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -17,12 +20,6 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./css/styles.css";
-
-/*
-
-TODO: Main app functionality implemented
-
-*/
 
 const theme = createTheme({
   palette: {
@@ -44,7 +41,9 @@ function App() {
           <Route path="/">
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
-            <Route path="resetPassword" element={<ResetPassword />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="resetPassword/:username" element={<ResetPassword />} />
+            <Route path="verify/:username" element={<Verify />} />
             <Route
               path={"dashboard"}
               element={
@@ -53,13 +52,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            
             <Route
               path={"game"}
               element={
-                <ProtectedRoute>
-                  <Game />
-                </ProtectedRoute>
+                <GameProvider>
+                  <ProtectedRoute>
+                    <Game />
+                  </ProtectedRoute>
+                </GameProvider>
               }
             />
 

@@ -30,8 +30,8 @@ export default function FrontPage() {
         <Link href="/mainGame" mx={1}>
           Main Game Screen
         </Link>
-        <Link href="/testChat" mx={1}>
-          Test Chat
+        <Link href="/settings" mx={1}>
+          Settings
         </Link>
         
       </div>

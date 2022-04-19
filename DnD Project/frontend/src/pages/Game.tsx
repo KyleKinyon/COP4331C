@@ -1,99 +1,75 @@
-import {
-  Box,
-  Collapse,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { useState } from "react";
+import * as d3 from "d3";
+import { CharList } from "../utils/interfaces";
+
+import { Box, Grid } from "@mui/material";
 import Navbar from "../components/Navbar";
 
-const maps = [
-  {
-    link: "/images/map_LavaVault.jpg",
-    name: "Lava Vault",
-  },
-  {
-    link: "/images/map_FireArena.jpg",
-    name: "Fire Arena",
-  },
-  {
-    link: "/images/map_AncientDesertTemple.jpg",
-    name: "Ancient Desert Temple",
-  },
-  {
-    link: "/images/map_DesertCatacombs.jpg",
-    name: "Desert Catacombs",
-  },
-  {
-    link: "/images/map_DesertIslandTropic.jpg",
-    name: "Desert Island Tropic",
-  },
-  {
-    link: "/images/map_MountainTopMonastery.jpg",
-    name: "Mountain Top Monastery",
-  },
-  {
-    link: "/images/map_MountainTopMonasteryInterior.jpg",
-    name: "Mountain Top Monastery Interior",
-  },
-  {
-    link: "/images/map_ArcadeCenter.jpg ",
-    name: "Arcade Center",
-  },
-  {
-    link: "/images/map_ClearForest.jpg",
-    name: "Clear Forest",
-  },
-  {
-    link: "/images/map_RiverFort.jpg",
-    name: "River Fort",
-  },
-  {
-    link: "/images/map_NomadicCamp.jpg",
-    name: "Nomadic Camp",
-  },
-  {
-    link: "/images/map_SpringLake.jpg",
-    name: "Spring Lake",
-  },
-  {
-    link: "/images/map_TownCenter.jpg",
-    name: "Town Center",
-  },
-  {
-    link: "/images/map_HauntedGraveyard.jpg",
-    name: "Haunted Graveyard",
-  },
-  {
-    link: "/images/map_AbandonedTunnels.jpg",
-    name: "Abandoned Tunnels",
-  },
-  {
-    link: "/images/map_HotSprings.jpg ",
-    name: "Hot Springs",
-  },
-  {
-    link: "/images/map_WizardSchoolClassroom.jpg",
-    name: "Wizard School Classroom",
-  },
-  {
-    link: "/images/map_WizardSchoolCourtyard.jpg",
-    name: "Wizard School Courtyard",
-  },
-];
+import { useContext, useEffect } from "react";
+import { gameContext } from "../components/Game/GameContext";
+
+import MapDropdown from "../components/Game/MapDropdown";
+import CharacterDropdown from "../components/Game/CharacterDropdown";
+import ListOptions from "../components/Game/ListOptions";
+import SaveGame from "../components/Game/SaveGame";
 
 export default function Game() {
-  const [chosenMap, setChosenMap] = useState(maps[0]);
-  const [showMaps, setShowMaps] = useState(false);
+  const { characters, chosenMap, updateChar, circleSize } =
+    useContext(gameContext);
+
+  useEffect(() => {
+    let zoom = d3.zoom().on("zoom", (e: any) => {
+      d3.select("#canvas g").attr("transform", e.transform);
+    });
+
+    d3.select("#canvas").call(zoom as any);
+    d3.select("#canvas g").on("click", (e) => {
+      const [x, y] = d3.pointer(e);
+
+      updateChar(x, y);
+    });
+
+    d3.select("#main")
+      .append("div")
+      .attr("id", "tooltip")
+      .attr("style", "position: absolute; opacity: 0;");
+
+    d3.select("#canvas g")
+      .selectAll("circle")
+      .data(characters)
+      .join("circle")
+      .attr("cx", (d) => (d as CharList).x)
+      .attr("cy", (d) => (d as CharList).y)
+      .attr("r", circleSize)
+      .style("fill", (d) => `#${(d as CharList).color}`)
+      .style("stroke", "rgba(180, 180, 180, 0.8)")
+      .on("mouseover", (_, item) => {
+        d3.select("#tooltip")
+          .transition()
+          .duration(200)
+          .style("opacity", 1)
+          .text((item as CharList).name);
+      })
+      .on("mouseout", () => {
+        d3.select("#tooltip").style("opacity", 0);
+      })
+      .on("mousemove", (e) => {
+        d3.select("#tooltip")
+          .style("left", `${e.clientX + 5}px`)
+          .style("top", `${e.clientY + 5}px`);
+      });
+  }, [characters, circleSize, updateChar]);
 
   return (
-    <Box width={1} height={1}>
+    <Box
+      width={1}
+      height={1}
+      overflow="hidden"
+      display="flex"
+      flexDirection="column"
+    >
       <Navbar />
       <Box
+        position="relative"
         display="flex"
         flexDirection="column"
         sx={{
@@ -102,9 +78,10 @@ export default function Game() {
           backgroundColor: "rgba(75,21,31, 0.1)",
         }}
       >
-        <Grid container columns={4} height={1} width={1} overflow="hidden">
+        <Grid container columns={4} height={1} width={1}>
           <Grid item xs={3}>
             <Box
+              id="main"
               sx={{
                 height: 1,
                 display: "flex",
@@ -113,13 +90,11 @@ export default function Game() {
                 alignContent: "center",
               }}
             >
-              <img
-                src={chosenMap.link}
-                alt={chosenMap.name}
-                style={{
-                  alignSelf: "center",
-                }}
-              />
+              <svg id="canvas" width="100%" height="100%">
+                <g>
+                  <image href={chosenMap.link} x="0" y="0" />
+                </g>
+              </svg>
             </Box>
           </Grid>
 
@@ -132,28 +107,10 @@ export default function Game() {
               overflow: "auto",
             }}
           >
-            <List sx={{}}>
-              <ListItemButton onClick={() => setShowMaps(!showMaps)}>
-                <ListItemText primary="Maps" />
-                {showMaps ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={showMaps} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {maps.map((item, i) => (
-                    <ListItem
-                      key={i}
-                      onClick={() => setChosenMap(item)}
-                      sx={{ cursor: "pointer" }}
-                      divider
-                    >
-                      <ListItemButton>
-                        <ListItemText primary={item.name} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-            </List>
+            <MapDropdown />
+            <CharacterDropdown />
+            <ListOptions />
+            <SaveGame />
           </Grid>
         </Grid>
       </Box>

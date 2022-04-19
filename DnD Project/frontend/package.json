@@ -16,6 +16,7 @@
     "@types/react-helmet": "^6.1.5",
     "axios": "^0.26.1",
     "axios-auth-refresh": "^3.2.2",
+    "d3": "^7.4.4",
     "material-ui-image": "^3.3.2",
     "mui-image": "^1.0.4",
     "react": "^17.0.2",
@@ -55,9 +56,11 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+    "@types/d3": "^7.1.0",
     "@types/enzyme": "^3.10.11",
     "@types/jest": "^27.4.1",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
-    "enzyme": "^3.11.0"
+    "enzyme": "^3.11.0",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }

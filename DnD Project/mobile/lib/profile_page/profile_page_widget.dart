@@ -1,6 +1,5 @@
 import '../auth/auth_util.dart';
 import '../change_password/change_password_widget.dart';
-import '../dashboard2/dashboard2_widget.dart';
 import '../edit_profile/edit_profile_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -26,6 +25,31 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: FlutterFlowTheme.of(context).white,
+        automaticallyImplyLeading: false,
+        leading: FlutterFlowIconButton(
+          borderColor: Colors.transparent,
+          borderRadius: 30,
+          borderWidth: 1,
+          buttonSize: 60,
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: FlutterFlowTheme.of(context).darkSienna,
+            size: 25,
+          ),
+          onPressed: () {
+            print('IconButton pressed ...');
+          },
+        ),
+        title: Text(
+          'Profile',
+          style: FlutterFlowTheme.of(context).bodyText1,
+        ),
+        actions: [],
+        centerTitle: true,
+        elevation: 2,
+      ),
       backgroundColor: Color(0xFFF1F4F8),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -54,65 +78,31 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
-                            child: Card(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              color: FlutterFlowTheme.of(context).copperPenny,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(70),
-                              ),
-                              child: Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
-                                child: Container(
-                                  width: 76,
-                                  height: 76,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
+                          Align(
+                            alignment: AlignmentDirectional(0, 0),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 150, 0, 0),
+                              child: Text(
+                                valueOrDefault<String>(
+                                  random_data.randomString(
+                                    1,
+                                    10,
+                                    true,
+                                    false,
+                                    false,
                                   ),
-                                  child: Image.network(
-                                    valueOrDefault<String>(
-                                      random_data.randomImageUrl(
-                                        200,
-                                        200,
-                                      ),
-                                      'https://images.unsplash.com/photo-1596831440741-238efd4619cc?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTQ1fHxiYXNrZXRiYWxsJTIwcGxheWVyfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                                  'Balla #1',
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .title1
+                                    .override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context).white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                            child: Text(
-                              valueOrDefault<String>(
-                                random_data.randomString(
-                                  1,
-                                  10,
-                                  true,
-                                  false,
-                                  false,
-                                ),
-                                'Balla #1',
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .title1
-                                  .override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: FlutterFlowTheme.of(context).white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
                             ),
                           ),
                         ],
@@ -148,26 +138,6 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                       ),
                     ],
                   ),
-                ),
-                FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 25,
-                  borderWidth: 1,
-                  buttonSize: 60,
-                  fillColor: FlutterFlowTheme.of(context).darkSienna,
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: FlutterFlowTheme.of(context).nickel,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Dashboard2Widget(),
-                      ),
-                    );
-                  },
                 ),
               ],
             ),
