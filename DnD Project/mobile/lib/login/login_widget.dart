@@ -1,3 +1,5 @@
+import 'package:test2/dashboard2/dashboard2_widget.dart';
+
 import '../auth/auth_util.dart';
 import '../change_password/change_password_widget.dart';
 import '../create_account/create_account_widget.dart';
@@ -34,33 +36,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     passwordController = TextEditingController();
     passwordVisibility = false;
   }
-  
-  
-  Future<User> getUser() async {
-    final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/auth/login'),
-      headers: <String, String>{
-        'Content-Type' : 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username' : emailAddressController.text,
-        'password' : passwordController.text,
-      }),
-    );
 
-    if (response.statusCode == 200) {
-      await Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              ProfilePageWidget(),
-        ),
-            (r) => false,
-      );
-      return User.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Error logging in');
-    }
-  }
 
   Future<User> getUser() async {
     final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/auth/login'),
@@ -78,7 +54,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              ProfilePageWidget(),
+              Dashboard2Widget(),
         ),
             (r) => false,
       );
