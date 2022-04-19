@@ -1,30 +1,10 @@
 import { Router } from "express";
 import Session from "../models/Session";
 import checkAuth from "../utils/CheckAuth";
-import SessionCharacter, {
-  SessionCharacterInterface,
-} from "../models/SessionCharacter";
 
 const router = Router();
 
 router.use(checkAuth);
-
-const appendCharacter = async (
-  id: string,
-  character: SessionCharacterInterface
-) => {
-  return Session.findByIdAndUpdate(
-    id,
-    {
-      $push: {
-        character: {
-          ...character,
-        },
-      },
-    },
-    { new: true, useFindAndModify: false }
-  );
-};
 
 router.get("/listSessions", async (req, res) => {
   const { _id: userId } = res.locals;
@@ -65,17 +45,6 @@ router.post("/createSession", async (req, res) => {
     }
 
     const { name, map, characters } = req.body;
-    console.log({ name, map, characters });
-    // let sessionCharArray = await SessionCharacter.create(characters);
-
-    // let session = new Session({
-    //   userId,
-    //   name,
-    //   map,
-    //   characters: sessionCharArray.map(
-    //     (item: SessionCharacterInterface) => item._id
-    //   ),
-    // });
 
     let session = new Session({
       userId,
@@ -84,7 +53,6 @@ router.post("/createSession", async (req, res) => {
       characters,
     });
 
-    console.log(session);
     await session.save();
 
     return res.status(200).json({ message: "Session saved!" });
