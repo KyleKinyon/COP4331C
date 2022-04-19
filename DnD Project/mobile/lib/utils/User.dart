@@ -1,3 +1,4 @@
+class User {
   final String username;
   final String password;
   final String firstName;
