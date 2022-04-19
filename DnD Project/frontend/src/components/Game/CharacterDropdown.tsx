@@ -1,67 +1,75 @@
 import {
   Box,
+  Grid,
   Button,
-  Collapse,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  List,
   ListItem,
   ListItemButton,
   ListItemText,
   TextField,
 } from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { gameContext } from "./GameContext";
 import { CharList } from "../../utils/interfaces";
+import Dropdown from "../General/Dropdown";
 
 export default function CharacterDropdown() {
-  const { characters, addCharacter } = useContext(gameContext);
-  const [showList, setShowList] = useState(false);
+  const { characters, addCharacter, chosenChar, setChosenChar } =
+    useContext(gameContext);
 
   const [showDialog, setShowDialog] = useState(false);
-  const [charName, setCharName] = useState("");
+  const [charInfo, setCharInfo] = useState({
+    name: "",
+    color: "",
+  });
+
+  useEffect(() => {
+    if (showDialog)
+      setCharInfo({
+        name: "",
+        color: "",
+      });
+  }, [showDialog]);
 
   return (
     <>
-      <List sx={{}}>
-        <ListItemButton onClick={() => setShowList(!showList)}>
-          <ListItemText primary="Characters" />
-          {showList ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={showList} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {characters.map((item: CharList, i: number) => (
-              <ListItem
-                key={i}
-                onClick={() => {
-                  setShowList(false);
+      <Dropdown title="Character">
+        {characters.map((item: CharList, i: number) => (
+          <ListItem
+            key={i}
+            onClick={() => {
+              setChosenChar(item);
+            }}
+            sx={{
+              cursor: "pointer",
+            }}
+            divider
+          >
+            <ListItemButton>
+              <ListItemText
+                primary={item.name}
+                sx={{
+                  borderBottom: chosenChar === item ? "1px #B76861 solid" : "",
                 }}
-                sx={{ cursor: "pointer" }}
-                divider
-              >
-                <ListItemButton>
-                  <ListItemText primary={item.name} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-            <ListItem
-              onClick={() => {
-                setShowDialog(true);
-                setShowList(false);
-              }}
-              sx={{ cursor: "pointer" }}
-              divider
-            >
-              <ListItemButton>
-                <ListItemText primary="Add a Character" />
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </Collapse>
-      </List>
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        <ListItem
+          onClick={() => {
+            setShowDialog(true);
+          }}
+          sx={{ cursor: "pointer" }}
+          divider
+        >
+          <ListItemButton>
+            <ListItemText primary="Add a Character" />
+          </ListItemButton>
+        </ListItem>
+      </Dropdown>
 
       <Dialog
         open={showDialog}
@@ -86,9 +94,34 @@ export default function CharacterDropdown() {
             <TextField
               id="room"
               label="New Character"
-              value={charName}
-              onChange={(e) => setCharName(e.target.value)}
+              value={charInfo.name}
+              onChange={(e) =>
+                setCharInfo({ ...charInfo, name: e.target.value })
+              }
             />
+
+            <Box py={1} my={1}>
+              <Grid container columns={2} sx={{ width: 1, height: 1 }}>
+                <Grid item xs={1}>
+                  <TextField
+                    id="room"
+                    label="Color"
+                    value={charInfo.color}
+                    onChange={(e) =>
+                      setCharInfo({ ...charInfo, color: e.target.value })
+                    }
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={1}
+                  sx={{
+                    border: "1px black solid",
+                    backgroundColor: `#${charInfo.color}`,
+                  }}
+                />
+              </Grid>
+            </Box>
           </Box>
         </DialogContent>
         <DialogActions>
@@ -99,9 +132,9 @@ export default function CharacterDropdown() {
             variant="contained"
             onClick={() => {
               addCharacter({
-                name: charName,
-                x: 0,
-                y: 0,
+                ...charInfo,
+                x: 10,
+                y: 10,
               });
               setShowDialog(false);
             }}

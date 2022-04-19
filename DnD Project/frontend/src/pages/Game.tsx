@@ -1,43 +1,20 @@
-import { Box, Grid } from "@mui/material";
-import { useContext, useEffect, useState, useCallback } from "react";
-import Navbar from "../components/Navbar";
-import MapDropdown from "../components/Game/MapDropdown";
-import { gameContext } from "../components/Game/GameContext";
 import * as d3 from "d3";
+import { CharList } from "../utils/interfaces";
+
+import { Box, Grid } from "@mui/material";
+import Navbar from "../components/Navbar";
+
+import { useContext, useEffect } from "react";
+import { gameContext } from "../components/Game/GameContext";
+
+import MapDropdown from "../components/Game/MapDropdown";
 import CharacterDropdown from "../components/Game/CharacterDropdown";
-
-interface Point {
-  id: number;
-  x: number;
-  y: number;
-  letter: string;
-}
-
-let numPoints = 5;
+import ListOptions from "../components/Game/ListOptions";
+import SaveGame from "../components/Game/SaveGame";
 
 export default function Game() {
-  const [data, setData] = useState<Point[]>([]);
-  const { chosenMap } = useContext(gameContext);
-
-  const updateData = useCallback(() => {
-    let temp = [];
-    const letters = "abcdefghijklmnopqrstuvwxyz";
-    for (let i = 0; i < numPoints; i++) {
-      const num = Math.floor(Math.random() * (25 - 0 + 1)) + 0;
-      temp.push({
-        id: i,
-        x: Math.random() * 500,
-        y: Math.random() * 500,
-        letter: letters[num],
-      });
-    }
-
-    setData(temp);
-  }, []);
-
-  useEffect(() => {
-    updateData();
-  }, [updateData]);
+  const { characters, chosenMap, updateChar, circleSize } =
+    useContext(gameContext);
 
   useEffect(() => {
     let zoom = d3.zoom().on("zoom", (e: any) => {
@@ -48,17 +25,7 @@ export default function Game() {
     d3.select("#canvas g").on("click", (e) => {
       const [x, y] = d3.pointer(e);
 
-      const num = Math.floor(Math.random() * (25 - 0 + 1)) + 0;
-      const letters = "abcdefghijklmnopqrstuvwxyz";
-      setData([
-        ...data,
-        {
-          id: data.length,
-          x,
-          y,
-          letter: letters[num],
-        },
-      ]);
+      updateChar(x, y);
     });
 
     d3.select("#main")
@@ -68,18 +35,19 @@ export default function Game() {
 
     d3.select("#canvas g")
       .selectAll("circle")
-      .data(data)
+      .data(characters)
       .join("circle")
-      .attr("cx", (d) => d.x)
-      .attr("cy", (d) => d.y)
-      .attr("r", 5)
+      .attr("cx", (d) => (d as CharList).x)
+      .attr("cy", (d) => (d as CharList).y)
+      .attr("r", circleSize)
+      .style("fill", (d) => `#${(d as CharList).color}`)
       .style("stroke", "rgba(180, 180, 180, 0.8)")
-      .on("mouseover", (_, i) => {
+      .on("mouseover", (_, item) => {
         d3.select("#tooltip")
           .transition()
           .duration(200)
           .style("opacity", 1)
-          .text(i.letter);
+          .text((item as CharList).name);
       })
       .on("mouseout", () => {
         d3.select("#tooltip").style("opacity", 0);
@@ -89,10 +57,16 @@ export default function Game() {
           .style("left", `${e.clientX + 5}px`)
           .style("top", `${e.clientY + 5}px`);
       });
-  }, [data, chosenMap]);
+  }, [characters, circleSize, updateChar]);
 
   return (
-    <Box width={1} height={1} overflow="hidden">
+    <Box
+      width={1}
+      height={1}
+      overflow="hidden"
+      display="flex"
+      flexDirection="column"
+    >
       <Navbar />
       <Box
         position="relative"
@@ -104,7 +78,7 @@ export default function Game() {
           backgroundColor: "rgba(75,21,31, 0.1)",
         }}
       >
-        <Grid container columns={4} height={1} width={1} overflow="hidden">
+        <Grid container columns={4} height={1} width={1}>
           <Grid item xs={3}>
             <Box
               id="main"
@@ -135,6 +109,8 @@ export default function Game() {
           >
             <MapDropdown />
             <CharacterDropdown />
+            <ListOptions />
+            <SaveGame />
           </Grid>
         </Grid>
       </Box>

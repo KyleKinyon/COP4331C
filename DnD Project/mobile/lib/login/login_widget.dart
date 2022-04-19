@@ -34,6 +34,33 @@ class _LoginWidgetState extends State<LoginWidget> {
     passwordController = TextEditingController();
     passwordVisibility = false;
   }
+  
+  
+  Future<User> getUser() async {
+    final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/auth/login'),
+      headers: <String, String>{
+        'Content-Type' : 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'username' : emailAddressController.text,
+        'password' : passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      await Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ProfilePageWidget(),
+        ),
+            (r) => false,
+      );
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Error logging in');
+    }
+  }
 
   Future<User> getUser() async {
     final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/auth/login'),
@@ -306,7 +333,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 onPressed: () async => {
                                   getUser(),
                                 },
-
                                 text: 'Login',
                                 options: FFButtonOptions(
                                   width: 130,
