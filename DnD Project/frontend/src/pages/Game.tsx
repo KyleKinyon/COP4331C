@@ -4,7 +4,7 @@ import { CharList } from "../utils/interfaces";
 import { Box, Grid } from "@mui/material";
 import Navbar from "../components/Navbar";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { gameContext } from "../components/Game/GameContext";
 
 import MapDropdown from "../components/Game/MapDropdown";

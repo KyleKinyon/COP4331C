@@ -28,7 +28,6 @@ export default function SaveGame() {
           onClick={async (e) => {
             e.preventDefault();
 
-            console.log(sessionUrl);
             !sessionUrl ? setShowDialog(true) : saveGame();
           }}
         >

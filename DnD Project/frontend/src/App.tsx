@@ -21,12 +21,6 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./css/styles.css";
 
-/*
-
-TODO: Main app functionality implemented
-
-*/
-
 const theme = createTheme({
   palette: {
     primary: {

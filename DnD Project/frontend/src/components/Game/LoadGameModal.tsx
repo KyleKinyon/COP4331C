@@ -23,8 +23,12 @@ interface LoadGameProps {
 }
 
 export default function LoadGame({ open, close }: LoadGameProps) {
-  const { loadGame, newGame } = useContext(gameContext);
+  const { loadGame, newGame, deleteGame } = useContext(gameContext);
   const [games, setGames] = useState<Game[]>([]);
+
+  const removeGameFromList = (item: Game) => {
+    setGames(games.filter((iter) => item !== iter));
+  };
 
   useEffect(() => {
     (async () => {
@@ -53,7 +57,10 @@ export default function LoadGame({ open, close }: LoadGameProps) {
                   <IconButton
                     edge="end"
                     aria-label="delete"
-                    onClick={() => console.log("Delete")}
+                    onClick={() => {
+                      deleteGame(item);
+                      removeGameFromList(item);
+                    }}
                   >
                     <Delete />
                   </IconButton>
@@ -77,6 +84,7 @@ export default function LoadGame({ open, close }: LoadGameProps) {
               <ListItemButton
                 onClick={() => {
                   newGame();
+                  close();
                 }}
               >
                 <ListItemText primary="Create a new game" />

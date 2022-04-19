@@ -150,12 +150,23 @@ export default function GameProvider({ children }: GameProviderProps) {
     }
   };
 
-  const newGame = async () => {
+  const newGame = () => {
     setCharacters([]);
     setChosenChar(null);
     setChosenMap(maps[0]);
     setSessionUrl(null);
     setSessionName("");
+  };
+
+  const deleteGame = async ({ _id, name }: Game) => {
+    await req.post("/session/deleteSession", {
+      id: _id,
+      name,
+    });
+
+    if (_id === sessionUrl) {
+      newGame();
+    }
   };
 
   return (
@@ -177,6 +188,7 @@ export default function GameProvider({ children }: GameProviderProps) {
         setSessionName,
 
         // methods
+        deleteGame,
         loadGame,
         newGame,
         addCharacter,
