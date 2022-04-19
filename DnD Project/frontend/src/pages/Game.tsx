@@ -1,43 +1,16 @@
-import { Box, Grid } from "@mui/material";
-import { useContext, useEffect, useState, useCallback } from "react";
+import { Box, Button, Grid, Slider } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import MapDropdown from "../components/Game/MapDropdown";
 import { gameContext } from "../components/Game/GameContext";
 import * as d3 from "d3";
 import CharacterDropdown from "../components/Game/CharacterDropdown";
-
-interface Point {
-  id: number;
-  x: number;
-  y: number;
-  letter: string;
-}
-
-let numPoints = 5;
+import { CharList } from "../utils/interfaces";
+import SaveGame from "../components/Game/SaveGame";
 
 export default function Game() {
-  const [data, setData] = useState<Point[]>([]);
-  const { chosenMap } = useContext(gameContext);
-
-  const updateData = useCallback(() => {
-    let temp = [];
-    const letters = "abcdefghijklmnopqrstuvwxyz";
-    for (let i = 0; i < numPoints; i++) {
-      const num = Math.floor(Math.random() * (25 - 0 + 1)) + 0;
-      temp.push({
-        id: i,
-        x: Math.random() * 500,
-        y: Math.random() * 500,
-        letter: letters[num],
-      });
-    }
-
-    setData(temp);
-  }, []);
-
-  useEffect(() => {
-    updateData();
-  }, [updateData]);
+  const { characters, chosenMap, updateChar } = useContext(gameContext);
+  const [circleSize, setCircleSize] = useState(5);
 
   useEffect(() => {
     let zoom = d3.zoom().on("zoom", (e: any) => {
@@ -48,17 +21,7 @@ export default function Game() {
     d3.select("#canvas g").on("click", (e) => {
       const [x, y] = d3.pointer(e);
 
-      const num = Math.floor(Math.random() * (25 - 0 + 1)) + 0;
-      const letters = "abcdefghijklmnopqrstuvwxyz";
-      setData([
-        ...data,
-        {
-          id: data.length,
-          x,
-          y,
-          letter: letters[num],
-        },
-      ]);
+      updateChar(x, y);
     });
 
     d3.select("#main")
@@ -68,18 +31,19 @@ export default function Game() {
 
     d3.select("#canvas g")
       .selectAll("circle")
-      .data(data)
+      .data(characters)
       .join("circle")
-      .attr("cx", (d) => d.x)
-      .attr("cy", (d) => d.y)
-      .attr("r", 5)
+      .attr("cx", (d) => (d as CharList).x)
+      .attr("cy", (d) => (d as CharList).y)
+      .attr("r", circleSize)
+      .style("fill", (d) => `#${(d as CharList).color}`)
       .style("stroke", "rgba(180, 180, 180, 0.8)")
       .on("mouseover", (_, i) => {
         d3.select("#tooltip")
           .transition()
           .duration(200)
           .style("opacity", 1)
-          .text(i.letter);
+          .text((i as CharList).name);
       })
       .on("mouseout", () => {
         d3.select("#tooltip").style("opacity", 0);
@@ -89,7 +53,7 @@ export default function Game() {
           .style("left", `${e.clientX + 5}px`)
           .style("top", `${e.clientY + 5}px`);
       });
-  }, [data, chosenMap]);
+  }, [characters, chosenMap, circleSize, updateChar]);
 
   return (
     <Box width={1} height={1} overflow="hidden">
@@ -133,8 +97,35 @@ export default function Game() {
               overflow: "auto",
             }}
           >
-            <MapDropdown />
-            <CharacterDropdown />
+            <Box
+              sx={{
+                height: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignContent: "center",
+              }}
+            >
+              <MapDropdown />
+              <CharacterDropdown />
+              <Box p={3}>
+                <Slider
+                  onChange={(e, newVal) => {
+                    e.preventDefault();
+                    setCircleSize(newVal as number);
+                  }}
+                  aria-label="Temperature"
+                  valueLabelDisplay="auto"
+                  defaultValue={5}
+                  step={1}
+                  min={5}
+                  max={15}
+                  marks
+                />
+              </Box>
+
+              <SaveGame />
+            </Box>
           </Grid>
         </Grid>
       </Box>

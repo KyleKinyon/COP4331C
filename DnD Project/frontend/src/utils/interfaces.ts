@@ -44,6 +44,7 @@ export interface Character {
 }
 
 export interface CharList {
+	color: string;
   name: string;
 	x: number;
 	y: number;

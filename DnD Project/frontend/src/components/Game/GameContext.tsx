@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { CharList } from "../../utils/interfaces";
+import req from "../../utils/request";
 
 const maps = [
   {
@@ -84,10 +85,48 @@ interface GameProviderProps {
 
 export default function GameProvider({ children }: GameProviderProps) {
   const [chosenMap, setChosenMap] = useState(maps[0]);
+  const [chosenChar, setChosenChar] = useState<CharList | null>(null);
   const [characters, setCharacters] = useState<CharList[]>([]);
+  const [sessionUrl, setSessionUrl] = useState<string | null>(null);
+
+  const updateChar = (x: number, y: number) => {
+    setCharacters(
+      characters.map((item: CharList) => {
+        if (item === chosenChar) {
+          let newData = { ...item, x, y };
+          setChosenChar(newData);
+          return newData;
+        } else {
+          return item;
+        }
+      })
+    );
+  };
 
   const addCharacter = (item: CharList) => {
     setCharacters([...characters, item]);
+    setChosenChar(item);
+  };
+
+  const saveGame = async (name: string, newSession: boolean = false) => {
+    let obj = {
+      name,
+      map: chosenMap.link,
+      characters,
+    };
+
+    let url = newSession ? "/session/createSession" : "/session/updateSession";
+
+    try {
+      await req.post(url, obj);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  const loadGame = async () => {
+    setSessionUrl(null);
   };
 
   return (
@@ -99,6 +138,10 @@ export default function GameProvider({ children }: GameProviderProps) {
         characters,
         setCharacters,
         addCharacter,
+        updateChar,
+        chosenChar,
+        setChosenChar,
+        saveGame,
       }}
     >
       {children}

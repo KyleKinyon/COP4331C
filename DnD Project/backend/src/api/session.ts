@@ -1,155 +1,119 @@
 import { Router } from "express";
 import Session from "../models/Session";
 import checkAuth from "../utils/CheckAuth";
-import { genSalt, hash } from "bcrypt";
-import User from "../models/User";
-import { compare } from "bcrypt";
+import SessionCharacter, {
+  SessionCharacterInterface,
+} from "../models/SessionCharacter";
 
 const router = Router();
 
 router.use(checkAuth);
 
+const appendCharacter = async (
+  id: string,
+  character: SessionCharacterInterface
+) => {
+  return Session.findByIdAndUpdate(
+    id,
+    {
+      $push: {
+        character: {
+          ...character,
+        },
+      },
+    },
+    { new: true, useFindAndModify: false }
+  );
+};
+
+router.get("/listSessions", async (req, res) => {
+  const { _id: userId } = res.locals;
+
+  try {
+    let data = await Session.find({ userId }).exec();
+
+    return res.status(200).json({ sessions: data });
+  } catch (err) {
+    return res.status(500).json({ error: "Issue getting sessions" });
+  }
+});
+
 router.post("/createSession", async (req, res) => {
-    const { sessionName, sessionPassword } = req.body;
-	const { _id: userId } = res.locals;
+  const { _id: userId } = res.locals;
 
-	if (!sessionName || !sessionPassword) {
-		return res.status(400).json({ error: "Session info not provided" });
-	}
+  let keys = Object.keys(req.body);
+  let contains = ["name", "map", "characters"].every((item) =>
+    keys.includes(item)
+  );
 
-	let data = await Session.findOne({ sessionName: sessionName }).exec();
+  if (!contains) {
+    return res
+      .status(400)
+      .json({ error: "Does not include name, map, characters" });
+  }
 
-	if (data) {
-		return res.status(400).json({ error: "Session name is already in use" });
-	}
+  try {
+    let conflict = await Session.find({ userId })
+      .where("name")
+      .equals(req.body.name)
+      .exec();
 
-	const filter = { _id: userId, sessionName: "" };
-	const update = { sessionName: sessionName };
+    if (conflict.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "Session with same name already exists" });
+    }
 
-	data = await User.findOneAndUpdate(filter, update).exec();
+    const { name, map, characters } = req.body;
+    console.log({ name, map, characters });
+    // let sessionCharArray = await SessionCharacter.create(characters);
 
-	if (!data) {
-		return res.status(400).json({ error: "User is already in a session" });
-	}
+    // let session = new Session({
+    //   userId,
+    //   name,
+    //   map,
+    //   characters: sessionCharArray.map(
+    //     (item: SessionCharacterInterface) => item._id
+    //   ),
+    // });
 
-    const salt = await genSalt(12);
-	const hashedPassword: string = await hash(sessionPassword, salt);
+    let session = await Session.create({
+      userId,
+      name,
+      map,
+    });
 
-	data = await Session.create({ sessionName: sessionName, sessionPassword: hashedPassword, map: "" });
-	
-	return res.status(200).json({ data });
+    console.log(session);
+    await session.save({ validateBeforeSave: false });
+
+    return res.status(200).json({ message: "Session saved!" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Issue saving data to server." });
+  }
 });
 
 router.post("/deleteSession", async (req, res) => {
-	const { sessionId, sessionName } = req.body;
+  const { id, name } = req.body;
 
-	if (!sessionId || !sessionName) {
-		return res.status(400).json({ error: "Session info not provided" });
-	}
+  if (!id || !name) {
+    return res.status(400).json({ error: "Session info not provided" });
+  }
 
-	try {
-		let data = await Session.findOneAndDelete({ _id: sessionId, sessionName: sessionName }).exec();
+  try {
+    let data = await Session.findOneAndDelete({
+      _id: id,
+      name,
+    }).exec();
 
-		if (!data) {
-			return res.status(400).json({ error: "Session does not exist" });
-		}
+    if (!data) {
+      return res.status(400).json({ error: "Session does not exist" });
+    }
 
-		const filter = { sessionName: sessionName };
-		const update = { sessionName: "" };
-
-		await User.updateMany(filter, update).exec();
-
-		res.status(200).json({ message: "Session successfully deleted" });
-
-	} catch (error) {
-		res.status(200).json({ error: "Invalid JSON value(s)" });
-	}
-});
-
-router.post("/joinSession", async (req, res) => {
-	const { sessionName, sessionPassword } = req.body;
-	const { _id: userId } = res.locals;
-
-	if (!sessionName || !sessionPassword) {
-		return res.status(400).json({ error: "Session info not provided" });
-	}
-
-	let data = await Session.findOne({ sessionName: sessionName }).exec();
-
-	if (!data) {
-		return res.status(400).json({ error: "Session does not exist" });
-	}
-
-	const validPassword = await compare(sessionPassword, data.sessionPassword);
-	if (!validPassword) {
-		return res.status(400).json({ error: "Incorrect password" });
-	}
-
-	const filter = { _id: userId, sessionName: "" };
-	const update = { sessionName: sessionName };
-
-	data = await User.findOneAndUpdate(filter, update).exec();
-
-	if (!data) {
-		return res.status(400).json({ error: "User is already in a session" });
-	}
-
-	res.status(200).json({ message: "User added to session" });
-});
-
-router.post("/leaveSession", async (req, res) => {
-	const { sessionName } = req.body;
-	const { _id: userId } = res.locals;
-
-	if (!sessionName) {
-		return res.status(400).json({ error: "Session info not provided" });
-	}
-
-	const filter = { _id: userId, sessionName: sessionName };
-	const update = { sessionName: "" };
-
-	let data = await User.findOneAndUpdate(filter, update).exec();
-
-	if (!data) {
-		return res.status(400).json({ error: "User does not belong to this session" });
-	}
-	
-	data = await User.findOne({ sessionName: sessionName }).exec();
-	if (!data) {
-		let data = await Session.findOneAndDelete({ sessionName: sessionName }).exec();
-	}
-
-	res.status(200).json({ message: "User left session" });
-});
-
-router.post("/changeMap", async (req, res) => {
-	const { sessionId, map } = req.body;
-
-	if (!sessionId) {
-		return res.status(400).json({ error: "Session info not provided" });
-	}
-	if (!map) {
-		return res.status(400).json({ error: "Map info not provided" });
-	}
-
-	const filter = { _id: sessionId };
-	const update = { map: map };
-
-	try {
-		let data = await Session.findOneAndUpdate(filter, update).exec();
-
-		if (!data) {
-			return res.status(400).json({ error: "Session does not exist" });
-		}
-		
-		res.status(200).json({ message: "Map updated" });
-
-	} catch (error) {
-		res.status(200).json({ error: "Invalid JSON value(s)" });
-	}
-});
-
-router.post("/updateCoords", async (req, res) => {
+    return res.status(200).json({ message: "Session successfully deleted" });
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid JSON value(s)" });
+  }
 });
 
 export default router;

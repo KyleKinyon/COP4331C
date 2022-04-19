@@ -13,16 +13,28 @@ import {
   TextField,
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { gameContext } from "./GameContext";
 import { CharList } from "../../utils/interfaces";
 
 export default function CharacterDropdown() {
-  const { characters, addCharacter } = useContext(gameContext);
+  const { characters, addCharacter, chosenChar, setChosenChar } =
+    useContext(gameContext);
   const [showList, setShowList] = useState(false);
 
   const [showDialog, setShowDialog] = useState(false);
-  const [charName, setCharName] = useState("");
+  const [charInfo, setCharInfo] = useState({
+    name: "",
+    color: "",
+  });
+
+  useEffect(() => {
+    if (showDialog)
+      setCharInfo({
+        name: "",
+        color: "",
+      });
+  }, [showDialog]);
 
   return (
     <>
@@ -37,20 +49,27 @@ export default function CharacterDropdown() {
               <ListItem
                 key={i}
                 onClick={() => {
-                  setShowList(false);
+                  setChosenChar(item);
                 }}
-                sx={{ cursor: "pointer" }}
+                sx={{
+                  cursor: "pointer",
+                }}
                 divider
               >
                 <ListItemButton>
-                  <ListItemText primary={item.name} />
+                  <ListItemText
+                    primary={item.name}
+                    sx={{
+                      borderBottom:
+                        chosenChar === item ? "1px #B76861 solid" : "",
+                    }}
+                  />
                 </ListItemButton>
               </ListItem>
             ))}
             <ListItem
               onClick={() => {
                 setShowDialog(true);
-                setShowList(false);
               }}
               sx={{ cursor: "pointer" }}
               divider
@@ -86,8 +105,19 @@ export default function CharacterDropdown() {
             <TextField
               id="room"
               label="New Character"
-              value={charName}
-              onChange={(e) => setCharName(e.target.value)}
+              value={charInfo.name}
+              onChange={(e) =>
+                setCharInfo({ ...charInfo, name: e.target.value })
+              }
+            />
+
+            <TextField
+              id="room"
+              label="Color"
+              value={charInfo.color}
+              onChange={(e) =>
+                setCharInfo({ ...charInfo, color: e.target.value })
+              }
             />
           </Box>
         </DialogContent>
@@ -99,7 +129,7 @@ export default function CharacterDropdown() {
             variant="contained"
             onClick={() => {
               addCharacter({
-                name: charName,
+                ...charInfo,
                 x: 0,
                 y: 0,
               });
