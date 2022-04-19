@@ -4,10 +4,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   List,
+  ListItem,
   ListItemButton,
   Typography,
 } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 import { gameContext } from "./GameContext";
 import { useContext, useEffect, useState } from "react";
 import { Game } from "../../utils/interfaces";
@@ -20,7 +23,7 @@ interface LoadGameProps {
 }
 
 export default function LoadGame({ open, close }: LoadGameProps) {
-  const { loadGame } = useContext(gameContext);
+  const { loadGame, newGame } = useContext(gameContext);
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
@@ -34,7 +37,7 @@ export default function LoadGame({ open, close }: LoadGameProps) {
         console.error(error);
       }
     })();
-  }, []);
+  }, [open]);
 
   return (
     <Dialog open={open} fullWidth>
@@ -43,18 +46,42 @@ export default function LoadGame({ open, close }: LoadGameProps) {
         {games.length > 0 && (
           <List>
             {games.map((item, i) => (
-              <ListItemButton
+              <ListItem
                 key={i}
+                divider
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => console.log("Delete")}
+                  >
+                    <Delete />
+                  </IconButton>
+                }
+              >
+                <ListItemButton
+                  onClick={() => {
+                    loadGame(item);
+                    close();
+                  }}
+                >
+                  <ListItemText
+                    primary={item.name}
+                    secondary={`Map: ${item.map.name}`}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+
+            <ListItem divider>
+              <ListItemButton
                 onClick={() => {
-                  loadGame(item?.id);
+                  newGame();
                 }}
               >
-                <ListItemText
-                  primary={item.name}
-                  secondary={`Map: ${item.map.name}`}
-                />
+                <ListItemText primary="Create a new game" />
               </ListItemButton>
-            ))}
+            </ListItem>
           </List>
         )}
 

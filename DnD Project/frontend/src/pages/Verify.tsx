@@ -15,9 +15,12 @@ export default function Verify() {
 
   const VerifyAccount = async () => {
     try {
-      await request.post("/auth/verifyUser", { username });
-    } catch (error) {}
-    navigation("/login");
+      request
+        .post("/auth/verifyUser", { username })
+        .then(() => navigation("/dashboard"));
+    } catch (error) {
+      console.log("Issue with verifying user.");
+    }
   };
 
   // TODO: Replace temporary UI for testing with actual good UI.

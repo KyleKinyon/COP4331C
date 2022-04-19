@@ -56,8 +56,8 @@ export interface MapList {
 }
 
 export interface Game {
-  id?: string;
+  _id?: string;
   name: string;
   map: MapList;
-  characters: CharList;
+  characters: CharList[];
 }

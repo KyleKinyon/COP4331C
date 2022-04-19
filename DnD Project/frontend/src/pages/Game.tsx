@@ -60,7 +60,13 @@ export default function Game() {
   }, [characters, circleSize, updateChar]);
 
   return (
-    <Box width={1} height={1} overflow="hidden">
+    <Box
+      width={1}
+      height={1}
+      overflow="hidden"
+      display="flex"
+      flexDirection="column"
+    >
       <Navbar />
       <Box
         position="relative"
@@ -72,7 +78,7 @@ export default function Game() {
           backgroundColor: "rgba(75,21,31, 0.1)",
         }}
       >
-        <Grid container columns={4} height={1} width={1} overflow="hidden">
+        <Grid container columns={4} height={1} width={1}>
           <Grid item xs={3}>
             <Box
               id="main"
@@ -101,20 +107,10 @@ export default function Game() {
               overflow: "auto",
             }}
           >
-            <Box
-              sx={{
-                height: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                alignContent: "center",
-              }}
-            >
-              <MapDropdown />
-              <CharacterDropdown />
-              <ListOptions />
-              <SaveGame />
-            </Box>
+            <MapDropdown />
+            <CharacterDropdown />
+            <ListOptions />
+            <SaveGame />
           </Grid>
         </Grid>
       </Box>

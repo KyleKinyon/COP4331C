@@ -14,10 +14,10 @@ import { gameContext } from "./GameContext";
 // TODO: Save existing or create a new one
 
 export default function SaveGame() {
-  const { saveGame } = useContext(gameContext);
+  const { saveGame, sessionUrl, sessionName, setSessionName } =
+    useContext(gameContext);
   // const location = useLocation();
   const [showDialog, setShowDialog] = useState(false);
-  const [sessionName, setSessionName] = useState("");
 
   return (
     <>
@@ -27,7 +27,9 @@ export default function SaveGame() {
           fullWidth
           onClick={async (e) => {
             e.preventDefault();
-            setShowDialog(true);
+
+            console.log(sessionUrl);
+            !sessionUrl ? setShowDialog(true) : saveGame();
           }}
         >
           Save

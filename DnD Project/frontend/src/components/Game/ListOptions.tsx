@@ -37,7 +37,7 @@ export default function ListOptions() {
             }}
             aria-label="Temperature"
             valueLabelDisplay="auto"
-            defaultValue={5}
+            defaultValue={10}
             step={1}
             min={5}
             max={15}

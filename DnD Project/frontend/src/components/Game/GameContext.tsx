@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { CharList } from "../../utils/interfaces";
+import { CharList, Game } from "../../utils/interfaces";
 import req from "../../utils/request";
 
 const maps = [
@@ -87,19 +87,20 @@ export default function GameProvider({ children }: GameProviderProps) {
   const [chosenMap, setChosenMap] = useState(maps[0]);
   const [chosenChar, setChosenChar] = useState<CharList | null>(null);
   const [characters, setCharacters] = useState<CharList[]>([]);
-  const [circleSize, setCircleSize] = useState(5);
+  const [sessionName, setSessionName] = useState("");
+  const [circleSize, setCircleSize] = useState(10);
   const [sessionUrl, setSessionUrl] = useState<string | null>(null);
 
   const updateChar = (x: number, y: number) => {
     setCharacters(
       characters.map((item: CharList) => {
-        if (item === chosenChar) {
-          let newData = { ...item, x, y };
-          setChosenChar(newData);
-          return newData;
-        } else {
+        if (item !== chosenChar) {
           return item;
         }
+
+        let newData = { ...item, x, y };
+        setChosenChar(newData);
+        return newData;
       })
     );
   };
@@ -109,14 +110,21 @@ export default function GameProvider({ children }: GameProviderProps) {
     setChosenChar(item);
   };
 
-  const saveGame = async (name: string, newSession: boolean = false) => {
-    let obj = {
-      name,
-      map: chosenMap.link,
+  const saveGame = async (name: string) => {
+    let obj: Game = {
+      name: sessionName || name,
+      map: chosenMap,
       characters,
     };
 
-    let url = newSession ? "/session/createSession" : "/session/updateSession";
+    let url = "";
+
+    if (sessionUrl) {
+      url = `/session/updateSession`;
+      obj._id = sessionUrl;
+    } else {
+      url = "/session/createSession";
+    }
 
     try {
       await req.post(url, obj);
@@ -126,8 +134,28 @@ export default function GameProvider({ children }: GameProviderProps) {
     }
   };
 
-  const loadGame = async () => {
+  const loadGame = async (item: Game) => {
+    try {
+      setChosenMap(item.map);
+      setCharacters(item.characters);
+      setSessionName(item.name);
+
+      if (!item._id) {
+        throw new Error("Id is not part of item");
+      }
+
+      setSessionUrl(item._id as string);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const newGame = async () => {
+    setCharacters([]);
+    setChosenChar(null);
+    setChosenMap(maps[0]);
     setSessionUrl(null);
+    setSessionName("");
   };
 
   return (
@@ -145,9 +173,12 @@ export default function GameProvider({ children }: GameProviderProps) {
         setChosenChar,
         circleSize,
         setCircleSize,
+        sessionName,
+        setSessionName,
 
         // methods
         loadGame,
+        newGame,
         addCharacter,
         updateChar,
         saveGame,
