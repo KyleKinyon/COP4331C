@@ -1,5 +1,6 @@
 import 'package:test2/dashboard2/dashboard2_widget.dart';
-
+import '../dashboard2/dashboard2_widget.dart';
+import '../utils/Character.dart';
 import '../auth/auth_util.dart';
 import '../change_password/change_password_widget.dart';
 import '../create_account/create_account_widget.dart';
@@ -9,6 +10,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../profile_page/profile_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 import '../utils/User.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -28,6 +30,8 @@ class _LoginWidgetState extends State<LoginWidget> {
   bool passwordVisibility;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   User _user;
+  List<Character> characters;
+  final LocalStorage storage = new LocalStorage('localStorage');
 
   @override
   void initState() {
@@ -35,7 +39,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     emailAddressController = TextEditingController();
     passwordController = TextEditingController();
     passwordVisibility = false;
-  }
+    }
 
 
   Future<User> getUser() async {
@@ -53,14 +57,18 @@ class _LoginWidgetState extends State<LoginWidget> {
 
     if (response.statusCode == 200) {
       _user = User.fromJson(jsonDecode(response.body));
+      await storage.setItem('accessToken', _user.accessToken);
+      await storage.setItem('refreshToken', _user.refreshToken);
+      characters = await getChars();
       await Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) =>
-              Dashboard2Widget(user: _user),
+              Dashboard2Widget(user: _user, characters: characters),
         ),
             (r) => false,
       );
+
       return _user;
     }
     else
@@ -69,6 +77,32 @@ class _LoginWidgetState extends State<LoginWidget> {
         return null;
     }
     }
+  
+    Future<List<Character>> getChars() async {
+    try {
+      print('starting');
+      final accessToken = storage.getItem('accessToken');
+      final response = await http.get(Uri.parse('https://cop4331-dnd.herokuapp.com/char/selectCharacter'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
+
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var characterObjectsJson = jsonDecode(response.body)['characters'] as List;
+        List<Character> characterList = characterObjectsJson.map((charJson) => Character.fromJson(charJson)).toList();
+        return characterList;
+      }
+      else
+        return null;
+    } catch(error) {
+      print(error);
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
