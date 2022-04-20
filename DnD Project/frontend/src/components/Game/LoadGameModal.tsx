@@ -7,6 +7,7 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemText,
   ListItemButton,
   Typography,
 } from "@mui/material";
@@ -14,7 +15,6 @@ import { Delete } from "@mui/icons-material";
 import { gameContext } from "./GameContext";
 import { useContext, useEffect, useState } from "react";
 import { Game } from "../../utils/interfaces";
-import { ListItemText } from "@material-ui/core";
 import req from "../../utils/request";
 
 interface LoadGameProps {

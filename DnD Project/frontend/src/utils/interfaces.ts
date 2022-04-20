@@ -60,4 +60,5 @@ export interface Game {
   name: string;
   map: MapList;
   characters: CharList[];
+  // logs: string[]
 }

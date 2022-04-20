@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { CharList, Game } from "../../utils/interfaces";
 import req from "../../utils/request";
 
@@ -90,6 +90,14 @@ export default function GameProvider({ children }: GameProviderProps) {
   const [sessionName, setSessionName] = useState("");
   const [circleSize, setCircleSize] = useState(10);
   const [sessionUrl, setSessionUrl] = useState<string | null>(null);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  const addLog = useCallback(
+    (text: string) => {
+      setLogs([...logs, text]);
+    },
+    [logs]
+  );
 
   const updateChar = (x: number, y: number) => {
     setCharacters(
@@ -105,9 +113,15 @@ export default function GameProvider({ children }: GameProviderProps) {
     );
   };
 
+  const removeCharacter = (idx: number) => {
+    addLog(`${characters[idx].name} has fallen!`);
+    setCharacters(characters.filter((_, i) => i === idx));
+  };
+
   const addCharacter = (item: CharList) => {
     setCharacters([...characters, item]);
     setChosenChar(item);
+    addLog(`${item.name} has joined the game.`);
   };
 
   const saveGame = async (name: string) => {
@@ -138,6 +152,7 @@ export default function GameProvider({ children }: GameProviderProps) {
     try {
       setChosenMap(item.map);
       setCharacters(item.characters);
+      setChosenChar(characters[0]);
       setSessionName(item.name);
 
       if (!item._id) {
@@ -188,9 +203,11 @@ export default function GameProvider({ children }: GameProviderProps) {
         setSessionName,
 
         // methods
+        addLog,
         deleteGame,
         loadGame,
         newGame,
+        removeCharacter,
         addCharacter,
         updateChar,
         saveGame,

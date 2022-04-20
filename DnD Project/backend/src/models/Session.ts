@@ -21,6 +21,7 @@ const SessionSchema = new Schema({
       color: { type: String, default: "000" },
     },
   ],
+  logs: [String],
 });
 
 const Session = model("Session", SessionSchema);

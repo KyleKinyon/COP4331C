@@ -11,6 +11,7 @@ import MapDropdown from "../components/Game/MapDropdown";
 import CharacterDropdown from "../components/Game/CharacterDropdown";
 import ListOptions from "../components/Game/ListOptions";
 import SaveGame from "../components/Game/SaveGame";
+import RollDice from "../components/Game/RollDice";
 
 export default function Game() {
   const { characters, chosenMap, updateChar, circleSize } =
@@ -110,6 +111,7 @@ export default function Game() {
             <MapDropdown />
             <CharacterDropdown />
             <ListOptions />
+            <RollDice />
             <SaveGame />
           </Grid>
         </Grid>
