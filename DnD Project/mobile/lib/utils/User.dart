@@ -9,6 +9,7 @@ class User {
   final bool verified;
   final String sessionName;
   final String accessToken;
+  final String refreshToken;
 
   const User({
     this.username,
@@ -19,6 +20,7 @@ class User {
     this.verified,
     this.sessionName,
     this.accessToken,
+    this.refreshToken,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class User {
       verified: json['verified'],
       sessionName: json['sessionName'],
       accessToken: json['accessToken'],
+      refreshToken: json['refreshToken'],
     );
   }
 }
