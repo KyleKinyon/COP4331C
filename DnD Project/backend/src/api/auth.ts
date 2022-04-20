@@ -187,4 +187,34 @@ router.post("/verifyUser", async (req,res) => {
     }
 });
 
+// NEEDS ADJUSTING
+// I'm unsure how we plan to route the frontend password reset but here's the basic framework needed
+router.post("/forgotPassword", async (req,res) => {
+	const { userId, email } = req.body;
+
+	if (!userId || !email) {
+		return res.status(400).json({ error: "User info not provided" });
+	}
+
+	const msg = {
+		to: email,
+		from: 'group25DemoGod@gmail.com',
+		subject: 'Verfication email',
+		text: 'https://cop4331-dnd.herokuapp.com/dashboard/resetPassword',
+		html: `
+		<div>
+			<h1><strong>DnD 25</strong> password reset</h1>
+			<h4>Click this link <a href='${baseURL}/resetPassword/${userId}'>here</a> to reset your password.</h4>
+		</div>`,
+	}
+
+	try {
+		sendgrid.send(msg);
+		return res.status(200).json({ message: "E-mail sent" });
+	} catch (err) {
+		console.error(err);
+		return res.status(400).json({ error: "Error sending E-mail" });
+	}
+});
+
 export default router;
