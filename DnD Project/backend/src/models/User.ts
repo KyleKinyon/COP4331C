@@ -7,7 +7,6 @@ const UserSchema = new Schema({
 	lastName: { type: String, default: "" },
 	email: String,
 	verified: { type: Boolean, default: false },
-	sessionName: { type: String, default: "" },
 })
 
 const User = model('User', UserSchema);
