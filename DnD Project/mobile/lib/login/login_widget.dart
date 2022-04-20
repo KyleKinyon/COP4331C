@@ -27,7 +27,7 @@ class _LoginWidgetState extends State<LoginWidget> {
   TextEditingController passwordController;
   bool passwordVisibility;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  Future<User> _user;
+  User _user;
 
   @override
   void initState() {
@@ -39,9 +39,11 @@ class _LoginWidgetState extends State<LoginWidget> {
 
 
   Future<User> getUser() async {
-    final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/auth/login'),
+    try {
+    final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/mobile/login'),
       headers: <String, String>{
         'Content-Type' : 'application/json; charset=UTF-8',
+        'Authorization' : 'Bearer accesstoken',
       },
       body: jsonEncode(<String, String>{
         'username' : emailAddressController.text,
@@ -50,19 +52,23 @@ class _LoginWidgetState extends State<LoginWidget> {
     );
 
     if (response.statusCode == 200) {
+      _user = User.fromJson(jsonDecode(response.body));
       await Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) =>
-              Dashboard2Widget(),
+              Dashboard2Widget(user: _user),
         ),
             (r) => false,
       );
-      return User.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Error logging in');
+      return _user;
     }
-  }
+    else
+      return null;
+    } catch(error) {
+        return null;
+    }
+    }
 
   @override
   Widget build(BuildContext context) {

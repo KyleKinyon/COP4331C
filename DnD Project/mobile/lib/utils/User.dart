@@ -1,3 +1,5 @@
+import 'package:mongo_dart/mongo_dart.dart';
+
 class User {
   final String username;
   final String password;
@@ -6,6 +8,7 @@ class User {
   final String email;
   final bool verified;
   final String sessionName;
+  final String accessToken;
 
   const User({
     this.username,
@@ -14,7 +17,8 @@ class User {
     this.lastName,
     this.email,
     this.verified,
-    this.sessionName
+    this.sessionName,
+    this.accessToken,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,7 @@ class User {
       email: json['email'],
       verified: json['verified'],
       sessionName: json['sessionName'],
+      accessToken: json['accessToken'],
     );
   }
 }
