@@ -1,3 +1,5 @@
+import 'package:test2/character_page/character_page_widget.dart';
+
 import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -107,7 +109,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
               size: 30,
             ),
             onPressed: () {
-              print('IconButton pressed ...');
+              'Icon Pressed';
             },
           ),
         ],
@@ -189,8 +191,16 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
                           trailing: IconButton(
                             icon: const Icon(Icons.arrow_forward_ios),
                             color: Color(0xFF303030),
-                            onPressed: () {
-
+                            onPressed: () async {
+                              final Character passedChar = widget.characters[charactersIndex];
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                              builder : (context) =>
+                                CharacterPageWidget(character : widget.characters[charactersIndex]),
+                              ),
+                              // (r) => false,
+                              );
                             },
                           ),
                           tileColor: Color(0xFFF5F5F5),

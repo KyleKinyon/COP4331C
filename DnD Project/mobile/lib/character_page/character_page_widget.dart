@@ -3,11 +3,13 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import '../utils/Character.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CharacterPageWidget extends StatefulWidget {
-  const CharacterPageWidget({Key key}) : super(key: key);
+  const CharacterPageWidget({Key key, this.character});
+  final Character character;
 
   @override
   _CharacterPageWidgetState createState() => _CharacterPageWidgetState();
@@ -36,7 +38,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
             size: 24,
           ),
           onPressed: () {
-            print('IconButton pressed ...');
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -47,7 +49,8 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
         centerTitle: true,
         elevation: 2,
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child : Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           Row(
@@ -92,7 +95,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                       style: FlutterFlowTheme.of(context).bodyText2.override(
                             fontFamily: 'Lexend Deca',
                             color: Color(0xFF8B97A2),
-                            fontSize: 14,
+                            fontSize: 20,
                             fontWeight: FontWeight.normal,
                           ),
                     ),
@@ -101,13 +104,13 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                       child: Text(
                         valueOrDefault<String>(
                           currentUserDisplayName,
-                          'Char_name',
+                          widget.character.charName,
                         ),
                         textAlign: TextAlign.start,
                         style: FlutterFlowTheme.of(context).title2.override(
                               fontFamily: 'Lexend Deca',
                               color: Color(0xFF090F13),
-                              fontSize: 22,
+                              fontSize: 26,
                               fontWeight: FontWeight.bold,
                             ),
                       ),
@@ -118,7 +121,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
             ),
           ),
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 8, 20, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -135,20 +138,20 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                         style: FlutterFlowTheme.of(context).bodyText2.override(
                               fontFamily: 'Lexend Deca',
                               color: Color(0xFF8B97A2),
-                              fontSize: 14,
+                              fontSize: 18,
                               fontWeight: FontWeight.normal,
                             ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
-                          'Ranger',
+                          widget.character.className,
                           textAlign: TextAlign.start,
                           style:
                               FlutterFlowTheme.of(context).subtitle1.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF151B1E),
-                                    fontSize: 18,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -170,20 +173,20 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 14,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            'Halfling',
+                            widget.character.race,
                             textAlign: TextAlign.start,
                             style:
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -196,7 +199,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
             ),
           ),
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 8, 20, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -213,20 +216,20 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                         style: FlutterFlowTheme.of(context).bodyText2.override(
                               fontFamily: 'Lexend Deca',
                               color: Color(0xFF8B97A2),
-                              fontSize: 14,
+                              fontSize: 18,
                               fontWeight: FontWeight.normal,
                             ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
-                          '5',
+                          widget.character.strength.toString(),
                           textAlign: TextAlign.start,
                           style:
                               FlutterFlowTheme.of(context).subtitle1.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF151B1E),
-                                    fontSize: 18,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -248,20 +251,20 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 14,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            '10',
+                            widget.character.constitution.toString(),
                             textAlign: TextAlign.start,
                             style:
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -284,20 +287,20 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 14,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            '15',
+                            widget.character.dexterity.toString(),
                             textAlign: TextAlign.start,
                             style:
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -323,24 +326,24 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Wisdom    ',
+                        'Wisdom',
                         style: FlutterFlowTheme.of(context).bodyText2.override(
                               fontFamily: 'Lexend Deca',
                               color: Color(0xFF8B97A2),
-                              fontSize: 14,
+                              fontSize: 18,
                               fontWeight: FontWeight.normal,
                             ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
-                          '20',
+                          widget.character.wisdom.toString(),
                           textAlign: TextAlign.start,
                           style:
                               FlutterFlowTheme.of(context).subtitle1.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF151B1E),
-                                    fontSize: 18,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -357,25 +360,25 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Intellligence',
+                          'Intelligence',
                           style:
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 14,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            '18',
+                            widget.character.intelligence.toString(),
                             textAlign: TextAlign.start,
                             style:
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -398,440 +401,20 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                          child: Text(
-                            '20',
-                            textAlign: TextAlign.start,
-                            style:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF151B1E),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 8, 20, 0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Acrobatics',
-                        style: FlutterFlowTheme.of(context).bodyText2.override(
-                              fontFamily: 'Lexend Deca',
-                              color: Color(0xFF8B97A2),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          '20',
-                          textAlign: TextAlign.start,
-                          style:
-                              FlutterFlowTheme.of(context).subtitle1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF151B1E),
                                     fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Insight',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF8B97A2),
-                                    fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            '18',
+                            widget.character.charisma.toString(),
                             textAlign: TextAlign.start,
                             style:
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(19, 0, 0, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Medicine',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF8B97A2),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                          child: Text(
-                            '20',
-                            textAlign: TextAlign.start,
-                            style:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF151B1E),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 8, 20, 0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'History',
-                        style: FlutterFlowTheme.of(context).bodyText2.override(
-                              fontFamily: 'Lexend Deca',
-                              color: Color(0xFF8B97A2),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          '20',
-                          textAlign: TextAlign.start,
-                          style:
-                              FlutterFlowTheme.of(context).subtitle1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF151B1E),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Investigation',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF8B97A2),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                          child: Text(
-                            '18',
-                            textAlign: TextAlign.start,
-                            style:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF151B1E),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(19, 0, 0, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Nature',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF8B97A2),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                          child: Text(
-                            '20',
-                            textAlign: TextAlign.start,
-                            style:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF151B1E),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 8, 20, 0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Deception',
-                        style: FlutterFlowTheme.of(context).bodyText2.override(
-                              fontFamily: 'Lexend Deca',
-                              color: Color(0xFF8B97A2),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          '20',
-                          textAlign: TextAlign.start,
-                          style:
-                              FlutterFlowTheme.of(context).subtitle1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF151B1E),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Intimidation',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF8B97A2),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                          child: Text(
-                            '18',
-                            textAlign: TextAlign.start,
-                            style:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF151B1E),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(19, 0, 0, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Performance',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF8B97A2),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                          child: Text(
-                            '20',
-                            textAlign: TextAlign.start,
-                            style:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF151B1E),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 8, 20, 0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Persuasion',
-                        style: FlutterFlowTheme.of(context).bodyText2.override(
-                              fontFamily: 'Lexend Deca',
-                              color: Color(0xFF8B97A2),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                        child: Text(
-                          '20',
-                          textAlign: TextAlign.start,
-                          style:
-                              FlutterFlowTheme.of(context).subtitle1.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF151B1E),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Athletics',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF8B97A2),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                          child: Text(
-                            '18',
-                            textAlign: TextAlign.start,
-                            style:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF151B1E),
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -845,6 +428,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
           ),
         ],
       ),
+      )
     );
   }
 }

@@ -60,13 +60,13 @@ class _LoginWidgetState extends State<LoginWidget> {
       await storage.setItem('accessToken', _user.accessToken);
       await storage.setItem('refreshToken', _user.refreshToken);
       characters = await getChars();
-      await Navigator.pushAndRemoveUntil(
+      await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) =>
               Dashboard2Widget(user: _user, characters: characters),
         ),
-            (r) => false,
+            //(r) => false,
       );
 
       return _user;
