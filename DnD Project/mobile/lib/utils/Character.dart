@@ -1,7 +1,7 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
 class Character {
-  final ObjectId userId;
+  final String userId;
   final String charName;
   final String className;
   final int level;
@@ -11,7 +11,7 @@ class Character {
   final int constitution;
   final int intelligence;
   final int charisma;
-  final List<String> equipment;
+  final List equipment;
   final int wisdom;
 
   const Character({
