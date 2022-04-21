@@ -1,40 +1,50 @@
+import { Box, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
-import { Link } from "@mui/material";
+import FloatingBar from "../components/FrontPage/Floatingbar";
 
 export default function FrontPage() {
-  useEffect(() => console.log(process.env.REACT_APP_BACKEND_ADDRESS), []);
-
   return (
-    <div>
-      <h1>Front page</h1>
-      <p>Hello World!</p>
-      <div>
-        <Link href="/login" mx={1}>
-          Login
-        </Link>
-        <Link href="/signup" mx={1}>
-          Sign up
-        </Link>
-        <Link href="/dashboard" mx={1}>
-          Front Page
-        </Link>
-        <Link href="/character" mx={1}>
-          Character Creation
-        </Link>
-        <Link href="/lobby" mx={1}>
-          Lobby
-        </Link>
-        <Link href="/dmLobby" mx={1}>
-          DM Lobby Screen
-        </Link>
-        <Link href="/mainGame" mx={1}>
-          Main Game Screen
-        </Link>
-        <Link href="/settings" mx={1}>
-          Settings
-        </Link>
-        
-      </div>
-    </div>
+    <Box
+      width={1}
+      height={1}
+      position="relative"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        // backgroundImage: "url('/images/frontpage.jpg')",
+        // backgroundSize: "cover",
+      }}
+    >
+      <FloatingBar />
+      <Grid container width={1} height={1} columns={5}>
+        <Grid
+          item
+          xs={3}
+          sx={{
+            backgroundColor: "rgba(128, 128, 128, 0.5)",
+          }}
+        >
+          <Box
+            height={1}
+            width={1}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignContent: "center",
+            }}
+          >
+            <Typography variant="h4" textAlign="center">
+              DnD 25
+            </Typography>
+
+            <Typography variant="h5" textAlign="center">
+              A Dungeons and Dragons Manager to aid your sessions.
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={2}></Grid>
+      </Grid>
+    </Box>
   );
 }
