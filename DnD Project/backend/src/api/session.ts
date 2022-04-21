@@ -46,6 +46,10 @@ router.post("/createSession", async (req, res) => {
 
     const { name, map, characters, logs } = req.body;
 
+    if (!name) {
+      return res.status(400).json({ error: "Session name not provided" });
+    }
+
     let session = new Session({
       userId,
       name,
