@@ -183,8 +183,10 @@ router.post("/verifyUser", async (req,res) => {
     let data = User.findOneAndUpdate(filter, update).exec();
 
     if (!data) {
-        return res.status(400).json({ error: "User does not exist" });
+			return res.status(400).json({ error: "User does not exist" });
     }
+
+		res.status(200).json({ message: "Verified!" });
 });
 
 // NEEDS ADJUSTING

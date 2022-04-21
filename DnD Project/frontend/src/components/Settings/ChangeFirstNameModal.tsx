@@ -66,7 +66,7 @@ export default function ChangeFirstNameModal({propName}:any) {
         <DialogTitle>Change First Name</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To change your first, please enter the newly desired first in the field provided.
+            To change your first name, please enter the newly desired first in the field provided.
           </DialogContentText>
           <TextField
             autoFocus
