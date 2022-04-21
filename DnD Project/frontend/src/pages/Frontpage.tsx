@@ -1,5 +1,4 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { useEffect } from "react";
 import FloatingBar from "../components/FrontPage/Floatingbar";
 
 export default function FrontPage() {

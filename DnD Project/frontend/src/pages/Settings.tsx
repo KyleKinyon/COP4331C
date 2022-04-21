@@ -3,7 +3,7 @@ import { useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import req from "../utils/request";
 
-import ChangeUserModal from "../components/Settings/ChangeUserModal";
+//import ChangeUserModal from "../components/Settings/ChangeUserModal";
 import ChangePassModal from "../components/Settings/ChangePassModal";
 import ChangeFirstNameModal from "../components/Settings/ChangeFirstNameModal";
 import ChangeLastNameModal from "../components/Settings/ChangeLastNameModal";
