@@ -13,7 +13,7 @@ import Game from "./pages/Game";
 import GameProvider from "./components/Game/GameContext";
 import Settings from "./pages/Settings";
 import History from "./pages/History";
-
+import ModalProvider from  "./components/Settings/ModalContext";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import "@fontsource/roboto/300.css";
@@ -42,7 +42,14 @@ function App() {
           <Route path="/">
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
-            <Route path="settings" element={<Settings />} />
+            <Route 
+             path="settings" 
+            element={
+           <ModalProvider>
+             <ProtectedRoute>
+              <Settings />
+              </ProtectedRoute>
+           </ModalProvider> } />
             <Route path="resetPassword/:username" element={<ResetPassword />} />
             <Route path="verify/:username" element={<Verify />} />
             <Route

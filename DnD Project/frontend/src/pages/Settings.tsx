@@ -7,9 +7,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Add, Delete, Edit } from "@mui/icons-material";
+import {  useEffect, useState, useContext } from "react";
 import Navbar from "../components/Navbar";
 import req from "../utils/request";
 
@@ -17,14 +15,58 @@ import ChangeUserModal from "../components/Settings/ChangeUserModal";
 import ChangePassModal from "../components/Settings/ChangePassModal";
 import ChangeFirstNameModal from "../components/Settings/ChangeFirstNameModal";
 import ChangeLastNameModal from "../components/Settings/ChangeLastNameModal";
+import { modalContext } from '../components/Settings/ModalContext';
 
 export default function Settings() {
-  const navigate = useNavigate();
+ const {
+     username,
+     password,
+     firstName,
+     lastName,
+     setUsername,
+     setPassword,
+     setFirst,
+    setLast}= useContext(modalContext);
 
-  function f1() {
-    console.log("Do Something Here");
-  }
-  const [isOpen, setIsOpen] = useState(false);
+ /*
+const getUser = () =>{
+    req.get("user/getUser").then(
+        (response)=> {
+            setUsername(response.data._id);
+        }
+    );
+};
+*/
+
+const getData = async () => {
+    try {
+      const {data:{data}
+    } = await req.get("/user/getUser");
+
+      setUsername(data.username);
+      //setPassword(data.password);
+      setFirst(data.firstName);
+      setLast(data.lastName);
+      console.log("The userID was " +data.username);
+      console.log("The password was " +data.password);
+      console.log("The first name was " +data.firstName);
+      console.log("The last name was " +data.lastName);
+
+    } catch (error) {
+      console.log("Issue getting username data");
+      console.error(error);
+    }
+  };
+
+  
+ 
+
+  
+
+  useEffect(() => {
+    getData();
+  }, []); 
+
   //const [chars, setChars] = useState<Character[]>([]);
 
   /* const getCharData = async () => {
@@ -77,8 +119,8 @@ export default function Settings() {
               >
                 <ListItemText
                   primary={"Username"}
-                  secondary={"~Player's Username Here~"}
-                  onClick={() => f1()}
+                  secondary={username}
+                  
                 />
               </ListItem>
             }
@@ -92,8 +134,8 @@ export default function Settings() {
             >
               <ListItemText
                 primary={"Password"}
-                secondary={"~Player's Password Here~"}
-                onClick={() => f1()}
+                secondary={"*********"}
+               
               />
             </ListItem>
 
@@ -107,8 +149,8 @@ export default function Settings() {
             >
               <ListItemText
                 primary={"First Name"}
-                secondary={"~Player's First Name Here~"}
-                onClick={() => f1()}
+                secondary={firstName}
+                
               />
             </ListItem>
 
@@ -122,8 +164,8 @@ export default function Settings() {
             >
               <ListItemText
                 primary={"Last Name"}
-                secondary={"~Player's Last Name Here~"}
-                onClick={() => f1()}
+                secondary={lastName}
+               
               />
             </ListItem>
           </List>

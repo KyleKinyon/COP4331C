@@ -8,9 +8,15 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { Edit } from "@mui/icons-material";
+import {  useContext } from "react";
+import { modalContext } from './ModalContext';
+import req from "../../utils/request";
 
-export default function ChangeLastNameModal() {
+export default function ChangeFirstNameModal({propName}:any) {
   const [open, setOpen] = React.useState(false);
+
+  const {lastName, setLast}= useContext(modalContext);
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,6 +24,33 @@ export default function ChangeLastNameModal() {
 
   const handleClose = () => {
     setOpen(false);
+    //console.log(value);
+  };
+
+  const handleSubmit = (e:any) => {
+    setOpen(false);
+    e.preventDefault();
+    if(lastName)
+    {
+       console.log(lastName);
+       saveLastName();
+    }
+    //console.log(value);
+  };
+
+  const saveLastName = async () => {
+    try {
+      //Pass in First name 
+       await req.post("/user/changeName", {lastName});
+
+      
+      //setFirst(data.firstName);
+      console.log("The first name was updated to " + lastName);
+
+    } catch (error) {
+      console.log("Issue replacing new username");
+      console.error(error);
+    }
   };
 
   return (
@@ -34,16 +67,20 @@ export default function ChangeLastNameModal() {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            id="lastName"
+            label="Last Name"
+            type="lastName"
             fullWidth
             variant="standard"
+            value={lastName}
+          onChange={(e) => {
+            setLast(e.target.value);
+          }}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Submit</Button>
+          <Button onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
     </div>
