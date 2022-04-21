@@ -23,7 +23,7 @@ interface LoadGameProps {
 }
 
 export default function LoadGame({ open, close }: LoadGameProps) {
-  const { loadGame, newGame, deleteGame } = useContext(gameContext);
+  const { loadGame, deleteGame } = useContext(gameContext);
   const [games, setGames] = useState<Game[]>([]);
 
   const removeGameFromList = (item: Game) => {
@@ -79,17 +79,6 @@ export default function LoadGame({ open, close }: LoadGameProps) {
                 </ListItemButton>
               </ListItem>
             ))}
-
-            <ListItem divider>
-              <ListItemButton
-                onClick={() => {
-                  newGame();
-                  close();
-                }}
-              >
-                <ListItemText primary="Create a new game" />
-              </ListItemButton>
-            </ListItem>
           </List>
         )}
 

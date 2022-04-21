@@ -12,6 +12,7 @@ import Maps from "./pages/Maps";
 import Game from "./pages/Game";
 import GameProvider from "./components/Game/GameContext";
 import Settings from "./pages/Settings";
+import History from "./pages/History";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -52,7 +53,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
+
+            <Route
+              path={"history"}
+              element={
+                <ProtectedRoute>
+                  <History />
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path={"game"}
               element={

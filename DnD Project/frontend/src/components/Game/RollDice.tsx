@@ -19,8 +19,8 @@ export default function RollDice() {
   const [openDialog, setOpenDialog] = useState(false);
   const [diceInfo, setDiceInfo] = useState({
     value: 0,
-    min: 0,
-    max: 1,
+    min: 1,
+    max: 10,
   });
 
   const randomNumber = (min: number, max: number) => {
@@ -29,9 +29,15 @@ export default function RollDice() {
         let value = Math.floor(Math.random() * (max - min) + min);
         setDiceInfo({ ...diceInfo, value });
 
-        if (--i) loop(i);
-        if (i === 0)
-          addLog(`${chosenChar.name} has rolled a ${diceInfo.value}`);
+        if (--i) {
+          loop(i);
+        } else {
+          addLog(
+            `${chosenChar.name} has rolled a ${
+              document.getElementById("num")?.innerHTML as string
+            }`
+          );
+        }
       }, 100);
     }
 
@@ -70,9 +76,10 @@ export default function RollDice() {
       <Dialog open={openDialog}>
         <DialogTitle>Roll Dice</DialogTitle>
         <DialogContent>
-          <Typography variant="h4" textAlign="center">
-            {diceInfo.value}
+          <Typography id="num" variant="h4" textAlign="center">
+            {chosenChar !== null ? diceInfo.value : ""}
           </Typography>
+
           <Box
             width={1}
             height={1}
@@ -81,33 +88,45 @@ export default function RollDice() {
               flexDirection: "row",
             }}
           >
-            <Box py={1} px={2}>
-              <TextField
-                id="min"
-                label="Min Number"
-                value={diceInfo.min}
-                onChange={handleInputChange}
-              />
-            </Box>
+            {chosenChar === null && (
+              <Typography variant="body1">
+                Please make a character before rolling
+              </Typography>
+            )}
 
-            <Box py={1} px={2}>
-              <TextField
-                id="max"
-                label="Max Number"
-                value={diceInfo.max}
-                onChange={handleInputChange}
-              />
+            {chosenChar !== null && (
+              <>
+                <Box py={1} px={2}>
+                  <TextField
+                    id="min"
+                    label="Min Number"
+                    value={diceInfo.min}
+                    onChange={handleInputChange}
+                  />
+                </Box>
+
+                <Box py={1} px={2}>
+                  <TextField
+                    id="max"
+                    label="Max Number"
+                    value={diceInfo.max}
+                    onChange={handleInputChange}
+                  />
+                </Box>
+              </>
+            )}
+          </Box>
+          {chosenChar !== null && (
+            <Box px={2} my={1}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => randomNumber(diceInfo.min, diceInfo.max)}
+              >
+                Roll
+              </Button>
             </Box>
-          </Box>
-          <Box px={2} my={1}>
-            <Button
-              variant="contained"
-              fullWidth
-              onClick={() => randomNumber(diceInfo.min, diceInfo.max)}
-            >
-              Roll
-            </Button>
-          </Box>
+          )}
         </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={() => setOpenDialog(false)}>
