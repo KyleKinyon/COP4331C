@@ -71,6 +71,7 @@ export default function Login() {
       }
 
       setErrorEncountered(false);
+      const email = form.username
       // changed to promise to ensure state change
       request
         .post("/auth/forgotPassword", {email : email})
