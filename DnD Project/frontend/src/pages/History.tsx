@@ -47,6 +47,16 @@ export default function History() {
         >
           <Box p={2} my={2} sx={{ width: "clamp(350px, 60%, 90%)" }}>
             <List sx={{ backgroundColor: "white" }}>
+              {games.length === 0 && (
+                <>
+                  <Typography variant="body1" textAlign="center">
+                    There are no sessions available.
+                  </Typography>
+                  <Typography variant="body1" textAlign="center">
+                    <a href="/game">Click here</a> to start a game session!
+                  </Typography>
+                </>
+              )}
               {games.map((item, i) => (
                 <Dropdown
                   key={i}

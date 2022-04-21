@@ -37,11 +37,9 @@ export default function FloatingBar() {
       sx={{
         width: 1,
         height: "30px",
-        top: "10px",
-        right: "10px",
-        position: "absolute",
         display: "flex",
         justifyContent: "flex-end",
+        backgroundColor: "rgba(0,0,0,0)",
       }}
     >
       <Box display="flex" justifyContent="center" alignContent="center">

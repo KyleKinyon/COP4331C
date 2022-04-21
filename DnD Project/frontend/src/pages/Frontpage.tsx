@@ -1,7 +1,9 @@
-import { Box, Grid, Typography } from "@mui/material";
-import FloatingBar from "../components/FrontPage/Floatingbar";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function FrontPage() {
+  const navigate = useNavigate();
+
   return (
     <Box
       width={1}
@@ -10,23 +12,24 @@ export default function FrontPage() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        // backgroundImage: "url('/images/frontpage.jpg')",
-        // backgroundSize: "cover",
+        backgroundImage: "url('/images/frontpage.jpg')",
+        backgroundSize: "cover",
       }}
     >
-      <FloatingBar />
+      {/* <FloatingBar /> */}
       <Grid container width={1} height={1} columns={5}>
         <Grid
           item
           xs={3}
           sx={{
-            backgroundColor: "rgba(128, 128, 128, 0.5)",
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
           }}
         >
           <Box
             height={1}
             width={1}
             sx={{
+              color: "white",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -34,12 +37,18 @@ export default function FrontPage() {
             }}
           >
             <Typography variant="h4" textAlign="center">
-              DnD 25
+              D&Dy
             </Typography>
 
             <Typography variant="h5" textAlign="center">
               A Dungeons and Dragons Manager to aid your sessions.
             </Typography>
+
+            <Box my={2} width={1} display="flex" justifyContent="center">
+              <Button variant="contained" onClick={() => navigate("/signup")}>
+                Click here to start your journey.
+              </Button>
+            </Box>
           </Box>
         </Grid>
         <Grid item xs={2}></Grid>

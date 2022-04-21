@@ -52,10 +52,16 @@ export default function Login() {
       }
 
       setErrorEncountered(false);
-      request.post("/auth/login", form).then(({ data }) => {
-        localStorage.setItem("username", data.data.username);
-        navigation("/dashboard");
-      });
+      request
+        .post("/auth/login", form)
+        .then(({ data }) => {
+          localStorage.setItem("username", data.data.username);
+          navigation("/dashboard");
+        })
+        .catch((error) => {
+          setErrorEncountered(true);
+          setErrorMessage((error as any)?.response.data.error);
+        });
 
       // TODO: Make error box not look ass
     } catch (error) {
@@ -71,10 +77,10 @@ export default function Login() {
       }
 
       setErrorEncountered(false);
-      const email = form.username
+      const email = form.username;
       // changed to promise to ensure state change
       request
-        .post("/auth/forgotPassword", {email : email})
+        .post("/auth/forgotPassword", { email: email })
         .then(() => setEmailSent(true));
       // Once we have id send an email that contains their id and directs them to reset password page
     } catch (error) {
@@ -117,7 +123,7 @@ export default function Login() {
                 </Alert>
               )}
 
-              <Typography variant="h5" component="h2">
+              <Typography variant="h5" component="h2" my={1}>
                 Start Your D&D Campaign Today
               </Typography>
 

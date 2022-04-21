@@ -27,8 +27,13 @@ router.post("/createCharacter", async (req, res) => {
 		return res.status(400).json({ error: "User does not exist" });
 	}
 
+	console.log(charInfo);
+
 	data = await Char.create({
-		userId, charName, ...charInfo
+		userId, 
+		charName, 
+		class: charInfo.charClass,
+		...charInfo
 	});
 
 	res.status(200).json({ data });
