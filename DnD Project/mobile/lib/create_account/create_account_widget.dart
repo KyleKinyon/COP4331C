@@ -1,13 +1,21 @@
+import 'package:test2/dashboard2/dashboard2_widget.dart';
+import '../dashboard2/dashboard2_widget.dart';
+import '../utils/Character.dart';
 import '../auth/auth_util.dart';
+import '../change_password/change_password_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../login/login_widget.dart';
 import '../profile_page/profile_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
+import 'dart:convert';
+import '../login/login_widget.dart';
+import '../utils/User.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 class CreateAccountWidget extends StatefulWidget {
   const CreateAccountWidget({Key key}) : super(key: key);
@@ -26,6 +34,36 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
   TextEditingController passwordController2;
   bool passwordVisibility2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  User _user;
+  final LocalStorage storage = new LocalStorage('localStorage');
+
+  void refreshToken() async {
+    final refreshToken = await storage.getItem('refreshToken');
+    final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/mobile/refreshToken'),
+      headers: <String, String>{
+        'Content-Type' : 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'refreshToken': refreshToken,
+      })
+    );
+    if (response.statusCode == 200) {
+      Map<String, dynamic> tokens = jsonDecode(response.body);
+      storage.setItem('accessToken', tokens['accessToken']);
+      storage.setItem('refreshToken', tokens['refreshToken']);
+    
+       await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              Dashboard2Widget(user: _user),
+        ),
+            //(r) => false,
+      );
+
+    }
+  }
+
 
   @override
   void initState() {
@@ -39,6 +77,36 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
     passwordController2 = TextEditingController();
     passwordVisibility2 = false;
   }
+
+  void saveUser() async {
+  //Future<User> getUser() async {
+
+    final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/mobile/signup'),
+      headers: <String, String>{
+        'Content-Type' : 'application/json; charset=UTF-8',
+        'Authorization' : 'Bearer accesstoken',
+      },
+      body: jsonEncode(<String, String>{
+        'username' : emailAddressController.text,
+        'password' : passwordController1.text,
+      }),
+    );
+
+ if (response.statusCode == 200) {
+      _user = User.fromJson(jsonDecode(response.body));
+      await storage.setItem('accessToken', _user.accessToken);
+      await storage.setItem('refreshToken', _user.refreshToken);
+
+      _user = User.fromJson(jsonDecode(response.body)['data']);
+
+      print(response.body);
+      print(_user.firstName);
+
+      
+   
+    }
+    
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +139,7 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'D&Dy',
+                      'DND-25',
                       style: FlutterFlowTheme.of(context).subtitle1.override(
                             fontFamily: 'Overpass',
                             color: FlutterFlowTheme.of(context).oxfordBlue,
@@ -595,3 +663,4 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
     );
   }
 }
+
