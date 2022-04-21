@@ -26,7 +26,7 @@ export default function RollDice() {
   const randomNumber = (min: number, max: number) => {
     function loop(i: number) {
       setTimeout(() => {
-        let value = Math.floor(Math.random() * (max - min) + min);
+        let value = Math.floor(Math.random() * (max+1 - min) + min);
         setDiceInfo({ ...diceInfo, value });
 
         if (--i) {
