@@ -141,7 +141,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'DND-25',
+                      'D&Dy',
                       style: FlutterFlowTheme.of(context).subtitle1.override(
                             fontFamily: 'Overpass',
                             color: FlutterFlowTheme.of(context).oxfordBlue,

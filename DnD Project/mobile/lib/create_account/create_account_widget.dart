@@ -71,7 +71,7 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'DND-25',
+                      'D&D',
                       style: FlutterFlowTheme.of(context).subtitle1.override(
                             fontFamily: 'Overpass',
                             color: FlutterFlowTheme.of(context).oxfordBlue,

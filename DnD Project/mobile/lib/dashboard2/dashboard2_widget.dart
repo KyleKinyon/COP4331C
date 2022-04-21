@@ -207,7 +207,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
                                   context,
                                   MaterialPageRoute(
                               builder : (context) =>
-                                CharacterPageWidget(character : widget.characters[charactersIndex]),
+                                CharacterPageWidget(character : passedChar),
                               ),
                               // (r) => false,
                               );
