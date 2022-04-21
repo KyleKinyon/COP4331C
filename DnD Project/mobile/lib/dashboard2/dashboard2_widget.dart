@@ -29,6 +29,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final LocalStorage storage = new LocalStorage('localStorage');
 
+
   void refreshToken() async {
     final refreshToken = await storage.getItem('refreshToken');
     final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/mobile/refreshToken'),
@@ -46,7 +47,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
     }
 
   }
-  
+
   Future<List<Character>> getChars() async {
     try {
       final accessToken = storage.getItem('accessToken');
@@ -107,13 +108,11 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
             onPressed: () async {
               await Navigator.push(
                 context,
-                PageTransition(
-                  type: PageTransitionType.fade,
-                  duration: Duration(milliseconds: 250),
-                  reverseDuration:
-                  Duration(milliseconds: 250),
-                  child: ProfilePageWidget(),
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProfilePageWidget(user: widget.user),
                 ),
+                //(r) => false,
               );
             },
           ),
@@ -179,7 +178,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
               child: Builder(
                 builder: (context) {
                     return ListView.builder(
-                      padding: EdgeInsets.zero,
+                      padding: EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
                       scrollDirection: Axis.vertical,
                       itemCount: widget.characters.length,
                       itemBuilder: (context, charactersIndex) {

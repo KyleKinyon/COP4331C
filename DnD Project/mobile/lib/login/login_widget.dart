@@ -59,7 +59,13 @@ class _LoginWidgetState extends State<LoginWidget> {
       _user = User.fromJson(jsonDecode(response.body));
       await storage.setItem('accessToken', _user.accessToken);
       await storage.setItem('refreshToken', _user.refreshToken);
+
+      _user = User.fromJson(jsonDecode(response.body)['data']);
+
+      print(response.body);
+      print(_user.firstName);
       characters = await getChars();
+      
       await Navigator.push(
         context,
         MaterialPageRoute(

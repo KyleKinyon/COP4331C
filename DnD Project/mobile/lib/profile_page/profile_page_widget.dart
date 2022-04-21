@@ -1,3 +1,5 @@
+import 'package:localstorage/localstorage.dart';
+
 import '../auth/auth_util.dart';
 import '../change_password/change_password_widget.dart';
 import '../edit_profile/edit_profile_widget.dart';
@@ -8,11 +10,16 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../login/login_widget.dart';
 import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:flutter/material.dart';
+import '../utils/User.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class ProfilePageWidget extends StatefulWidget {
-  const ProfilePageWidget({Key key}) : super(key: key);
+  const ProfilePageWidget({Key key, this.user}) : super(key: key);
+  final User user;
 
   @override
   _ProfilePageWidgetState createState() => _ProfilePageWidgetState();
@@ -20,6 +27,65 @@ class ProfilePageWidget extends StatefulWidget {
 
 class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final LocalStorage storage = new LocalStorage('localStorage');
+
+  void refreshToken() async {
+    final refreshToken = await storage.getItem('refreshToken');
+    final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/mobile/refreshToken'),
+        headers: <String, String>{
+          'Content-Type' : 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'refreshToken': refreshToken,
+        })
+    );
+    if (response.statusCode == 200) {
+      Map<String, dynamic> tokens = jsonDecode(response.body);
+      storage.setItem('accessToken', tokens['accessToken']);
+      storage.setItem('refreshToken', tokens['refreshToken']);
+    }
+
+  }
+
+  Future<User> getUser() async {
+    try {
+      final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/mobile/login'),
+        headers: <String, String>{
+          'Content-Type' : 'application/json; charset=UTF-8',
+          'Authorization' : 'Bearer accesstoken',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        var _user = User.fromJson(jsonDecode(response.body));
+        await storage.setItem('accessToken', _user.accessToken);
+        await storage.setItem('refreshToken', _user.refreshToken);
+        print(response.body);
+        //characters = await getChars();
+        /*await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                Dashboard2Widget(user: _user, characters: characters),
+          ),
+          //(r) => false,
+        );*/
+
+        return _user;
+      }
+      else
+        return null;
+    } catch(error) {
+      return null;
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +151,9 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                                   EdgeInsetsDirectional.fromSTEB(0, 150, 0, 0),
                               child: Text(
                                 valueOrDefault<String>(
-                                  random_data.randomString(
-                                    1,
-                                    10,
-                                    true,
-                                    false,
-                                    false,
+                                  valueOrDefault<String>(
+                                    currentUserDisplayName,
+                                    widget.user.username,
                                   ),
                                   'Balla #1',
                                 ),
@@ -114,12 +177,9 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                             child: Text(
                               valueOrDefault<String>(
-                                random_data.randomString(
-                                  1,
-                                  10,
-                                  true,
-                                  false,
-                                  false,
+                                valueOrDefault<String>(
+                                  currentUserDisplayName,
+                                  widget.user.email,
                                 ),
                                 '\"email@gmail.com\"',
                               ),
