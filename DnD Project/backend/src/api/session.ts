@@ -64,16 +64,15 @@ router.post("/createSession", async (req, res) => {
 });
 
 router.post("/deleteSession", async (req, res) => {
-  const { id, name } = req.body;
+  const { id } = req.body;
 
-  if (!id || !name) {
+  if (!id) {
     return res.status(400).json({ error: "Session info not provided" });
   }
 
   try {
     let data = await Session.findOneAndDelete({
       _id: id,
-      name,
     }).exec();
 
     if (!data) {

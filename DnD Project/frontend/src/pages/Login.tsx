@@ -130,7 +130,7 @@ export default function Login() {
               >
                 <TextField
                   style={FieldStyle}
-                  placeholder="Username"
+                  placeholder="Username or Email"
                   type="text"
                   id="username"
                   margin="dense"
