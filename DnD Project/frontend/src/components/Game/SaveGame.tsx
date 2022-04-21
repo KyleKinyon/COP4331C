@@ -9,14 +9,10 @@ import {
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { gameContext } from "./GameContext";
-// import { useLocation } from "react-router-dom";
-
-// TODO: Save existing or create a new one
 
 export default function SaveGame() {
   const { saveGame, sessionUrl, sessionName, setSessionName } =
     useContext(gameContext);
-  // const location = useLocation();
   const [showDialog, setShowDialog] = useState(false);
 
   return (
@@ -26,8 +22,6 @@ export default function SaveGame() {
           variant="contained"
           fullWidth
           onClick={async (e) => {
-            e.preventDefault();
-
             !sessionUrl ? setShowDialog(true) : saveGame();
           }}
         >

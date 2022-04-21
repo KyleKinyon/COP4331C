@@ -8,9 +8,15 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { Edit } from "@mui/icons-material";
+import {  useContext } from "react";
+import { modalContext } from './ModalContext';
 
-export default function ChangePassModal() {
+
+export default function ChangeFirstNameModal({propName}:any) {
   const [open, setOpen] = React.useState(false);
+
+  const {password, setPassword}= useContext(modalContext);
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,7 +24,19 @@ export default function ChangePassModal() {
 
   const handleClose = () => {
     setOpen(false);
+    //console.log(value);
   };
+
+  const handleSubmit = (e:any) => {
+    setOpen(false);
+    e.preventDefault();
+    if(password)
+    {
+       console.log(password);
+    }
+    //console.log(value);
+  };
+
 
   return (
     <div>
@@ -34,16 +52,20 @@ export default function ChangePassModal() {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            id="password"
+            label="Password"
+            type="password"
             fullWidth
             variant="standard"
+            value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Submit</Button>
+          <Button onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -71,14 +71,15 @@ export default function Login() {
       }
 
       setErrorEncountered(false);
+      const email = form.username
       // changed to promise to ensure state change
       request
-        .post("/auth/getUserId", form.username)
+        .post("/auth/forgotPassword", {email : email})
         .then(() => setEmailSent(true));
       // Once we have id send an email that contains their id and directs them to reset password page
     } catch (error) {
-      setErrorEncountered(true);
       setErrorMessage((error as any)?.response.data.error);
+      setErrorEncountered(true);
     }
   };
 
@@ -129,7 +130,7 @@ export default function Login() {
               >
                 <TextField
                   style={FieldStyle}
-                  placeholder="Username"
+                  placeholder="Username or Email"
                   type="text"
                   id="username"
                   margin="dense"

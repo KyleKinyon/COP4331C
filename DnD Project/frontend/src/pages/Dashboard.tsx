@@ -80,15 +80,15 @@ export default function Dashboard() {
           py={2}
         >
           {cards.map((item, i) => (
-            <Card key={i} sx={{ maxWidth: 350, margin: "1rem" }}>
+            <Card key={i} sx={{ maxWidth: 500, margin: "1rem" }}>
               <CardMedia
                 component="img"
                 src={item.image.src}
                 alt={item.image.alt}
-                height="180"
+                height="400"
               />
               <CardContent>
-                <Typography variant="h5">{item.title}</Typography>
+                <Typography variant="h4">{item.title}</Typography>
                 <Typography variant="body2" my={1}>
                   {item.body}
                 </Typography>

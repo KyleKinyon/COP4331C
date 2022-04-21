@@ -62,12 +62,14 @@ router.post("/changeName", async (req, res) => {
     const { firstName, lastName } = req.body;
     const { _id: userId } = res.locals;
 
-    if (!firstName || !lastName) {
-        return res.status(400).json({ error: "First/Last name not provided" });
+    if (!firstName && !lastName) {
+			return res.status(400).json({ error: "First/Last name not provided" });
     }
 
     const filter = { _id: userId };
-    const update = { firstName: firstName, lastName: lastName };
+		let update: any = {};
+		if (firstName) update.firstName = firstName;
+		if (lastName) update.lastName = lastName;
 
     User.findOneAndUpdate(filter, update).exec();
 
@@ -96,7 +98,7 @@ router.delete("/delete", async (req, res) => {
 	const { _id: userId, username } = res.locals;
 
 	try {
-        await Session.deleteMany({ userId }).exec();
+		await Session.deleteMany({ userId }).exec();
 		await Character.deleteMany({ userId }).exec();
 		await User.deleteMany({ username }).exec();
 

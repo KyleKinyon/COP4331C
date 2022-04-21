@@ -11,19 +11,19 @@ import Dropdown from "../General/Dropdown";
 import LoadGameModal from "./LoadGameModal";
 
 export default function ListOptions() {
-  const { setCircleSize } = useContext(gameContext);
+  const { setCircleSize, newGame } = useContext(gameContext);
   const [loadGameDialog, setLoadGameDialog] = useState(false);
 
   return (
     <>
       <Dropdown title="Options">
-        <ListItem
-          onClick={() => {}}
-          sx={{
-            cursor: "pointer",
-          }}
-          divider
-        >
+        <ListItem divider>
+          <ListItemButton onClick={() => newGame()}>
+            <ListItemText primary={"New Session"} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem divider>
           <ListItemButton onClick={() => setLoadGameDialog(true)}>
             <ListItemText primary={"Load Session"} />
           </ListItemButton>

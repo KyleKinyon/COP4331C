@@ -5,7 +5,7 @@ import { MapList } from "../../utils/interfaces";
 import Dropdown from "../General/Dropdown";
 
 export default function MapDropdown() {
-  const { setChosenMap, maps } = useContext(gameContext);
+  const { setChosenMap, maps, addLog } = useContext(gameContext);
 
   return (
     <Dropdown title="Maps">
@@ -14,6 +14,7 @@ export default function MapDropdown() {
           key={i}
           onClick={() => {
             setChosenMap(item);
+            addLog(`Map changed to ${item.name}`);
           }}
           sx={{ cursor: "pointer" }}
           divider

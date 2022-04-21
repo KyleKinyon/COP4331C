@@ -1,5 +1,7 @@
 import { Box, Typography, TextField, Grid } from "@mui/material";
+import RandomizeStats from "./RandomizeStats";
 import { Stats } from "../../utils/interfaces";
+import { useEffect, useState } from "react";
 
 // TODO: Update so that stats can be randomized with a cap (feature)
 
@@ -12,6 +14,8 @@ export default function ChooseStats({
   statsObj,
   updateStatsObj,
 }: chooseStatsProps) {
+  const [random, setRandom] = useState(20);
+
   const handleInputChange = (e: any) => {
     const { id: name, value } = e.target;
 
@@ -22,6 +26,45 @@ export default function ChooseStats({
       [name]: value === "" ? 0 : parseInt(value),
     });
   };
+
+  const randomizeStats = (remaining: number) => {
+    return Math.floor(Math.random() * (remaining - 3 + 1) + 3);
+  };
+
+  const genRandom = () => {
+    let total = random;
+
+    let obj: { [key: string]: number } = {
+      strength: 0,
+      constitution: 0,
+      dexterity: 0,
+      wisdom: 0,
+      intelligence: 0,
+      charisma: 0,
+    };
+
+    let arr = [
+      "strength",
+      "constitution",
+      "dexterity",
+      "wisdom",
+      "intelligence",
+      "charisma",
+    ];
+
+    arr.sort(() => Math.random() - 0.5);
+
+    arr.forEach((item) => {
+      let val = randomizeStats(total);
+      total = Math.max(total - val, val);
+
+      obj[item] = total;
+    });
+
+    updateStatsObj(obj);
+  };
+
+  useEffect(() => {}, [random]);
 
   return (
     <>
@@ -97,6 +140,14 @@ export default function ChooseStats({
             />
           </Grid>
         </Grid>
+
+        <Box width={1} mt={3} display="flex" justifyContent="center">
+          <RandomizeStats
+            value={random}
+            update={setRandom}
+            randomize={genRandom}
+          />
+        </Box>
       </Box>
     </>
   );

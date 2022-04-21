@@ -17,6 +17,7 @@ import {
   SportsEsports,
   Settings,
   Map,
+  Book,
 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import req from "../utils/request";
@@ -39,9 +40,14 @@ export default function Navbar({ fixed, back }: NavProps) {
       icon: <Home />,
     },
     {
-      name: "Start New Campaign",
+      name: "Campaign",
       link: "/game",
       icon: <SportsEsports />,
+    },
+    {
+      name: "History",
+      link: "/history",
+      icon: <Book />,
     },
     {
       name: "Characters",

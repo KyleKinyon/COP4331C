@@ -1,13 +1,6 @@
-import { Box, Grid, Button, TextField, Alert } from "@mui/material";
+import { Box, Grid, Button, Typography } from "@mui/material";
 import request from "../utils/request";
 import { useParams, useNavigate } from "react-router-dom";
-
-const FieldStyle = {
-  backgroundColor: "white",
-  borderRadius: "4px",
-  marginRight: "0.1rem",
-  marginLeft: "0.1rem",
-};
 
 export default function Verify() {
   const { username } = useParams();
@@ -23,7 +16,6 @@ export default function Verify() {
     }
   };
 
-  // TODO: Replace temporary UI for testing with actual good UI.
   return (
     <>
       <Box sx={{ height: 1 }} className="dragon-background">
@@ -48,28 +40,12 @@ export default function Verify() {
                   width: "65%",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignContent: "center",
-                    padding: "",
-                  }}
-                ></Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignContent: "center",
-                  }}
-                ></Box>
+                <Typography variant="h4">
+                  Click below to verify your account!
+                </Typography>
 
                 <Button
                   onClick={(e) => {
-                    e.preventDefault();
                     VerifyAccount();
                   }}
                   variant="contained"

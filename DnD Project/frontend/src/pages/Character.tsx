@@ -6,9 +6,8 @@ import Navbar from "../components/Navbar";
 import ChooseClass from "../components/Character/ChooseClass";
 import ChooseRace from "../components/Character/ChooseRace";
 import ChooseStats from "../components/Character/ChooseStats";
-import ChooseAbilities from "../components/Character/ChooseAbilities";
 import req from "../utils/request";
-import { Abilities, Stats } from "../utils/interfaces";
+import { Stats } from "../utils/interfaces";
 
 // TODO: Have race and class show what is currently selected
 
@@ -33,28 +32,6 @@ export default function Character({ load }: CharacterPageProps) {
     wisdom: 0,
     intelligence: 0,
     charisma: 0,
-  });
-
-  // I pray to optimize this somehow
-  // nothing in the backend for this, remind to update later - Alex
-  const [abilities, setAbilities] = useState<Abilities>({
-    acrobatics: 0,
-    sleightOfHand: 0,
-    stealth: 0,
-    animalHealing: 0,
-    insight: 0,
-    medicine: 0,
-    survival: 0,
-    perception: 0,
-    arcana: 0,
-    history: 0,
-    investigation: 0,
-    nature: 0,
-    deception: 0,
-    intimidation: 0,
-    performance: 0,
-    persuasion: 0,
-    athletics: 0,
   });
 
   useEffect(() => {
@@ -128,7 +105,6 @@ export default function Character({ load }: CharacterPageProps) {
           <Tab label="Class" />
           <Tab label="Race" />
           <Tab label="Stats" />
-          <Tab label="Abilities" />
           <Tab label="Save" />
         </Tabs>
 
@@ -167,16 +143,8 @@ export default function Character({ load }: CharacterPageProps) {
         <TabPanel value={3} index={page}>
           <ChooseStats statsObj={stats} updateStatsObj={setStats} />
         </TabPanel>
+
         <TabPanel value={4} index={page}>
-          <ChooseAbilities absObj={abilities} updateAbsObj={setAbilities} />
-        </TabPanel>
-
-        {/* TODO: Allow for equipment setup/editing */}
-        {/* <TabPanel value={5} index={page}>
-						Equipment Panel
-        </TabPanel> */}
-
-        <TabPanel value={5} index={page}>
           <Box
             display="flex"
             flexDirection="column"

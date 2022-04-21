@@ -22,7 +22,7 @@ router.post("/createSession", async (req, res) => {
   const { _id: userId } = res.locals;
 
   let keys = Object.keys(req.body);
-  let contains = ["name", "map", "characters"].every((item) =>
+  let contains = ["name", "map", "characters", "logs"].every((item) =>
     keys.includes(item)
   );
 
@@ -44,13 +44,14 @@ router.post("/createSession", async (req, res) => {
         .json({ error: "Session with same name already exists" });
     }
 
-    const { name, map, characters } = req.body;
+    const { name, map, characters, logs } = req.body;
 
     let session = new Session({
       userId,
       name,
       map,
       characters,
+      logs,
     });
 
     await session.save();
@@ -63,16 +64,15 @@ router.post("/createSession", async (req, res) => {
 });
 
 router.post("/deleteSession", async (req, res) => {
-  const { id, name } = req.body;
+  const { id } = req.body;
 
-  if (!id || !name) {
+  if (!id) {
     return res.status(400).json({ error: "Session info not provided" });
   }
 
   try {
     let data = await Session.findOneAndDelete({
       _id: id,
-      name,
     }).exec();
 
     if (!data) {
@@ -82,6 +82,22 @@ router.post("/deleteSession", async (req, res) => {
     return res.status(200).json({ message: "Session successfully deleted" });
   } catch (error) {
     return res.status(400).json({ error: "Invalid JSON value(s)" });
+  }
+});
+
+router.post("/updateSession", async (req, res) => {
+  const { _id } = req.body;
+
+  if (!_id) {
+    return res.status(400).json({ error: "Session info not provided" });
+  }
+
+  try {
+    await Session.findOneAndUpdate({ _id }, { ...req.body }).exec();
+
+    return res.status(200).json({ message: "Session successfully deleted" });
+  } catch (error) {
+    return res.status(400).json({ error: "Unable to update" });
   }
 });
 

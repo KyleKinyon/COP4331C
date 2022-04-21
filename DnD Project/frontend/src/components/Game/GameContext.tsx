@@ -1,4 +1,4 @@
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { CharList, Game } from "../../utils/interfaces";
 import req from "../../utils/request";
 
@@ -89,7 +89,7 @@ export default function GameProvider({ children }: GameProviderProps) {
   const [characters, setCharacters] = useState<CharList[]>([]);
   const [sessionName, setSessionName] = useState("");
   const [circleSize, setCircleSize] = useState(10);
-  const [sessionUrl, setSessionUrl] = useState<string | null>(null);
+  const [sessionUrl, setSessionUrl] = useState("");
   const [logs, setLogs] = useState<string[]>([]);
 
   const addLog = useCallback(
@@ -111,6 +111,8 @@ export default function GameProvider({ children }: GameProviderProps) {
         return newData;
       })
     );
+
+    addLog(`${chosenChar?.name} has moved`);
   };
 
   const removeCharacter = (idx: number) => {
@@ -129,6 +131,7 @@ export default function GameProvider({ children }: GameProviderProps) {
       name: sessionName || name,
       map: chosenMap,
       characters,
+      logs,
     };
 
     let url = "";
@@ -152,14 +155,10 @@ export default function GameProvider({ children }: GameProviderProps) {
     try {
       setChosenMap(item.map);
       setCharacters(item.characters);
-      setChosenChar(characters[0]);
+      setChosenChar(item.characters[0]);
       setSessionName(item.name);
-
-      if (!item._id) {
-        throw new Error("Id is not part of item");
-      }
-
       setSessionUrl(item._id as string);
+      setLogs(item.logs ?? []);
     } catch (err) {
       console.error(err);
     }
@@ -169,7 +168,7 @@ export default function GameProvider({ children }: GameProviderProps) {
     setCharacters([]);
     setChosenChar(null);
     setChosenMap(maps[0]);
-    setSessionUrl(null);
+    setSessionUrl("");
     setSessionName("");
   };
 
@@ -183,6 +182,10 @@ export default function GameProvider({ children }: GameProviderProps) {
       newGame();
     }
   };
+
+  useEffect(() => {
+    console.log(logs);
+  }, [logs]);
 
   return (
     <gameContext.Provider
@@ -201,6 +204,8 @@ export default function GameProvider({ children }: GameProviderProps) {
         setCircleSize,
         sessionName,
         setSessionName,
+        sessionUrl,
+        setSessionUrl,
 
         // methods
         addLog,
