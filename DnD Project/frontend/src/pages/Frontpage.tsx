@@ -1,6 +1,13 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+const features = [
+  "Character sheet creation and management",
+  "Session hosting and visualization",
+  "Viewable session histories",
+  "Over a dozen maps to choose from",
+];
+
 export default function FrontPage() {
   const navigate = useNavigate();
 
@@ -16,8 +23,7 @@ export default function FrontPage() {
         backgroundSize: "cover",
       }}
     >
-      {/* <FloatingBar /> */}
-      <Grid container width={1} height={1} columns={5}>
+      <Grid container width={1} height={1} columns={6}>
         <Grid
           item
           xs={3}
@@ -39,10 +45,28 @@ export default function FrontPage() {
             <Typography variant="h4" textAlign="center">
               D&Dy
             </Typography>
-
-            <Typography variant="h5" textAlign="center">
+            <Typography variant="h5" textAlign="center" mt={2}>
               A Dungeons and Dragons Manager to aid your sessions.
             </Typography>
+
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignContent="center"
+              my={2}
+            >
+              <Box px={4}>
+                <ul style={{ width: "100%" }}>
+                  {features.map((item, i) => (
+                    <li>
+                      <Typography key={i} variant="body1">
+                        {item}
+                      </Typography>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
+            </Box>
 
             <Box my={2} width={1} display="flex" justifyContent="center">
               <Button variant="contained" onClick={() => navigate("/signup")}>
@@ -51,7 +75,7 @@ export default function FrontPage() {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={2}></Grid>
+        <Grid item xs={3}></Grid>
       </Grid>
     </Box>
   );

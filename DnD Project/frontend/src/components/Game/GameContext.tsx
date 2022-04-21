@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { CharList, Game } from "../../utils/interfaces";
 import req from "../../utils/request";
 
@@ -115,9 +115,10 @@ export default function GameProvider({ children }: GameProviderProps) {
     addLog(`${chosenChar?.name} has moved`);
   };
 
-  const removeCharacter = (idx: number) => {
-    addLog(`${characters[idx].name} has fallen!`);
-    setCharacters(characters.filter((_, i) => i === idx));
+  const removeCharacter = () => {
+    addLog(`${chosenChar?.name} has fallen!`);
+    setCharacters(characters.filter((char) => char !== chosenChar));
+    setChosenChar(characters.length > 0 ? characters[0] : null);
   };
 
   const addCharacter = (item: CharList) => {
@@ -182,10 +183,6 @@ export default function GameProvider({ children }: GameProviderProps) {
       newGame();
     }
   };
-
-  useEffect(() => {
-    console.log(logs);
-  }, [logs]);
 
   return (
     <gameContext.Provider

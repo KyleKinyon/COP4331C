@@ -10,15 +10,22 @@ import {
   ListItemButton,
   ListItemText,
   TextField,
+  SvgIcon,
 } from "@mui/material";
+import {} from "@mui/icons-material";
 import { useContext, useEffect, useState } from "react";
 import { gameContext } from "./GameContext";
 import { CharList } from "../../utils/interfaces";
 import Dropdown from "../General/Dropdown";
 
 export default function CharacterDropdown() {
-  const { characters, addCharacter, chosenChar, setChosenChar } =
-    useContext(gameContext);
+  const {
+    characters,
+    addCharacter,
+    chosenChar,
+    setChosenChar,
+    removeCharacter,
+  } = useContext(gameContext);
 
   const [showDialog, setShowDialog] = useState(false);
   const [charInfo, setCharInfo] = useState({
@@ -69,6 +76,18 @@ export default function CharacterDropdown() {
             <ListItemText primary="Add a Character" />
           </ListItemButton>
         </ListItem>
+
+        <ListItem
+          onClick={() => {
+            removeCharacter();
+          }}
+          sx={{ cursor: "pointer" }}
+          divider
+        >
+          <ListItemButton>
+            <ListItemText primary="Delete Character" />
+          </ListItemButton>
+        </ListItem>
       </Dropdown>
 
       <Dialog
@@ -110,6 +129,26 @@ export default function CharacterDropdown() {
                     onChange={(e) =>
                       setCharInfo({ ...charInfo, color: e.target.value })
                     }
+                    InputProps={{
+                      startAdornment: (
+                        <SvgIcon>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                            />
+                          </svg>
+                        </SvgIcon>
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid

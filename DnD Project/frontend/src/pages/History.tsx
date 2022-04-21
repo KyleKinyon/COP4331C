@@ -14,12 +14,17 @@ export default function History() {
         data: { sessions },
       } = await req.get("/session/listSessions");
       setGames(sessions);
-      console.log(sessions);
     })();
   }, []);
 
   return (
-    <Box width={1} height={1} display="flex" flexDirection="column">
+    <Box
+      flexGrow={1}
+      width={1}
+      height={1}
+      display="flex"
+      flexDirection="column"
+    >
       <Navbar />
       <Box
         position="relative"
@@ -27,12 +32,13 @@ export default function History() {
         flexDirection="column"
         justifyContent="center"
         alignContent="center"
+        p={1}
         sx={{
           width: 1,
           height: 1,
         }}
       >
-        <Typography variant="h4" py={1} px={2} textAlign="center">
+        <Typography variant="h4" textAlign="center">
           History
         </Typography>
 
