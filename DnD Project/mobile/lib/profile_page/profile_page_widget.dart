@@ -28,6 +28,10 @@ class ProfilePageWidget extends StatefulWidget {
 class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final LocalStorage storage = new LocalStorage('localStorage');
+  TextEditingController textController1;
+  TextEditingController textController2;
+  TextEditingController textController3;
+  TextEditingController textController4;
 
   void refreshToken() async {
     final refreshToken = await storage.getItem('refreshToken');
@@ -84,11 +88,16 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   @override
   void initState() {
     super.initState();
+    textController1 = TextEditingController(text: widget.user.username);
+    textController2 = TextEditingController(text: widget.user.password);
+    textController3 = TextEditingController(text: widget.user.firstName);
+    textController4 = TextEditingController(text: widget.user.lastName);
 
   }
 
   @override
   Widget build(BuildContext context) {
+    refreshToken();
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -122,8 +131,12 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
+            constraints: BoxConstraints(
+              maxHeight: double.infinity,
+            ),
             width: MediaQuery.of(context).size.width,
-            height: 220,
+            height: 250,
+
             decoration: BoxDecoration(
               color: Colors.white,
               image: DecorationImage(
@@ -145,10 +158,10 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Align(
-                            alignment: AlignmentDirectional(0, 0),
+                            alignment: AlignmentDirectional.bottomStart,
                             child: Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 150, 0, 0),
+                                  EdgeInsetsDirectional.fromSTEB(0, 200, 0, 0),
                               child: Text(
                                 valueOrDefault<String>(
                                   valueOrDefault<String>(
@@ -170,32 +183,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                            child: Text(
-                              valueOrDefault<String>(
-                                valueOrDefault<String>(
-                                  currentUserDisplayName,
-                                  widget.user.email,
-                                ),
-                                '\"email@gmail.com\"',
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: FlutterFlowTheme.of(context)
-                                        .copperPenny,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
+
                     ],
                   ),
                 ),
@@ -236,13 +224,8 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditProfileWidget(),
-                            ),
-                          );
+                        onTap: ()  {
+
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.9,
@@ -259,38 +242,34 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                                child: Text(
-                                  'Edit Profile',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Lexend Deca',
-                                        color: Color(0xFF090F13),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
-                                      ),
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                                  child: Text(
+                                    'Username',
+                                    style:
+                                    FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: Color(0xFF090F13),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
                                 ),
                               ),
                               Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(0.9, 0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EditProfileWidget(),
-                                        ),
-                                      );
-                                    },
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xFF95A1AC),
-                                      size: 18,
+                                flex: 2,
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                                  child: Text(
+                                    widget.user.username,
+                                    style:
+                                    FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Lexend Deca',
+                                      color: FlutterFlowTheme.of(context).nickel,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
                                     ),
                                   ),
                                 ),
@@ -308,68 +287,150 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      InkWell(
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChangePasswordWidget(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            shape: BoxShape.rectangle,
-                            border: Border.all(
-                              color: FlutterFlowTheme.of(context).grayLines,
-                              width: 2,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
-                                child: Text(
-                                  'Reset Password',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Lexend Deca',
-                                        color: Color(0xFF090F13),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(0.9, 0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EditProfileWidget(),
-                                        ),
-                                      );
-                                    },
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xFF95A1AC),
-                                      size: 18,
-                                    ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: ()  {
+
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  shape: BoxShape.rectangle,
+                                  border: Border.all(
+                                    color: FlutterFlowTheme.of(context).grayLines,
+                                    width: 2,
                                   ),
                                 ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                                        child: Text(
+                                          'FirstName',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                            fontFamily: 'Lexend Deca',
+                                            color: Color(0xFF090F13),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+
+                                        child: Text(
+                                          widget.user.firstName,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                            fontFamily: 'Lexend Deca',
+                                            color: FlutterFlowTheme.of(context).nickel,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: ()  {
+
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  shape: BoxShape.rectangle,
+                                  border: Border.all(
+                                    color: FlutterFlowTheme.of(context).grayLines,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                                        child: Text(
+                                          'LastName',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                            fontFamily: 'Lexend Deca',
+                                            color: Color(0xFF090F13),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
+                                        child: Text(
+                                          widget.user.lastName,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                            fontFamily: 'Lexend Deca',
+                                            color: FlutterFlowTheme.of(context).nickel,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -389,7 +450,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             MaterialPageRoute(
                               builder: (context) => LoginWidget(),
                             ),
-                            (r) => false,
+                                (r) => false,
                           );
                         },
                         text: 'Log Out',
@@ -397,13 +458,12 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           width: 90,
                           height: 40,
                           color: FlutterFlowTheme.of(context).darkSienna,
-                          textStyle:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: FlutterFlowTheme.of(context).white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                          textStyle: FlutterFlowTheme.of(context).bodyText2.override(
+                            fontFamily: 'Lexend Deca',
+                            color: FlutterFlowTheme.of(context).white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
                           elevation: 2,
                           borderSide: BorderSide(
                             color: Colors.transparent,
@@ -417,7 +477,8 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                 ),
               ],
             ),
-          ),
+          )
+
         ],
       ),
     );

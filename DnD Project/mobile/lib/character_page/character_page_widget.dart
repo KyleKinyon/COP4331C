@@ -12,6 +12,7 @@ import '../dashboard2/dashboard2_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 class CharacterPageWidget extends StatefulWidget {
   const CharacterPageWidget({Key key, this.character, this.user});
   final Character character;
@@ -53,8 +54,18 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    String name = widget.character.charName;
+    name = name[0].toUpperCase() + name.substring(1);
+
+    String cname = widget.character.className;
+    cname = cname[0].toUpperCase() + cname.substring(1);
+
+    String rname = widget.character.race;
+    rname = rname[0].toUpperCase() + rname.substring(1);
+
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -205,7 +216,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                       child: Text(
                         valueOrDefault<String>(
                           currentUserDisplayName,
-                          widget.character.charName,
+                          name,
                         ),
                         textAlign: TextAlign.start,
                         style: FlutterFlowTheme.of(context).title2.override(
@@ -246,7 +257,8 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                         child: Text(
-                          widget.character.className,
+
+                          cname,
                           textAlign: TextAlign.start,
                           style:
                               FlutterFlowTheme.of(context).subtitle1.override(
@@ -281,7 +293,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            widget.character.race,
+                            rname,
                             textAlign: TextAlign.start,
                             style:
                                 FlutterFlowTheme.of(context).subtitle1.override(

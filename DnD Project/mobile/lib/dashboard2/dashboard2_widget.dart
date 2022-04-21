@@ -73,6 +73,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
 
   @override
   Widget build(BuildContext context) {
+
     refreshToken();
 
     return Scaffold(
@@ -125,6 +126,11 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: double.infinity,
+              )
+            ),
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
