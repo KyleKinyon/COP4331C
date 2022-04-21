@@ -190,21 +190,27 @@ router.post("/verifyUser", async (req,res) => {
 // NEEDS ADJUSTING
 // I'm unsure how we plan to route the frontend password reset but here's the basic framework needed
 router.post("/forgotPassword", async (req,res) => {
-	const { userId, email } = req.body;
+	const { email } = req.body;
 
-	if (!userId || !email) {
+	if (!email) {
 		return res.status(400).json({ error: "User info not provided" });
+	}
+	
+	let data = await User.findOne({ email : email }).exec();
+	
+	if (!data) {
+		return res.status(400).json({error: "User does not exist"});
 	}
 
 	const msg = {
 		to: email,
 		from: 'group25DemoGod@gmail.com',
-		subject: 'Verfication email',
+		subject: 'Reset password email',
 		text: 'https://cop4331-dnd.herokuapp.com/dashboard/resetPassword',
 		html: `
 		<div>
 			<h1><strong>DnD 25</strong> password reset</h1>
-			<h4>Click this link <a href='${baseURL}/resetPassword/${userId}'>here</a> to reset your password.</h4>
+			<h4>Click this link <a href='${baseURL}/resetPassword/${data.email}'>here</a> to reset your password.</h4>
 		</div>`,
 	}
 
@@ -216,5 +222,24 @@ router.post("/forgotPassword", async (req,res) => {
 		return res.status(400).json({ error: "Error sending E-mail" });
 	}
 });
+
+router.post("/resetPassword", async (req,res) => {
+    const { password, email } = req.body;
+
+    if (!password) {
+        return res.status(400).json({ error: "Password not provided" });
+    }
+
+    const salt = await genSalt(12);
+    const hashedPassword: string = await hash(password, salt);
+    const filter = { email: email };
+    const update = { password: hashedPassword };
+
+    User.findOneAndUpdate(filter, update).exec();
+
+    res.status(200).json({ message: "Password updated" });
+});
+
+export default router;
 
 export default router;
