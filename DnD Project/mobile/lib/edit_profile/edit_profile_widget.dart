@@ -38,7 +38,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
           },
           child: Icon(
             Icons.arrow_back_rounded,
-            color: Colors.black,
+            color: FlutterFlowTheme.of(context).darkSienna,
             size: 24,
           ),
         ),
@@ -114,9 +114,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 16),
                 child: TextFormField(
                   controller: textController2,
-                  obscureText: false,
+                  obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'New Password',
+                    labelText: 'Password',
                     labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Lexend Deca',
                           color: Color(0xFF95A1AC),
@@ -173,7 +173,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                       textStyle:
                           FlutterFlowTheme.of(context).subtitle2.override(
                                 fontFamily: 'Lexend Deca',
-                                color: Colors.white,
+                                color: FlutterFlowTheme.of(context).darkSienna,
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal,
                               ),

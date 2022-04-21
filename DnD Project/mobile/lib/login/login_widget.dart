@@ -193,6 +193,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'Username',
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -250,6 +251,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   obscureText: !passwordVisibility,
                                   decoration: InputDecoration(
                                     labelText: 'Password',
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -325,7 +327,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     ),
                                   );
                                 },
-                                text: 'Forgot Email?',
+                                text: 'Forgot Password?',
                                 options: FFButtonOptions(
                                   width: 120,
                                   height: 40,

@@ -38,8 +38,8 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
             color: FlutterFlowTheme.of(context).darkSienna,
             size: 25,
           ),
-          onPressed: () {
-            print('IconButton pressed ...');
+          onPressed: () async {
+            Navigator.pop(context);
           },
         ),
         title: Text(

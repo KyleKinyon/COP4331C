@@ -1,4 +1,5 @@
 import 'package:test2/character_page/character_page_widget.dart';
+import 'package:test2/profile_page/profile_page_widget.dart';
 
 import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -76,7 +77,7 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Color(0x066E726E),
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         leading: InkWell(
           onTap: () async {
@@ -84,18 +85,13 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
           },
           child: Icon(
             Icons.arrow_back_rounded,
-            color: FlutterFlowTheme.of(context).darkSienna,
+            color: Color(0x066E726E),
             size: 24,
           ),
         ),
         title: Text(
           'Dashboard',
-          style: FlutterFlowTheme.of(context).bodyText1.override(
-            fontFamily: 'Lexend Deca',
-            color: Color(0xFF14181B),
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+          style: FlutterFlowTheme.of(context).bodyText1,
         ),
         actions: [
           FlutterFlowIconButton(
@@ -108,8 +104,17 @@ class _Dashboard2WidgetState extends State<Dashboard2Widget> {
               color: FlutterFlowTheme.of(context).darkSienna,
               size: 30,
             ),
-            onPressed: () {
-              'Icon Pressed';
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                PageTransition(
+                  type: PageTransitionType.fade,
+                  duration: Duration(milliseconds: 250),
+                  reverseDuration:
+                  Duration(milliseconds: 250),
+                  child: ProfilePageWidget(),
+                ),
+              );
             },
           ),
         ],
