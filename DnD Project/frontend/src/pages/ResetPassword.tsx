@@ -1,6 +1,6 @@
 import { Box, Grid, Button, TextField, Typography, Alert } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import request from "../utils/request";
 
 const FieldStyle = {
@@ -12,6 +12,7 @@ const FieldStyle = {
 
 export default function ResetPassword() {
     const nav = useNavigate();
+    const { username } = useParams();
 
     const [form, setForm] = useState({
         password: "",
@@ -33,7 +34,8 @@ export default function ResetPassword() {
 
             setErrorEncountered(false);
 
-            request.post("/user/resetPassword", form.password).then(() => nav("/login"));
+            await request.post("/auth/resetPassword", {password :form.password, email: username});
+            nav("/login");
 
 
         } catch (error) {
