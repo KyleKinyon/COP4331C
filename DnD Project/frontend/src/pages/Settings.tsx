@@ -50,13 +50,11 @@ export default function Settings() {
           </Typography>
           <List>
             <ListItem
-              sx={{ cursor: "pointer" }}
               divider
             >
               <ListItemText primary={"Username"} secondary={username} />
             </ListItem>
             <ListItem
-              sx={{ cursor: "pointer" }}
               secondaryAction={<ChangePassModal />}
               divider
             >
@@ -64,7 +62,6 @@ export default function Settings() {
             </ListItem>
 
             <ListItem
-              sx={{ cursor: "pointer" }}
               divider
               secondaryAction={<ChangeFirstNameModal />}
             >
@@ -72,7 +69,6 @@ export default function Settings() {
             </ListItem>
 
             <ListItem
-              sx={{ cursor: "pointer" }}
               divider
               secondaryAction={<ChangeLastNameModal />}
             >
