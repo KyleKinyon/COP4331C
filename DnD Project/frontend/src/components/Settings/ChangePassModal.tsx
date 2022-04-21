@@ -8,15 +8,20 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { Edit } from "@mui/icons-material";
-import {  useContext } from "react";
+import { useContext, useState } from "react";
 import { modalContext } from './ModalContext';
-
+import req from "../../utils/request";
+import { InputAdornment } from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 
 export default function ChangeFirstNameModal({propName}:any) {
   const [open, setOpen] = React.useState(false);
 
   const {password, setPassword}= useContext(modalContext);
   
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,11 +37,26 @@ export default function ChangeFirstNameModal({propName}:any) {
     e.preventDefault();
     if(password)
     {
-       console.log(password);
+      console.log(password);
+      savePassword();
     }
     //console.log(value);
   };
 
+  const savePassword = async () => {
+    try {
+      //Pass in First name 
+       await req.post("/user/changePassword", {newPassword: password});
+
+      
+      //setFirst(data.firstName);
+      console.log("The password was updated to " + password);
+
+    } catch (error) {
+      console.log("Issue replacing new password");
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -54,12 +74,25 @@ export default function ChangeFirstNameModal({propName}:any) {
             margin="dense"
             id="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             fullWidth
             variant="standard"
             value={password}
           onChange={(e) => {
             setPassword(e.target.value);
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            )
           }}
           />
         </DialogContent>

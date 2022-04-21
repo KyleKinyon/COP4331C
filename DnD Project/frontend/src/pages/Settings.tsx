@@ -51,7 +51,6 @@ export default function Settings() {
           <List>
             <ListItem
               sx={{ cursor: "pointer" }}
-              secondaryAction={<ChangeUserModal />}
               divider
             >
               <ListItemText primary={"Username"} secondary={username} />
