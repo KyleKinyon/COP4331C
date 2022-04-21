@@ -4,12 +4,19 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import '../utils/Character.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../utils/User.dart';
+import '../dashboard2/dashboard2_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CharacterPageWidget extends StatefulWidget {
-  const CharacterPageWidget({Key key, this.character});
+  const CharacterPageWidget({Key key, this.character, this.user});
   final Character character;
+  final User user;
+
 
   @override
   _CharacterPageWidgetState createState() => _CharacterPageWidgetState();
@@ -17,6 +24,34 @@ class CharacterPageWidget extends StatefulWidget {
 
 class _CharacterPageWidgetState extends State<CharacterPageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  List<Character> characters;
+  final LocalStorage storage = new LocalStorage('localStorage');
+
+  Future<List<Character>> getChars() async {
+    try {
+      print('starting');
+      final accessToken = storage.getItem('accessToken');
+      final response = await http.get(Uri.parse('https://cop4331-dnd.herokuapp.com/char/selectCharacter'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
+
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var characterObjectsJson = jsonDecode(response.body)['characters'] as List;
+        List<Character> characterList = characterObjectsJson.map((charJson) => Character.fromJson(charJson)).toList();
+        return characterList;
+      }
+      else
+        return null;
+    } catch(error) {
+      print(error);
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +80,78 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
           'Character',
           style: FlutterFlowTheme.of(context).bodyText1,
         ),
-        actions: [],
+        actions: [
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                child: IconButton(
+                  icon: const Icon(Icons.clear_outlined),
+                  onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Delete Character?'),
+                          content: Text('Are you sure you want to delete this character?'),
+                          actions: [
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }
+                            ),
+                            TextButton(
+                              child: Text('Yes'),
+                              onPressed: () async {
+                                //do the thing
+                                try {
+                                  final accessToken = storage.getItem('accessToken');
+                                  final response = await http.post(Uri.parse('https://cop4331-dnd.herokuapp.com/char/deleteCharacter'),
+                                    headers: <String, String>{
+                                      'Content-Type': 'application/json; charset=UTF-8',
+                                      'Authorization': 'Bearer $accessToken',
+                                    },
+                                    body: jsonEncode(<String, String>{
+                                      'charId': widget.character.id,
+                                    })
+                                  );
+                                  if (response.statusCode == 200) {
+                                    print('Delete says it did it');
+                                    print(response.body);
+                                    characters = await getChars();
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            Dashboard2Widget(user: widget.user,
+                                                characters: characters),
+                                      ),
+                                      //(r) => false,
+                                    );
+                                  }
+                                  else {
+                                    print(response.body);
+                                  }
+
+                                } catch(error) {
+                                  print('OOps');
+                                  print(error);
+                                }
+                              }
+                            )
+                          ]
+                        )
+                      );
+                }
+                ),
+              )
+          ),
+        ],
         centerTitle: true,
         elevation: 2,
+
       ),
       body: SingleChildScrollView(
-        child : Column(
+        child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           Row(
@@ -95,7 +196,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                       style: FlutterFlowTheme.of(context).bodyText2.override(
                             fontFamily: 'Lexend Deca',
                             color: Color(0xFF8B97A2),
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.normal,
                           ),
                     ),
@@ -138,7 +239,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                         style: FlutterFlowTheme.of(context).bodyText2.override(
                               fontFamily: 'Lexend Deca',
                               color: Color(0xFF8B97A2),
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.normal,
                             ),
                       ),
@@ -151,7 +252,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).subtitle1.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF151B1E),
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -173,7 +274,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
@@ -186,7 +287,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -216,7 +317,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                         style: FlutterFlowTheme.of(context).bodyText2.override(
                               fontFamily: 'Lexend Deca',
                               color: Color(0xFF8B97A2),
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.normal,
                             ),
                       ),
@@ -229,7 +330,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).subtitle1.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF151B1E),
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -251,7 +352,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
@@ -264,7 +365,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -287,7 +388,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
@@ -300,7 +401,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -330,7 +431,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                         style: FlutterFlowTheme.of(context).bodyText2.override(
                               fontFamily: 'Lexend Deca',
                               color: Color(0xFF8B97A2),
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.normal,
                             ),
                       ),
@@ -343,7 +444,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).subtitle1.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF151B1E),
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -365,7 +466,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
@@ -378,7 +479,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -401,7 +502,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                               FlutterFlowTheme.of(context).bodyText2.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF8B97A2),
-                                    fontSize: 18,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
@@ -414,7 +515,7 @@ class _CharacterPageWidgetState extends State<CharacterPageWidget> {
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),

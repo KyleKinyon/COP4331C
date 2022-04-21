@@ -2,6 +2,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 
 class Character {
   final String userId;
+  final String id;
   final String charName;
   final String className;
   final int level;
@@ -16,6 +17,7 @@ class Character {
 
   const Character({
     this.userId,
+    this.id,
     this.charName,
     this.className,
     this.level,
@@ -32,6 +34,7 @@ class Character {
   factory Character.fromJson(Map<String, dynamic> json) {
     return Character(
       userId: json['userId'],
+      id: json['_id'],
       charName: json['charName'],
       className: json['class'],
       level: json['level'],
